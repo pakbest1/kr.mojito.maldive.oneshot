@@ -1,0 +1,1 @@
+# kr.mojito.maldive.oneshot
