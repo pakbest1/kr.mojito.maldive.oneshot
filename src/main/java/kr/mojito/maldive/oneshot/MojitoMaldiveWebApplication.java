@@ -34,8 +34,6 @@ public class MojitoMaldiveWebApplication {
 
 	@Bean
 	public MessageRepository messageRepository() {
-		int i = 0;
-
 		return new InMemoryMessageRespository();
 	}
 
