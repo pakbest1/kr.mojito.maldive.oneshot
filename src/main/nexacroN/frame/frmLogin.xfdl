@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="frmLogin" width="1280" height="720" titletext="LoginFrame" cssclass="frm_LOGIN_Bg" onsize="frmLogin_onsize" onload="form_onload">
+    <Layouts>
+      <Layout height="720" width="1280">
+        <Static id="sta00" taborder="1" left="0" top="0" cssclass="sta_LOGIN_Pattern" right="0" bottom="0"/>
+        <Div id="divLogin" taborder="0" text="" left="430" top="95" width="400" height="500" background="" cssclass="div_LOGIN_Bg" formscrollbartype="none none">
+          <Layouts>
+            <Layout>
+              <Static id="staUserId" taborder="4" left="70" top="160" height="40" cssclass="sta_LOGIN_Id" right="70"/>
+              <Static id="staPassword" taborder="3" left="70" top="232" height="40" cssclass="sta_LOGIN_Pw" right="70"/>
+              <Button id="btnLogin" taborder="2" text="시작하기" bottom="50" height="48" right="70" cssclass="btn_LOGIN_Start" onclick="divLogin_btnLogin_onclick" width="260"/>
+              <Edit id="edtUserId" taborder="0" left="105" top="160" width="210" height="40" text="" cssclass="edt_LOGIN_Input" onkeyup="edt_keyup"/>
+              <Edit id="edtPassword" taborder="1" left="105" top="232" width="210" height="40" password="true" text="" cssclass="edt_LOGIN_Input" onkeyup="edt_keyup" visible="true"/>
+              <Static id="Static00" taborder="5" left="70" top="28" height="98" cssclass="sta_LOGIN_Logo" right="70"/>
+              <CheckBox id="chkSaveId" taborder="6" text="아이디저장" width="81" height="30" cssclass="chk_LOGIN_Id" falsevalue="false" truevalue="true" right="161" top="286"/>
+              <Static id="sta00" taborder="7" top="295" width="1" height="13" cssclass="sta_BF_Line" right="150"/>
+              <Button id="btn00" taborder="8" text="비밀번호 변경" top="286" width="70" height="30" cssclass="btn_LOGIN_Pw" right="70"/>
+              <Static id="sta01" taborder="9" text="User ID" left="71" top="145" width="42" height="15" cssclass="sta_LOGIN_Label"/>
+              <Static id="sta01_00" taborder="10" text="Password" left="71" top="217" width="51" height="15" cssclass="sta_LOGIN_Label"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	frmLogin.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+/**
+ * @description 화면 오픈
+ */
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	// form size 변경시 divLogin size 변경
+	this.fnDivLoginResize();
+};
+
+/**
+ * @description 화면 리사이징
+ */
+this.frmLogin_onsize = function(obj:nexacro.Form,e:nexacro.SizeEventInfo)
+{
+	// form size 변경시 divLogin size 변경
+	this.fnDivLoginResize();
+};
+
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+/**
+ * @description form size 변경시 divLogin size 변경
+ */ 
+this.fnDivLoginResize = function()
+{
+  	var nLeft = (nexacro.getApplication().mainframe.width / 2) - Math.round((this.divLogin.getOffsetWidth()) / 2);
+  	var nTop = (nexacro.getApplication().mainframe.height / 2) - Math.round((this.divLogin.getOffsetHeight()) / 2);
+
+	if(nLeft <= 0){
+		this.divLogin.setOffsetLeft(0);
+	}else{
+    	this.divLogin.setOffsetLeft(nLeft);
+		this.divLogin.setOffsetTop(nTop);
+	}
+}
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+/**
+ * @description 로그인 버튼 클릭 이벤트
+ */ 
+this.divLogin_btnLogin_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.gfnSetLogin(); // 메인화면 세팅
+};
+
+this.edt_keyup = function(obj:nexacro.Edit,e:nexacro.KeyEventInfo)
+{
+	if( e.keycode == 13){
+		this.gfnSetLogin(); // 메인화면 세팅
+	}
+};]]></Script>
+    <Objects/>
+    <Bind>
+      <BindItem id="item0" compid="divLogin.form.edtUserId" propid="value" datasetid="dsCond" columnid="EMP_NO"/>
+      <BindItem id="item1" compid="divLogin.form.edtPassword" propid="value" datasetid="dsCond" columnid="USER_PASSWORD"/>
+    </Bind>
+  </Form>
+</FDL>

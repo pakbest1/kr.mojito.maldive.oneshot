@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="sampleMessage" width="1050" height="700" titletext=" 메세지 오픈 샘플" onload="form_onload">
+    <Layouts>
+      <Layout height="700" mobileorientation="landscape" width="1050">
+        <TextArea id="txaGuide" taborder="3" left="0" top="0" height="210" right="20" onchanged="txaGuide_onchanged" value="1. 메시지 팝업을 통해 사용자에게 알림, 확인창을 호출할 수 있습니다.&#10;&#10;2. 메시지는 서비스를 통해 가져온 AppVariables의 gdsMessage에 등록된 코드만 사용가능합니다.&#10;&#10;3. 업무화면에서 메시지는 아래와 같이 기술하여야 합니다.&#10;// {0} 이(가) {1} 와(과) 일치하지 않습니다.&#10;this.gfnAlert(&quot;msg.err.validator.equalto&quot;, [&quot;이름&quot;, &quot;홍길동&quot;]);&#9;&#10;&#10;4. 확인창에서는 버튼의 명칭과 버튼 클릭시 리턴된 값을 변경할 수 있습니다.&#10;this.gfnAlert(sMsgId, arrArg, sPopId, sMsgCallback, [&quot;예&quot;, &quot;아니오&quot;, &quot;취소&quot;], [&quot;Y&quot;, &quot;N&quot;, &quot;C&quot;]);"/>
+        <Div id="divSearch" taborder="0" left="0" top="txaGuide:0" height="54" cssclass="div_WF_Search" text="" right="20">
+          <Layouts>
+            <Layout>
+              <Combo id="Combo01" taborder="0" left="56" width="185" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="Combo02" taborder="1" left="282" width="185" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="Combo03" taborder="2" left="521" width="184" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Calendar id="Calendar00" taborder="3" left="785" top="-158" width="184" height="28" value="20190308" dateformat="yyyy-MM-dd ddd" readonly="false"/>
+              <Button id="btnSearch" taborder="4" top="11" width="30" height="30" cssclass="btn_WF_Search" right="25" onclick="divSearch_btnSearch_onclick" visible="true"/>
+              <Static id="staSearchTitle00" taborder="5" text="메세지 타입" left="0" top="12" width="102" height="28" cssclass="sta_WF_SchLabel" fittocontents="width"/>
+              <Combo id="cboMessageType" taborder="6" text="system message" left="staSearchTitle00:0" top="12" width="150" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" value="system" onitemchanged="divSearch_cboMessageType_onitemchanged">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">popup</Col>
+                      <Col id="datacolumn">popup message</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">system</Col>
+                      <Col id="datacolumn">system message</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grdList" taborder="1" left="0" top="divSearch:43" binddataset="dsMsgList" autofittype="col" right="20" oncelldblclick="grdList_oncelldblclick" maxwidth="" minheight="350" maxheight="" bottom="0">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="238"/>
+                <Column size="581"/>
+                <Column size="199"/>
+              </Columns>
+              <Rows>
+                <Row size="37" band="head"/>
+                <Row size="37"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="메세지아이디"/>
+                <Cell col="1" text="메세지 내용"/>
+                <Cell col="2" text="메세지타입"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:MSGE_CD" displaytype="expr:dataset.getRowType(currow)=='2'?'editcontrol':'normal'" edittype="expr:dataset.getRowType(currow)=='2'?'text':'none'"/>
+                <Cell col="1" text="bind:KORN_MSGE"/>
+                <Cell col="2" combodataset="dsMsgType" combodatacol="name" combocodecol="code" text="bind:MSGE_FLAG_CD" displaytype="combotext"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="staTitle" taborder="2" text="메세지조회" left="0" top="divSearch:0" width="342" height="43" cssclass="sta_WF_Title"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsMsgType">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">CFN</Col>
+            <Col id="name">확인</Col>
+          </Row>
+          <Row>
+            <Col id="code">INF</Col>
+            <Col id="name">알림</Col>
+          </Row>
+          <Row>
+            <Col id="code">WAN</Col>
+            <Col id="name">경고</Col>
+          </Row>
+          <Row>
+            <Col id="code">ERR</Col>
+            <Col id="name">에러</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsMsgList" firefirstcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="dsList_onrowposchanged">
+        <ColumnInfo>
+          <Column id="KORN_MSGE" type="string" size="32"/>
+          <Column id="ENGL_MSGE" type="string" size="32"/>
+          <Column id="MSGE_CD" type="string" size="32"/>
+          <Column id="MSGE_FLAG_CD" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsMsgListGrid"/>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	sampleMessage.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj); //필수함수
+	nexacro.setEnvironmentVariable("evMessagePopup", "true");
+};
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+this.cfnSearch = function ()
+{
+	this.fnSearch();
+};
+
+this.cfnRefresh = function ()
+{
+	this.fnInit();
+};
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+this.fnSearch = function ()
+{
+	this.dsMsgList.clear();
+	this.dsMsgList.copyData(nexacro.getApplication().gdsMessage);
+};
+
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+this.fnMsgCallback = function (sMsgId, sRtn)
+{
+	trace("message id : " + sMsgId + " // return value : " + sRtn);
+};
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+this.fnInit = function ()
+{
+	this.dsMsgList.clearData();
+};
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+this.grdList_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	var nRow = e.row;
+	var sMsgId = this.dsMsgList.getColumn(nRow,"MSGE_CD");
+	var sPopId = sMsgId;
+	var sCallback = "fnMsgCallback";
+	var arrArg = ["test1","test2","test3"];
+
+	var sMsgType = this.dsMsgList.getColumn(nRow, "MSGE_FLAG_CD");
+	
+	// Confirm일 때 
+	if (sMsgType == "CFN")
+	{
+		this.gfnAlert(sMsgId, arrArg, sPopId, sCallback, ["예", "아니오", "취소"], ["Y", "N", "C"]);
+	// Alert일 때
+	} else 
+	{
+		this.gfnAlert(sMsgId, arrArg, sPopId, sCallback);
+	}
+	
+	
+};
+
+this.divSearch_cboMessageType_onitemchanged = function(obj:nexacro.Combo,e:nexacro.ItemChangeEventInfo)
+{
+	var sPopupMsgYN = "true";
+	if(e.postvalue == "system") sPopupMsgYN = "false";
+
+	nexacro.setEnvironmentVariable("evMessagePopup", sPopupMsgYN);
+};
+
+this.divSearch_btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.cfnSearch();
+};
+]]></Script>
+  </Form>
+</FDL>

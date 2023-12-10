@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ENV version="2.1">
+  <Environment themeid="theme::DesktopMDI" datatyperule="2.0" usehttpkeepalive="true" filesecurelevel="all" loadingimage="url('theme::PcMdi/images/loadingimage.gif')">
+    <ScreenDefinition>
+      <Screen id="desktop" type="desktop" themeid="theme::DesktopMDI"/>
+    </ScreenDefinition>
+    <Variables>
+      <Variable id="evMessagePopup" initval="true"/>
+      <Variable id="evQuickView" initval="Y"/>
+    </Variables>
+    <Cookies/>
+    <httpheader/>
+  </Environment>
+</ENV>

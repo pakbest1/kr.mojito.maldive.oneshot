@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Temp02" width="1050" height="736" titletext="Shuttle" cssclass="frm_WF_Frame" onload="form_onload" top="0">
+    <Layouts>
+      <Layout height="736" mobileorientation="landscape" width="1050">
+        <Static id="sta00" taborder="0" text="서브타이틀" left="0" top="50" width="342" height="43" cssclass="sta_WF_Title"/>
+        <Grid id="grd00" taborder="1" left="0" top="93" binddataset="ds_grid" autofittype="col" bottom="0" width="46.67%">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40"/>
+                <Column size="48"/>
+                <Column size="160"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="120"/>
+              </Columns>
+              <Rows>
+                <Row size="32" band="head"/>
+                <Row size="32"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="chk" displaytype="checkboxcontrol" edittype="checkbox"/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="에디트"/>
+                <Cell col="3" text="필수" cssclass="essential"/>
+                <Cell col="4" text="숫자"/>
+                <Cell col="5" text="텍스트"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:chk" displaytype="checkboxcontrol" edittype="checkbox"/>
+                <Cell col="1" text="bind:No" displaytype="text"/>
+                <Cell col="2" text="bind:Edi" displaytype="editcontrol" edittype="normal"/>
+                <Cell col="3" text="bind:Essential" displaytype="text"/>
+                <Cell col="4" text="bind:Num" displaytype="number"/>
+                <Cell col="5" text="bind:CenterAlign" displaytype="text"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn51" taborder="3" height="29" cssclass="btn_WF_Left" left="grd00:10" top="47%" onclick="Button02_onclick" width="29"/>
+        <Grid id="grd01" taborder="2" left="btn51:10" top="93" binddataset="ds_grid" autofittype="col" bottom="0" right="20">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40"/>
+                <Column size="48"/>
+                <Column size="160"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="120"/>
+              </Columns>
+              <Rows>
+                <Row size="32" band="head"/>
+                <Row size="32"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="chk" displaytype="checkboxcontrol" edittype="checkbox"/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="에디트"/>
+                <Cell col="3" text="필수" cssclass="essential"/>
+                <Cell col="4" text="숫자"/>
+                <Cell col="5" text="텍스트"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:chk" displaytype="checkboxcontrol" edittype="checkbox"/>
+                <Cell col="1" text="bind:No" displaytype="text"/>
+                <Cell col="2" text="bind:Edi" displaytype="editcontrol" edittype="normal"/>
+                <Cell col="3" text="bind:Essential" displaytype="text"/>
+                <Cell col="4" text="bind:Num" displaytype="number"/>
+                <Cell col="5" text="bind:CenterAlign" displaytype="text"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn54" taborder="4" top="btn51:4" cssclass="btn_WF_Right" height="29" left="grd00:10" width="29"/>
+        <Div id="divSearch" taborder="5" left="0" top="0" height="50" cssclass="div_WF_Search" text="" right="20">
+          <Layouts>
+            <Layout>
+              <Static id="sta00" taborder="0" text="필수캘린더" left="0" top="12" width="98" height="24" cssclass="sta_WF_SchLabel" fittocontents="width"/>
+              <Combo id="cbo01" taborder="1" left="56" width="185" height="24" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="cbo02" taborder="2" left="282" width="185" height="24" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="cbo03" taborder="3" left="521" width="184" height="24" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Calendar id="cal00" taborder="4" left="785" top="-158" width="184" height="24" value="20190308" dateformat="yyyy-MM-dd ddd" readonly="false"/>
+              <Static id="sta01" taborder="5" text="검색라벨" left="238" top="12" width="86" height="24" cssclass="sta_WF_SchLabel"/>
+              <Edit id="edt00" taborder="6" left="324" top="12" width="140" height="24"/>
+              <Button id="btnSearch" taborder="7" top="9" width="30" height="30" cssclass="btn_WF_Search" right="25"/>
+              <Calendar id="cal01" taborder="8" left="98" top="12" width="140" height="24" cssclass="essential"/>
+              <Edit id="edt04" taborder="9" left="467" top="12" width="140" height="24" cssclass="edi_WF_Search"/>
+              <Button id="btn02" taborder="10" left="579" top="12" width="28" height="24" cssclass="btn_WF_EdiSch" onclick="Div00_Button01_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="sta00_00" taborder="6" text="서브타이틀" left="btn51:20" top="50" height="43" cssclass="sta_WF_Title" right="20"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_grid">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="No" type="STRING" size="256"/>
+          <Column id="Edi" type="STRING" size="256"/>
+          <Column id="Essential" type="STRING" size="256"/>
+          <Column id="Num" type="STRING" size="256"/>
+          <Column id="Expand" type="STRING" size="256"/>
+          <Column id="Cmb" type="STRING" size="256"/>
+          <Column id="Cal" type="STRING" size="256"/>
+          <Column id="CenterAlign" type="STRING" size="256"/>
+          <Column id="Btn" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="No">01</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">02</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">03</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">04</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">05</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">06</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">07</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">08</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">09</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">10</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">11</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">12</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">13</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">14</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">15</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	Temp15.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj); //필수함수
+	
+};
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+//조회
+this.cfnSearch = function ()
+{
+	//TODO..
+};
+
+//저장
+this.cfnSave = function ()
+{
+	//TODO..
+};
+
+//추가
+this.cfnAdd = function ()
+{
+	//TODO..
+};
+
+//삭제
+this.cfnDel = function ()
+{
+	//TODO..
+};
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/]]></Script>
+  </Form>
+</FDL>

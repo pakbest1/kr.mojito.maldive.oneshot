@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ADL version="2.0">
+  <Application id="application" screenid="desktop" onload="application_onload">
+    <Layout>
+      <MainFrame id="mainframe" showtitlebar="true" showstatusbar="false" width="1280" height="900" titletext="Desktop MDI" showcascadetitletext="false" openalign="center middle" onsize="mainframe_onsize">
+        <VFrameSet id="vfrs" showtitleicon="false" showtitlebar="false" showstatusbar="false" separatesize="*,0,0">
+          <Frames>
+            <ChildFrame id="frmLogin" formurl="" dragmovetype="none" showtitlebar="false" showtitleicon="false"/>
+            <ChildFrame id="frmTop" formurl="" showtitleicon="false" showtitlebar="false" dragmovetype="none"/>
+            <HFrameSet id="hfrs" separatesize="0,*" showtitlebar="false" showtitleicon="false">
+              <Frames>
+                <ChildFrame id="frmLeft" formurl="" showtitlebar="false" dragmovetype="none" showtitleicon="false"/>
+                <VFrameSet id="vfrsWork" separatesize="42,*,0,0" showtitlebar="false" showtitleicon="false">
+                  <Frames>
+                    <ChildFrame id="frmMdi" formurl="" showtitlebar="false" showtitleicon="false" dragmovetype="none"/>
+                    <ChildFrame id="frmMain" formurl="" showtitlebar="false" dragmovetype="none" showtitleicon="false"/>
+                    <FrameSet id="frsWork" showtitlebar="false" showtitleicon="false">
+                      <Frames/>
+                    </FrameSet>
+                  </Frames>
+                </VFrameSet>
+              </Frames>
+            </HFrameSet>
+          </Frames>
+        </VFrameSet>
+      </MainFrame>
+    </Layout>
+  </Application>
+  <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	application 
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+*  date          		Modifier                Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT				application
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * application 변수 선언 영역
+************************************************************************************************/
+this.gvRunMode  = "";					// 실행환경 S : Studio, L : local, D : 개발, R : 운영
+
+/* 각 프레임에 해당되는 객체 참조 변수 */
+this.gvVfrs;
+this.gvFrmLogin;
+this.gvFrmTop ;
+this.gvHfrs;	
+this.gvFrmLeft;
+this.gvVfrsWork;
+this.gvFrmMdi;
+this.gvFrmMain;
+this.gvFrsWork; 
+
+/* 프레임 관련 변수*/
+this.LOGIN_FORM_PATH = "frame::frmLogin.xfdl";
+this.TOP_FORM_PATH   = "frame::frmTop.xfdl";
+this.LEFT_FORM_PATH  = "frame::frmLeft.xfdl";
+this.WORK_FORM_PATH  = "frame::frmWork.xfdl";
+this.MDI_FORM_PATH   = "frame::frmMdi.xfdl";
+this.MAIN_FORM_PATH  = "frame::frmMain.xfdl";
+
+this.gvOpenMaxFrame = 10; 				// 열리는 프레임 최대 갯수
+this.gvFrameStat = "login";				// 프레임상태(login,main,sub)
+this.gvCloseCheck;						// 화면 닫을때 체크할지 여부
+this.gvTitlebarHeight = 0;				// 차일드프레임 타이틀바 높이
+
+/* grid 관련 */
+this.gvUseGridContextMenu = true;		// 그리드 Context Menu 사용 여부
+
+/***********************************************************************************************
+* Application EVENT 영역(onload, onbeforeclose)
+/***********************************************************************************************/
+this.application_onload = function(obj:nexacro.Application,e:nexacro.LoadEventInfo)
+{
+	// QuikView 여부 설정
+	nexacro.setEnvironmentVariable("evQuikView", "N");
+	
+	//trace ("======================== PcMdi 프로젝트(PC) Start ==============================");
+	
+	// 각 프레임에 해당되는 객체 참조 변수 설정
+	this.gvVfrs = this.mainframe.vfrs;
+	this.gvFrmLogin = this.mainframe.vfrs.frmLogin;
+	this.gvFrmTop = this.mainframe.vfrs.frmTop;
+	this.gvHfrs = this.mainframe.vfrs.hfrs;
+	this.gvFrmLeft 	= this.mainframe.vfrs.hfrs.frmLeft;
+	this.gvVfrsWork = this.mainframe.vfrs.hfrs.vfrsWork;
+	this.gvFrmMain = this.mainframe.vfrs.hfrs.vfrsWork.frmMain;
+	this.gvFrsWork = this.mainframe.vfrs.hfrs.vfrsWork.frsWork;
+	this.gvFrmMdi	= this.mainframe.vfrs.hfrs.vfrsWork.frmMdi;
+	
+	var sRunMode = "S";  // S : Studio, L : local, D : 개발, R : 운영
+	var objEnv	 = nexacro.getEnvironment();
+	var objSrv   = objEnv.services["svcUrl"];
+	
+	// 런타임 접속
+	if (system.navigatorname == "nexacro") 
+	{			
+		var sXadl = nexacro.getProjectPath();
+		// 로컬(Studio)
+		if (sXadl.indexOf("file://") != -1) 
+		{        
+			sRunMode = "S";
+			this.mainframe.set_titletext("로컬(Studio) - " + this.mainframe.titletext);
+		}	
+		
+		// Runtime 실행할때 TitleBar 크기(30px) 만큼 높이를 조정
+		this.mainframe.set_height(932);
+		// Runtime 실행할때 border 보이도록 설정
+		this.mainframe.set_border("1px solid #111111");
+	} 	
+	else 	//WEB 접속
+	{		
+		var urlPath = window.location.protocol + "//" + window.location.host;		
+		//서비스  URL 세팅
+ 		objSrv.set_url(urlPath+"/");
+		
+		// 로컬(웹)
+	    if (objSrv.url.indexOf("localhost") > -1 || objSrv.url.indexOf("127.0.0.1") > -1 ) 
+		{			
+			sRunMode = "L";
+			this.mainframe.set_titletext("로컬(웹)  - " + this.mainframe.titletext);
+		}
+	}
+	this.gvRunMode = sRunMode;
+ 	trace("========== 접속경로 : " + nexacro.getProjectPath() + " / 실행환경(nRunMode) : " + this.gvRunMode + " / 서비스URL : " + objSrv.url + " ================");
+
+	// 로그인 화면 보여주기
+	this.gvFrmLogin.set_formurl(this.LOGIN_FORM_PATH);
+};
+
+this.mainframe_onsize = function(obj:nexacro.MainFrame,e:nexacro.SizeEventInfo)
+{
+	var objFrame = nexacro.getPopupFrames();
+	var nLeft = 0;
+	var nTop = 0;
+	for (var i = objFrame.length-1; i >= 0; i--)
+	{
+		if (objFrame[i]._modaltype == "center")
+		{
+			nLeft = (nexacro.getApplication().mainframe.width - objFrame[i].width)/2;
+			nTop = (nexacro.getApplication().mainframe.height - objFrame[i].height)/2;
+			objFrame[i].move(nLeft, nTop);
+		}
+	}
+};
+]]></Script>
+</ADL>

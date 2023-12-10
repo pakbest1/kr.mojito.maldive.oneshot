@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Temp09" width="1050" height="736" titletext="Popup" cssclass="frm_WF_Frame" onload="form_onload">
+    <Layouts>
+      <Layout height="736" mobileorientation="landscape" width="1050">
+        <Div id="divSearch" taborder="0" left="0" top="0" height="50" cssclass="div_WF_Search" text="" right="20">
+          <Layouts>
+            <Layout>
+              <Combo id="Combo01" taborder="0" left="56" width="185" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="Combo02" taborder="1" left="282" width="185" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="Combo03" taborder="2" left="521" width="184" height="28" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체" readonly="false" value="1" top="-158">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Calendar id="Calendar00" taborder="3" left="785" top="-158" width="184" height="28" value="20190308" dateformat="yyyy-MM-dd ddd" readonly="false"/>
+              <Static id="sta01" taborder="4" text="사용자 검색" left="0" top="12" width="106" height="24" cssclass="sta_WF_SchLabel" fittocontents="width"/>
+              <Button id="btnSearch" taborder="5" top="9" width="30" height="30" cssclass="btn_WF_Search" right="25" onclick="divSearch_btnSearch_onclick"/>
+              <Edit id="edtSearch" taborder="6" left="sta01:0" top="12" width="140" height="24" cssclass="edi_WF_Search" onkeyup="divSearch_edtSearch_onkeyup"/>
+              <Button id="btn02" taborder="7" left="sta01:112" top="12" width="28" height="24" cssclass="btn_WF_EdiSch" onclick="Div00_Button01_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_grid">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="No" type="STRING" size="256"/>
+          <Column id="Edi" type="STRING" size="256"/>
+          <Column id="Essential" type="STRING" size="256"/>
+          <Column id="Num" type="STRING" size="256"/>
+          <Column id="Expand" type="STRING" size="256"/>
+          <Column id="Cmb" type="STRING" size="256"/>
+          <Column id="Cal" type="STRING" size="256"/>
+          <Column id="CenterAlign" type="STRING" size="256"/>
+          <Column id="Btn" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="No">01</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">02</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">03</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">04</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">05</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">06</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">07</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">08</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">09</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">10</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">11</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">12</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">13</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">14</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+          <Row>
+            <Col id="No">15</Col>
+            <Col id="Edi">가나다라마바</Col>
+            <Col id="Essential">투비</Col>
+            <Col id="Num">1000000</Col>
+            <Col id="Expand">가나다라</Col>
+            <Col id="Cmb">콤보</Col>
+            <Col id="Cal">20200202</Col>
+            <Col id="CenterAlign">투비소프트</Col>
+            <Col id="Btn">버튼</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	Temp17.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction    팝업 유형 화면
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj); //필수함수
+};
+
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+/**
+ * @description 팝업 콜백
+*/
+this.fnPopupCallback = function(sPopupId, sRtn)
+{
+	if (sPopupId == "popupSearch")
+	{
+		if (this.gfnIsNull(sRtn)) return;
+		
+		var objRtn = JSON.parse(sRtn);
+		
+		var sId = objRtn.rtnId;
+		var sName = objRtn.rtnName;
+		
+		if (!this.gfnIsNull(sName)) this.divSearch.form.edtSearch.set_value(sName);
+	}
+}
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+/**
+ * @description 사용자검색 팝업 호출
+*/
+this.fnOpenSearchPop = function()
+{
+	var sSearch = this.divSearch.form.edtSearch.value;
+	if (this.gfnIsNull(sSearch)) sSearch = "";
+	
+	var sTitle = "사용자 검색 팝업";
+	var objArg   = {pvSearch:sSearch};
+	var objOption = {
+		width:700
+		,height:394			//width,height 지정하지 않음 popup form size적용
+		,popuptype:"modal"	//modal,modaless
+		,autosize:false
+		,title:sTitle
+		,resize:false
+		,titlebar:true};
+	var sPopupCallBack = "fnPopupCallback";
+	
+	this.gfnOpenPopup("popupSearch", "design::template/Temp17_1.xfdl", objArg, sPopupCallBack, objOption);
+}
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+/**
+ * @description 검색 버튼 클릭 이벤트
+*/
+this.Div00_Button01_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	// 사용자검색 팝업 호출
+	this.fnOpenSearchPop();
+};
+
+/**
+ * @description 검색 엔터키 이벤트
+*/
+this.divSearch_edtSearch_onkeyup = function(obj:nexacro.Edit,e:nexacro.KeyEventInfo)
+{
+	// 엔터키일 경우
+	if (e.keycode == 13)
+	{
+		// 사용자검색 팝업 호출
+		this.fnOpenSearchPop();
+	}
+};
+]]></Script>
+  </Form>
+</FDL>

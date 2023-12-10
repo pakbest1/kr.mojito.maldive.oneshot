@@ -1,0 +1,927 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="frmMdi" width="1070" height="42" titletext="MdiFrame" onsize="form_onsize" cssclass="frm_MDI_Bg" onload="form_onload">
+    <Layouts>
+      <Layout height="42" width="1070">
+        <Static id="sta00_01" taborder="14" left="0" top="0" height="42" cssclass="sta_MDI_Bg" right="0"/>
+        <Static id="Static00" taborder="1" left="0" right="0" bottom="0" height="1" cssclass="sta_MDI_Line"/>
+        <Button id="btnLeftMenuShowHide" taborder="2" top="0" width="20" cssclass="btn_MDI_Open" onclick="btnLeftMenuShowHide_onclick" left="0" text="" height="42"/>
+        <Button id="btnHome" taborder="7" top="0" width="42" cssclass="btn_MDI_Home" height="42" left="btnLeftMenuShowHide:0" onclick="btnHome_onclick" text=""/>
+        <Static id="sta00" taborder="13" top="15" width="1" height="14" cssclass="sta_MDI_Line" right="38"/>
+        <Button id="btnHorizontal" taborder="11" top="6" height="31" cssclass="btn_MDI_Horizontal" right="sta00:-35" width="23" onclick="btnArrange_onclick" tooltiptext="vertical"/>
+        <Button id="btnVertical" taborder="10" top="6" width="23" height="31" cssclass="btn_MDI_Vertical" right="btnHorizontal:0" onclick="btnArrange_onclick" tooltiptext="horizontal"/>
+        <Button id="btnCascade" taborder="9" top="6" width="23" height="29" cssclass="btn_MDI_Restore" right="btnVertical:0" onclick="btnArrange_onclick" tooltiptext="cascade"/>
+        <Button id="btnMaximize" taborder="8" top="6" width="23" height="31" cssclass="btn_MDI_Max" right="btnCascade:0" onclick="btnArrange_onclick" tooltiptext="최대화"/>
+        <Static id="sta00_00" taborder="12" top="15" width="1" height="14" cssclass="sta_MDI_Line" right="btnMaximize:5"/>
+        <Button id="btnCloseAll" taborder="6" top="6" width="23" height="31" right="sta00_00:5" tooltiptext="전체닫기" cssclass="btn_MDI_CloseAll" onclick="btnCloseAll_onclick"/>
+        <Button id="btnList" taborder="3" top="6" width="23" height="31" right="btnCloseAll:0" tooltiptext="열린메뉴" cssclass="btn_MDI_List" onclick="btnList_onclick"/>
+        <Button id="btnNexMdi" taborder="4" top="6" width="18" height="31" right="btnList:0" onclick="btnNexMdi_onclick" tooltiptext="다음 화면목록으로" cssclass="btn_MDI_Right"/>
+        <Button id="btnPreMdi" taborder="5" top="6" width="18" height="31" right="btnNexMdi:0" onclick="btnPreMdi_onclick" tooltiptext="이전 화면목록으로" cssclass="btn_MDI_Left"/>
+        <Div id="divTab" taborder="0" left="btnHome:0" top="0" right="btnPreMdi:5" text="" formscrollbartype="none none" formscrolltype="none" height="42">
+          <Layouts>
+            <Layout/>
+          </Layouts>
+        </Div>
+        <PopupDiv id="pdvOpenMenu" visible="false" left="790" top="42" width="245" height="200" cssclass="pdiv_MDI_Bg">
+          <Layouts>
+            <Layout>
+              <Grid id="grdOpenMenu" taborder="0" left="0" top="0" right="0" bottom="0" autofittype="col" binddataset="gdsOpenMenu" oncellclick="pdvOpenMenu_grdOpenMenu_oncellclick" cssclass="grd_MDI_List" scrollbardecbuttonsize="0" scrollbarincbuttonsize="0">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="80"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="28"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell text="bind:MENU_NM" tooltiptext="bind:MENU_NM"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	frmMdi.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+this.fvFirstGap = 0;
+this.fvBtnGap = 0;
+this.fvTabHeight = 42;
+this.fvTabExtraRightGap = 25;
+this.fvExtraWidth = 25;
+this.fvExtraTop = 8;
+this.fvExtraHeight = 25;
+this.fvExtraBtnPrefix = "EXTRA_";
+this.fvTabBtnPrefix = "TAB_";
+this.bClose;
+this.fvContextMenuWinID = "";
+
+this.fvCurrentRow = -1;
+this.objApp = nexacro.getApplication();
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+/**
+ * @description 화면 리사이징
+ */
+this.form_onsize = function(obj:nexacro.Form,e:nexacro.SizeEventInfo)
+{
+	this.fnRedrawTab();
+};
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+/**
+ * @description 메세지 콜백
+*/
+this.fnMsgCallback = function (sMsgId, sVal)
+{
+	var arrMsgId = sMsgId.split("^");
+
+	switch (arrMsgId[0])
+	{
+		case "confirm.removeallpage" :	// 전체 화면을 닫겠습니까?
+			if (sVal)
+			{		
+				this.fnCloseAll(false);
+			}
+			break;			
+		default :
+			break;
+	}
+};
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+/**
+ * @description MDI 버튼 재조정
+ */
+this.fnRedrawTab = function (sGubn)
+{
+	if (this.gfnIsNull(sGubn)) sGubn = "move";
+	
+	this.fnSetTabSpinBtnShow();
+	
+	if (this.dsTab.rowcount < 1) return;
+
+	var objTabFirst = this.fnFindObj(this.dsTab.getColumn(0, "tabId"));
+	var nLeft = objTabFirst.getOffsetLeft();
+	
+	var objTabLast  = this.fnFindObj(this.dsTab.getColumn(this.dsTab.rowcount - 1, "tabId"));
+	var nRight = objTabLast.getOffsetRight();
+	
+	if (this.divTab.getOffsetWidth() >= (nRight - nLeft)) 
+	{
+		this.fnMoveFirst(0);
+	} else 
+	{
+		// 메뉴 추가 시 버튼 잘림 방지
+		if (sGubn == "add") 
+		{
+			this.fnMoveFirst(this.fnGetFirstTabIndex() + 1);
+		}
+	}
+	
+}
+
+/**
+ * @description MDI spin 버튼 활성/비활성화 처리
+ */
+this.fnSetTabSpinBtnShow = function ()
+{
+	var objTab;
+	
+	if (this.dsTab.rowcount == 0) 
+	{		
+		this.btnPreMdi.set_enable(false);
+		this.btnNexMdi.set_enable(false);
+		return;
+	}
+
+	objTab = this.fnFindObj(this.dsTab.getColumn(this.dsTab.rowcount - 1, "tabId"));
+ 
+	if (this.divTab.getOffsetWidth() < objTab.getOffsetRight()) 
+	{
+		this.btnNexMdi.set_enable(true);
+	} else 
+	{
+		this.btnNexMdi.set_enable(false);
+	}
+
+	objTab = this.fnFindObj(this.dsTab.getColumn(0, "tabId"));
+
+	if (objTab.getOffsetLeft() < 0) 
+	{
+		this.btnPreMdi.set_enable(true);
+	} else 
+	{
+		this.btnPreMdi.set_enable(false);   
+	}
+}
+
+/**
+ * @description 메인/서브 디자인 적용
+ */
+this.fnSetStyle = function(sType) 
+{
+	if (sType == "sub") 
+	{
+		// 서브일때 정렬 사용
+		//this.fnSetEnableArrange(true);			
+		
+		// 화면버튼 디자인 설정
+		var sCurWinId = this.objApp.gvFrsWork.getActiveFrame().name;
+		this.fnSetActive(this.fvTabBtnPrefix + sCurWinId.name);
+		
+		// 메인버튼 디자인 설정
+		this.btnHome.set_cssclass("btn_MDI_Home"); 
+	} else 
+	{
+		// 메인일때 정렬 사용못함
+		//this.fnSetEnableArrange(false);			
+		
+		// 메인버튼 디자인 설정
+		this.btnHome.set_cssclass("btn_MDI_HomeS");
+		
+		// 화면버튼 디자인 설정
+		this.fnSetActiveBtn("btnHome");
+	}
+};
+
+/**
+ * @description cascade 제어버튼 활성/비활성
+ * @param {Boolean} bEnable - 활성화여부
+ */
+this.fnSetEnableArrange = function(bEnable) 
+{
+	this.btnCloseAll.set_enable(bEnable);
+};
+
+/**
+ * @description menu tab 현재 버튼 이동
+ * @param {String} sTabID - 이동할 탭 ID
+ */
+this.fnSetActive = function (sTabID)
+{
+	var nRow = this.dsTab.findRow("tabId", sTabID);
+
+	if (nRow < 0) 
+	{
+		return false;
+	}
+	
+	this.dsTab.set_rowposition(nRow);
+	this.fnSetActiveBtn(sTabID);
+
+	return true;
+}
+
+/**
+ * @description menu tab 현재 버튼 이동
+ * @param {String} sTabId - 활성화할 탭 ID
+ */
+this.fnSetActiveBtn = function (sTabId)
+{
+	var objTab;
+	var objExtraBtn;
+	
+	for (var i = 0; i < this.dsTab.rowcount; i++) 
+	{
+		objTab = this.fnFindObj(this.dsTab.getColumn(i, "tabId"));
+		objExtraBtn = this.fnFindObj(this.fvExtraBtnPrefix + this.dsTab.getColumn(i, "tabId"));
+
+		if (sTabId == this.dsTab.getColumn(i, "tabId")) 
+		{		
+			objTab.set_cssclass("btn_MDI_MenuS");
+			this.fnShowTabBtn(i);
+		}
+		else 
+		{
+		   objTab.set_cssclass("btn_MDI_Menu");
+		}
+	}
+}
+
+/**
+ * @description menu tab 현재 버튼 보여주는 함수
+ * @param {String} nIdx - 탭버튼인덱스
+ */
+this.fnShowTabBtn = function (nIdx)
+{
+	var n;
+	var nLeft;
+	var nRight;
+
+	var objTab = this.fnFindObj(this.dsTab.getColumn(nIdx, "tabId"));
+	nLeft = objTab.getOffsetLeft();
+	nRight = objTab.getOffsetRight();
+
+	if (0 <= nLeft && this.divTab.getOffsetWidth() >= nRight) 
+	{
+		return;
+	}
+
+	if (nLeft < 0) 
+	{
+		this.fnMoveFirst(nIdx);
+		return;
+	}
+
+	var nMoveIdx = nIdx;
+	
+	for (var i = this.fnGetFirstTabIndex() + 1; i < this.dsTab.rowcount; i++) 
+	{
+		objTab = this.fnFindObj(this.dsTab.getColumn(i, "tabId"));
+		if (nRight - objTab.getOffsetLeft() <= this.divTab.getOffsetWidth()) 
+		{
+			nMoveIdx = i;
+			break;
+		}
+	}
+	
+	this.fnMoveFirst(nMoveIdx);
+}
+
+/**
+ * @description menu tab 찾는 함수
+ */
+this.fnFindObj = function (sId)
+{
+	return this.divTab.form.components[sId];
+}
+
+/**
+ * @description menu tab 버튼 첫번째 이동 함수
+ */
+this.fnMoveFirst = function (nMoveIdx)
+{
+	var nIndex;
+	var sTabId;
+	var objTab;
+	var objExtraBtn;
+	var objTabFirst;
+
+	nIndex = this.fnGetFirstTabIndex();
+	if (nIndex < 0) 
+	{
+		return;
+	}
+
+	if (nMoveIdx < 0) 
+	{
+		return;
+	}
+	if (nMoveIdx >= this.dsTab.rowcount) 
+	{
+		return;
+	}
+
+	sTabId = this.dsTab.getColumn(nIndex, "tabId");
+	objTabFirst = this.fnFindObj(sTabId);
+
+	sTabId = this.dsTab.getColumn(nMoveIdx, "tabId");
+	objTab = this.fnFindObj(sTabId);
+	
+	var nShiftPos = objTab.getOffsetLeft() - objTabFirst.getOffsetLeft();
+	for (var i = 0; i < this.dsTab.rowcount; i++) 
+	{
+		sTabId = this.dsTab.getColumn(i, "tabId");
+		objTab = this.fnFindObj(sTabId);
+		objExtraBtn = this.fnFindObj(this.fvExtraBtnPrefix + sTabId);	
+		objTab.move(objTab.getOffsetLeft() - nShiftPos, objTab.getOffsetTop());
+		if (this.gfnIsNull(objExtraBtn) == false )
+			objExtraBtn.move(objExtraBtn.getOffsetLeft() - nShiftPos, objExtraBtn.getOffsetTop());
+	}
+}
+
+/**
+ * @description menu tab 버튼 첫번째 index 가져오는 함수
+ */
+this.fnGetFirstTabIndex = function ()
+{
+	for (var i=0; i < this.dsTab.rowcount;i++)
+	{
+		var sTabID  = this.dsTab.getColumn(i, "tabId");
+		var objTab = this.fnFindObj(sTabID);
+		if (this.gfnIsNull(objTab) == false) 
+		{
+			if (0 <= objTab.getOffsetLeft()) return i;
+		}
+	}
+	return -1;
+}
+
+/**
+ * @description 윈도우 키를 기준으로 열려있는 화면 여부 확인
+ * @param {string} sWinId : 윈도우 생성 키
+ * @example
+ */
+this.isActiveFrame = function (sWinId)
+{
+	var framesInfo = this.objApp.gvFrsWork.frames;
+
+	if (this.gfnIsNull(sWinId)) 
+	{
+		return true;
+	}
+
+	if (framesInfo[sWinId])
+	{
+	    this.gfnSetSub();
+		this.fnMoveTab(sWinId);   //tab이동		
+		framesInfo[sWinId].setFocus();
+		return true;
+	}
+};
+
+/**
+ * @description 메뉴 tab 이동
+ * @param {string} sWindId - 메뉴키값
+ */
+this.fnMoveTab = function (sWindId)
+{
+	var nRow = this.dsTab.findRow("winId", sWindId);
+	if (nRow < 0) return nRow;
+	
+	var sTabId = this.fvTabBtnPrefix + sWindId;
+	this.fnSetActive(sTabId);
+	this.fnRedrawTab();
+}
+
+/**
+ * @description 메뉴 tab Button 동적생성
+ * @param {string} sWindId - 메뉴키값
+ * @param {string} sName - 메뉴명
+ */
+this.fnAddTab = function (sWindId, sName)
+{	
+	var nRow = this.dsTab.findRow("winId", sWindId);
+	
+	if (nRow > -1) return nRow;
+
+	var sTabID = this.fvTabBtnPrefix + sWindId;
+	
+	nRow = this.dsTab.addRow();
+	this.dsTab.setColumn(nRow, "tabId", sTabID);
+	this.dsTab.setColumn(nRow, "winId", sWindId);
+	this.dsTab.setColumn(nRow, "title", sName);
+
+	this.fnAddTabBtn(sTabID, sName);
+	this.fnRedrawTab();
+	
+	this.bClose = true;
+	
+	return nRow;
+}
+
+/**
+ * @description 메뉴 tab 신규 동적 생성
+ * @param {string} sTabID - 메뉴키값
+ * @param {string} sTabName - 메뉴명
+ */
+this.fnAddTabBtn = function (sTabID, sTabName)
+{
+	var objTab;
+	var objBtn;
+	var sExBtnId = this.fvExtraBtnPrefix + sTabID;   //extra button id
+
+	var objTextWidth =  "";
+
+	if (this.gfnIsNull(this.fnFindObj(sTabID))) 
+	{
+		objTab = new Button();
+		objTab.init(sTabID, this.fnGetLeft(sTabID), 0, 130, this.fvTabHeight, null, null);  
+		this.divTab.addChild(objTab.name, objTab);
+	}
+
+	objTab.set_text(sTabName);
+	objTab.set_textAlign("left");
+	objTab.set_padding("0px 10px 0px 15px");
+	objTab.set_cssclass("btn_MDI_MenuS");	
+	var nCompWidth = this.gfnGetTextSize(sTabName)[0]+ 35;
+	objTab.set_width(nCompWidth);
+	objTab.show();
+
+	objTab.setEventHandler("onclick", this.btnTab_onclick, this);
+
+	if (this.fnFindObj(sExBtnId) == null) 
+	{		
+		objBtn = new Button();		
+		objBtn.init(sExBtnId, objTab.getOffsetRight() - this.fvTabExtraRightGap, this.fvExtraTop, objTab.getOffsetRight() - this.fvTabExtraRightGap + this.fvExtraWidth - (objTab.getOffsetRight() - this.fvTabExtraRightGap), this.fvExtraTop + this.fvExtraHeight - this.fvExtraTop);
+		
+		this.divTab.addChild(sExBtnId, objBtn);
+
+		objBtn.set_cssclass("btn_MDI_TabClose");
+		objBtn.set_cursor("pointer");
+		objBtn.show();
+		
+		objBtn.setEventHandler("onclick", this.btnExtra_onclick, this);		
+	}
+}
+
+/**
+ * @description 이전 버튼을 기준으로 버튼위치 리턴
+ */
+this.fnGetLeft = function (sTabId)
+{
+	var nCurRow = this.dsTab.findRow("tabId", sTabId);
+	if (nCurRow == 0) return this.fvFirstGap;
+
+	var objPrevTab = this.fnFindObj(this.dsTab.getColumn(nCurRow - 1, "tabId"));
+	return objPrevTab.getOffsetRight() + this.fvBtnGap;
+}
+
+/**
+ * @description 메뉴닫기(외부호출)
+ * @param {String} sMenuId - 메뉴ID
+ */
+this.fnCloseMenu = function(sMenuId, bCheck)
+{
+	if (this.gfnIsNull(sMenuId)) return;
+	if (this.gfnIsNull(bCheck)) bCheck	= this.objApp.gvCloseCheck;
+	
+	var sWinId = this.gfnGetLookupData(this.objApp.gdsOpenMenu, this.FRAME_MENUCOLUMNS.menuId, sMenuId, this.FRAME_MENUCOLUMNS.winId);
+
+	var objFrame = this.objApp.gvFrsWork.frames;
+	var objForm =  objFrame[sWinId].form;
+	
+	var rtn = objForm.fnWorkFrameClose(bCheck);
+
+	if (rtn == false) 
+	{
+		// 변경된 데이터가 있습니다. 현재 화면을 닫겠습니까?
+		this.gfnAlert("confirm.before.movepage", "", "confirm.before.movepage^" + sWinId, "fnMsgCallback");	
+	} else 
+	{
+		this.fnTabOnClose(sWinId);
+	}
+};
+
+/**
+ * @description 화면 전체 닫기
+ * @param {Boolean} bCheck - 전체닫기 체크
+ * @return	:   N/A
+ */
+this.fnCloseAll = function(bCheck) 
+{
+	if (this.objApp.gdsOpenMenu.getRowCount() < 1) return;
+
+	var iFramesCnt = this.objApp.gvFrsWork.frames.length;
+	var isCloseCheck = this.fnCheckCloseAll(bCheck);
+	
+	if (isCloseCheck) 
+	{
+		for (var i=iFramesCnt; i>0; i--) 
+		{	
+			this.fnTabOnClose(this.objApp.gvFrsWork.frames[i-1].name);
+		}		
+	} else 
+	{
+		// 변경된 데이터가 있습니다. 전체 화면을 닫겠습니까?
+		this.gfnAlert("confirm.before.removeallpage", "", "confirm.before.removeallpage", "fnMsgCallback");	
+	}	
+};
+
+/**
+ * @description 화면 전체닫기 여부 체크
+ * @param {Boolean} bCheck - 전체닫기 체크
+ * @return	:   N/A
+ */
+this.fnCheckCloseAll = function(bCheck) 
+{
+	// workFrame영역에 open된 childFrame 갯수
+	var iFramesCnt = this.objApp.gvFrsWork.frames.length;
+	var isCloseCheck = true;
+	
+	if (this.gfnIsNull(bCheck)) bCheck	= this.objApp.gvCloseCheck;
+	
+	// 닫기할때 체크할지 여부(변경되도 강제로 닫을때 사용)
+	if (bCheck == true) 
+	{
+		for (var i=0; i<iFramesCnt; i++) 
+		{	
+			if (this.gfnIsNull(this.objApp.gvFrsWork.frames[i].form.fvDivWork.form.lookup("cfnClose")))
+			{
+			} else
+			{
+				if (this.objApp.gvFrsWork.frames[i].form.fnWorkFrameClose() == false)
+				{
+					isCloseCheck =  false;
+					break;
+				} 
+			}
+		}
+	}
+	
+	return isCloseCheck;
+};
+
+/**
+ * @description 메뉴 tab 닫기 실행 함수
+ * @param {String} sWinId - 윈도우ID
+ */
+this.fnTabOnClose = function (sWinId)
+{
+    var objFrame = this.objApp.gvFrsWork.frames;
+
+	var sCurWinId = this.objApp.gvFrsWork.getActiveFrame().name;
+	
+	var nRow = this.objApp.gdsOpenMenu.findRow(this.FRAME_MENUCOLUMNS.winId, sWinId);
+	
+	// MDI 탭버튼 삭제
+	if (!this.gfnIsNull(objFrame[sWinId]) && nRow > -1)
+	{
+		this.bClose = false;
+		var objRemoveChildFrame = this.objApp.gvFrsWork.removeChild(sWinId);	
+		
+		objRemoveChildFrame.destroy();
+		objRemoveChildFrame = null;
+		this.fnDelTab(sWinId);			
+	}
+
+	// 열린화면 제거
+	this.gfnRemoveOpenMenuDs(sWinId);
+
+    if (objFrame.length > 0)
+    {
+		if (sWinId != sCurWinId ) 
+		{
+			this.objApp.gvFrsWork[sCurWinId].setFocus();
+		} else 
+		{
+			sCurWinId = this.objApp.gvFrsWork.getActiveFrame();
+			
+			if (sCurWinId != null) 
+			{
+				this.fnSetActive(this.fvTabBtnPrefix + sCurWinId.name);
+			}
+		}
+	} else
+	{
+		this.gfnSetMain();	//변경이후에 main에 포커스를 준다.
+	}
+};
+
+/**
+ * @description메뉴 tab 삭제
+ * @param {String} sWinId - 윈도우ID
+ */
+this.fnDelTab = function (sWinId)
+{
+	var nRow = this.dsTab.findRow("winId", sWinId);
+	if (nRow < 0) return false;
+	var sTabId = this.fvTabBtnPrefix + sWinId;
+	
+	// Removing Tab button.
+	this.fnDelTabBtn(sTabId);
+	this.dsTab.deleteRow(nRow);
+	this.fnRedrawTab();
+	return true;
+};
+
+/**
+ * @description menu tab 삭제
+ * @param {String} sTabId - 탭ID
+ */
+this.fnDelTabBtn = function (sTabId)
+{
+	var sExtraBtnId = this.fvExtraBtnPrefix + sTabId;
+	var objTab = this.fnFindObj(sTabId);
+	var objExtraBtn = this.fnFindObj(sExtraBtnId);
+
+	var nShitLeft = objTab.getOffsetWidth() + this.fvBtnGap;
+	var nCurRow = this.dsTab.findRow("tabId", sTabId);
+
+	var nTabLeft = objTab.getOffsetLeft();
+	
+	if (nTabLeft == 0) 
+	{
+		if (this.dsTab.rowcount > 1) 
+		{
+			this.btnPreMdi_onclick();
+		}
+	}
+	
+	this.fnRemoveObj(sExtraBtnId);
+	this.fnRemoveObj(sTabId);
+
+	var sWinId = sTabId.replace(this.fvTabBtnPrefix, "");
+	var nRow = this.dsTab.findRow("winId", sWinId);
+   
+	if (nTabLeft < 0)
+	{
+		for (var i = 0 ; i < nRow ; i++) 
+		{	
+			objTab = this.fnFindObj(this.dsTab.getColumn(i, "tabId"));
+			objExtraBtn = this.fnFindObj(this.fvExtraBtnPrefix + this.dsTab.getColumn(i, "tabId"));
+			objTab.move(objTab.getOffsetLeft() + nShitLeft, objTab.getOffsetTop());
+			objExtraBtn.move(objExtraBtn.getOffsetLeft() + nShitLeft, objExtraBtn.getOffsetTop());
+		}   
+	} else
+	{
+		for (var i = nCurRow + 1; i < this.dsTab.rowcount; i++) 
+		{	
+			objTab = this.fnFindObj(this.dsTab.getColumn(i, "tabId"));
+			objExtraBtn = this.fnFindObj(this.fvExtraBtnPrefix + this.dsTab.getColumn(i, "tabId"));
+			objTab.move(objTab.getOffsetLeft() - nShitLeft, objTab.getOffsetTop());
+			objExtraBtn.move(objExtraBtn.getOffsetLeft() - nShitLeft, objExtraBtn.getOffsetTop());
+		}
+	 }
+	
+	this.bClose = true;
+};
+
+/**
+ * @description menu tab 삭제  함수
+ * @param {String} sObjId - 삭제할 오브젝트 ID
+ */
+this.fnRemoveObj = function (sObjId)
+{
+	if (this.fnFindObj(sObjId) == null) 
+	{
+		return;
+	}
+	var objDelBtn = this.divTab.removeChild(sObjId);
+	if (objDelBtn != null) 
+	{
+		objDelBtn.destroy();
+	}
+};
+
+/**
+ * @description Mdi 창분리 버튼 클릭 시 콜백 받아옴
+ */ 
+this.fnSetPopupCallback = function (sPopupId, sRtn)
+{
+ 	if (!this.gfnIsNull(sRtn))
+	{			
+		// 메뉴 화면 호출
+		this.objApp.gvFrmLeft.form.fnFormOpen(sRtn);
+	}
+};
+
+/**
+* 열려있는 윈도우 화면을 정렬
+* @param	: 	strType: 정렬 타입
+* @return	:   N/A
+*/
+this.fnArrangeWin = function(strType)
+{
+	strType = strType.toLowerCase();
+	// workFrame영역에 open된 childFrame 갯수
+	var iFramesCnt = this.objApp.gvFrsWork.frames.length;
+	
+	if (this.dsTab.getRowCount() < 1) return;
+	
+	if (strType != "maximize" ) {
+		var framesInfo = this.objApp.gvFrsWork.frames;
+		for ( var i = 0 ; i < framesInfo.length ; i++ ) {
+			framesInfo[i].set_visible(true);
+		}
+	}
+	this.fvArrangeType = strType;
+	
+	switch (strType)
+	{
+		case "maximize" :
+			var curWinId = this.objApp.gvFrsWork.getActiveFrame().name;
+			for (var i=0; i<iFramesCnt; i++)
+			{
+				this.objApp.gvFrsWork.frames[i].set_openstatus("maximize");
+				this.objApp.gvFrsWork.frames[i].set_showtitlebar(false);
+				this.objApp.gvFrsWork.frames[i].set_border("0px solid #006666");
+				this.objApp.gvFrsWork.frames[i].set_resizable(false);
+			}
+			
+			this.isActiveFrame(curWinId);
+			break;
+		default :
+			for (var i=0; i<iFramesCnt; i++)
+			{
+				this.objApp.gvFrsWork.frames[i].set_showtitlebar(true);
+				this.objApp.gvFrsWork.frames[i].set_border("1px solid #7f7f7b");
+				this.objApp.gvFrsWork.frames[i].set_borderRadius("3px 3px");
+				this.objApp.gvFrsWork.frames[i].set_openstatus("normal");
+				this.objApp.gvFrsWork.frames[i].set_resizable(true);
+				this.objApp.gvFrsWork.frames[i].set_titlebarheight(30);
+				this.objApp.gvFrsWork.frames[i].titlebar.closebutton.set_enable(false);
+				this.objApp.gvFrsWork.frames[i].titlebar.maxbutton.set_enable(true);	
+			}
+			this.objApp.gvFrsWork.arrange(strType);
+			break;
+	}
+}
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+/**
+ * @description 홈버튼 onclick event 
+ */
+this.btnHome_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	// 메인으로 이동
+	this.gfnSetMain();
+};
+
+/**
+ * @description 메뉴 tab onclick event 
+ */
+this.btnTab_onclick = function (obj:Button, e:ClickEventInfo)
+{
+	var sWinId = obj.name.split(this.fvTabBtnPrefix).join("");
+	this.isActiveFrame(sWinId);
+};
+
+/**
+ * @description 메뉴 tab extra버튼 클릭시 발생되는 event
+ */
+this.btnExtra_onclick = function (obj:Button, e:ClickEventInfo)
+{     
+	var sWinId = obj.name.split(this.fvTabBtnPrefix).join("").split(this.fvExtraBtnPrefix).join("");
+	var sMenuId = this.gfnGetLookupData(this.objApp.gdsOpenMenu, this.FRAME_MENUCOLUMNS.winId, sWinId, this.FRAME_MENUCOLUMNS.menuId)
+	
+	this.fnCloseMenu(sMenuId);
+
+	this.bClose = true;
+};
+
+/**
+ * @description 메뉴 Mdi 이전   split버튼 
+ */
+this.btnPreMdi_onclick = function (obj:Button, e:ClickEventInfo)
+{
+	this.fnMoveFirst(this.fnGetFirstTabIndex() - 1);
+	this.fnRedrawTab();
+};
+
+/**
+ * @description 메뉴 Mdi 다음  split버튼 
+ */
+this.btnNexMdi_onclick = function (obj:Button, e:ClickEventInfo)
+{
+	this.fnMoveFirst(this.fnGetFirstTabIndex() + 1);
+	this.fnRedrawTab();
+};
+
+/**
+ * @description 열린 메뉴리스트 버튼 click
+ */
+this.btnList_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var nWidth = this.pdvOpenMenu.width;
+	var nHeight = this.pdvOpenMenu.height;
+	
+    if (this.objApp.gdsOpenMenu.rowcount > 0)
+	{
+		this.pdvOpenMenu.trackPopupByComponent(obj, 0, obj.height);
+	
+		this.pdvOpenMenu.form.grdOpenMenu.setFocus();
+		this.pdvOpenMenu.form.grdOpenMenu.selectCell(0, 0, true);	
+	}
+};
+
+/**
+ * @description 메뉴 전체닫기 버튼 클릭
+ */
+this.btnCloseAll_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if (this.objApp.gdsOpenMenu.getRowCount() > 0)
+	{
+		this.gfnAlert("confirm.before.removeallpage", "", "confirm.removeallpage", "fnMsgCallback");		
+	}
+};
+
+/**
+ * @description 접기/펼치기 버튼 click
+ */
+this.btnLeftMenuShowHide_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if (obj.cssclass == "btn_MDI_Open") 
+	{
+		this.gfnShowLeftFrame();
+	} else 
+	{
+		this.gfnHideLeftFrame();
+	}
+};
+
+/**
+ * @description 열린 메뉴리스트 그리드 cellclick
+ */
+this.pdvOpenMenu_grdOpenMenu_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	var objDs = obj.getBindDataset();
+	
+	// 메뉴명 클릭 시
+	if (obj.getBindCellIndex("body", this.FRAME_MENUCOLUMNS.title) == e.cell) 
+	{
+		var sMenuId = objDs.getColumn(e.row, this.FRAME_MENUCOLUMNS.menuId);
+		
+		var objArgs = null;
+		
+		this.objApp.gvFrmLeft.form.fnFormOpen(sMenuId, objArgs);
+	}
+	
+	this.pdvOpenMenu.closePopup();
+};
+
+
+/**
+* MDI 영역 열려있는 윈도우 화면 정렬 버튼 이벤트
+* @param	: 	strType: 정렬 타입
+*/
+this.btnArrange_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var strType = obj.name.replace("btn", "");
+	this.fnArrangeWin(strType);
+};
+]]></Script>
+    <Objects>
+      <Dataset id="dsTab">
+        <ColumnInfo>
+          <Column id="tabId" type="STRING" size="256"/>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="winId" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsOpenMenu">
+        <ColumnInfo>
+          <Column id="WIN_ID" type="STRING" size="256"/>
+          <Column id="MENU_ID" type="STRING" size="256"/>
+          <Column id="MENU_NM" type="STRING" size="256"/>
+          <Column id="MENU_URL" type="STRING" size="256"/>
+          <Column id="PRGM_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

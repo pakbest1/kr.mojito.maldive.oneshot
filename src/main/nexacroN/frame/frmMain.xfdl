@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="frmMain" width="1070" height="772" titletext="MainFrame" onload="form_onload" onsize="form_onsize" cssclass="frm_MF_Frame">
+    <Layouts>
+      <Layout height="772" width="1070">
+        <Div id="divMain" taborder="1" text="div00" left="0" top="0" maxwidth="" maxheight="" width="1070" height="772" minwidth="1070" minheight="772" cssclass="div_MF_Main">
+          <Layouts>
+            <Layout>
+              <Div id="divBoard" taborder="0" left="720" top="304" width="330" height="320" text="">
+                <Layouts>
+                  <Layout>
+                    <Static id="sta00" taborder="0" text="공지사항" left="28" top="20" width="159" height="45" cssclass="sta_MF_tile" onclick="divMain_divBoard_sta00_onclick"/>
+                    <Button id="btnPlus" taborder="1" top="27" width="30" height="30" right="20" cssclass="btn_MF_More" uLinkType="menu" uLinkUrl="10501001"/>
+                    <Grid id="grdNoti" taborder="2" left="25" top="63" cssclass="grd_MF_Notice" binddataset="dsNotiList" autofittype="col" right="20" bottom="25" scrollbardecbuttonsize="0" scrollbarincbuttonsize="0">
+                      <Formats>
+                        <Format id="default">
+                          <Columns>
+                            <Column size="176"/>
+                            <Column size="80"/>
+                          </Columns>
+                          <Rows>
+                            <Row size="30"/>
+                          </Rows>
+                          <Band id="body">
+                            <Cell text="bind:TITLE"/>
+                            <Cell col="1" text="bind:INPT_DTTM" cssclass="cell_WF_Right,cell_WF_DecoNo" displaytype="date" calendardateformat="yyyy-MM-dd"/>
+                          </Band>
+                        </Format>
+                      </Formats>
+                    </Grid>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="divCalendar" taborder="1" left="20" top="304" width="680" height="320" cssclass="div_MF_Box2" background="" text="">
+                <Layouts>
+                  <Layout>
+                    <Calendar id="calTodo" taborder="0" left="47" top="30" type="monthonly" usetrailingday="true" weekformat="S M T W T F S" bottom="30" right="376" innerdataset="dsTodo" backgroundcolumn="CAL_IMAGE" ondayclick="divMain_divCalendar_calTodo_ondayclick" daysize="30 30" datecolumn="CAL_DATE" onlbuttonup="divMain_divCalendar_calTodo_onlbuttonup" onkeydown="divMain_divCalendar_calTodo_onkeydown" datepickerchangetype="spin" cssclass="cal_MF_Cal" value="20230920" headheight="40"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="divTodolist" taborder="2" left="370" top="304" width="330" height="320" cssclass="div_MF_BoxColor">
+                <Layouts>
+                  <Layout>
+                    <Static id="staTitle" taborder="0" text="TO-DO LIST" left="35" top="22" width="159" height="45" cssclass="sta_MF_tile2"/>
+                    <Button id="btnNew" taborder="1" top="29" width="30" height="30" right="20" cssclass="btn_MF_New" onclick="btnLink_onclick" uLinkType="popup" uLinkUrl="add"/>
+                    <Grid id="grdTodo" taborder="2" left="30" top="75" cssclass="grd_MF_Todo" autofittype="col" right="30" bottom="30" binddataset="dsTodo">
+                      <Formats>
+                        <Format id="default">
+                          <Columns>
+                            <Column size="0"/>
+                            <Column size="40"/>
+                            <Column size="180"/>
+                            <Column size="80"/>
+                          </Columns>
+                          <Rows>
+                            <Row size="24"/>
+                          </Rows>
+                          <Band id="body">
+                            <Cell text="bind:SCD_ID"/>
+                            <Cell col="1" displaytype="text" cssclass="bind:CLASSID" text="bind:SSC_CD_KORN_NM"/>
+                            <Cell col="2" text="bind:TITLE" tooltiptext="expr:dataset.parent.fnGetWriterDate(dataset, currow)" expr="expr:TITLE.length &gt; 13 ? TITLE.substr(0,13)+'...' : TITLE"/>
+                            <Cell col="3" text="expr:INPT_EMP_NO.substr(0, INPT_EMP_NO.indexOf(&quot;(&quot;))"/>
+                          </Band>
+                        </Format>
+                      </Formats>
+                    </Grid>
+                    <Button id="btnRefresh" taborder="3" top="29" width="30" cssclass="btn_MF_Restore" visible="true" height="30" right="50"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="divLink" taborder="3" left="20" top="100" height="168" cssclass="div_MF_Box" right="20">
+                <Layouts>
+                  <Layout>
+                    <Button id="btnDevGuideDown" taborder="0" text="초보자를 위한 자습서" left="0" top="0" width="169" cssclass="btn_MF_Quick01" uLinkUrl="http://docs.tobesoft.com/getting_started_nexacro_n_ko" uLinkType="url" height="168" onclick="btnLink_onclick"/>
+                    <Button id="btnDsgGuideDown" taborder="1" text="개발도구가이드" left="173" top="0" width="168" cssclass="btn_MF_Quick02" uLinkUrl="http://docs.tobesoft.com/development_tools_guide_nexacro_n_ko" uLinkType="url" height="168" onclick="btnLink_onclick"/>
+                    <Button id="btnGoIdeaBoard" taborder="2" text="컴퍼넌트 활용 워크북" left="345" top="0" width="168" cssclass="btn_MF_Quick03" uLinkUrl="http://docs.tobesoft.com/developer_guide_nexacro_n_ko" uLinkType="url" height="168" onclick="btnLink_onclick"/>
+                    <Button id="btnGoSupport" taborder="3" text="기술지원" left="862" top="0" width="168" height="168" cssclass="btn_MF_Quick06" uLinkUrl="http://support.tobesoft.co.kr/Support/index.html" onclick="btnLink_onclick" uLinkType="url"/>
+                    <Button id="btnGoPlayNexacro" taborder="4" text="플레이넥사크로" left="690" top="0" width="168" height="168" cssclass="btn_MF_Quick05" uLinkUrl="https://www.playnexacro.com/#" onclick="btnLink_onclick" uLinkType="url"/>
+                    <Button id="btnGoTobesoft" taborder="5" text="투비소프트" left="517" top="0" width="169" height="168" cssclass="btn_MF_Quick04" uLinkUrl="https://www.tobesoft.com/" onclick="btnLink_onclick" uLinkType="url"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	frmMain.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+this.nDivMainTerm 		= 10;  			//divMain 가로세로 최소 여백
+this.fvDate 			= ""; 			//TodoList에서 사용할 날짜
+this.objApp = nexacro.getApplication();
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.fnDivMainResize(); //div리사이즈(가운데로)
+	
+	this.fvDate = this.divMain.form.divCalendar.form.calTodo.value;
+	
+	this.fnSetCalImage();
+	
+	this.fnSetTodoList();
+};
+
+//max size 변경
+this.form_onsize = function(obj:nexacro.Form,e:nexacro.SizeEventInfo)
+{
+	this.fnDivMainResize();
+};
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+//main div 가운데정렬
+this.fnDivMainResize = function ()
+{
+	var nLeft = nexacro.round((this.getOffsetWidth() - this.divMain.getOffsetWidth() ) /2);
+	var nTop = nexacro.round((this.getOffsetHeight() - this.divMain.getOffsetHeight() ) /2);
+	
+	if( nLeft < this.nDivMainTerm ) nLeft = this.nDivMainTerm; 
+	if( nTop < this.nDivMainTerm ) nTop = this.nDivMainTerm;
+	
+	this.divMain.move(nLeft, nTop);
+	this.resetScroll();
+};
+
+//TODO LIST 세팅
+this.fnSetTodoList = function ()
+{
+	this.dsTodoGrid.clearData();
+	this.dsTodo.set_enableevent(false);
+	this.divMain.form.divTodolist.form.grdTodo.set_binddataset("");
+
+	if(this.fvDate != "20230920")
+	{
+		this.divMain.form.divTodolist.form.staTitle.set_text(this.fvDate.substr(4,2) + "월 " + this.fvDate.substr(6,2) + "일" 
+			+ " (" + this.gfnGetDayKor(this.fvDate) + ")");
+			
+		this.dsTodo.filter("CAL_DATE=='"+this.fvDate+"'");	
+	}
+	else
+	{
+		this.divMain.form.divTodolist.form.staTitle.set_text("09월 " + "20일" 
+			+ " (" + this.gfnGetDayKor("20230920") + ")");
+		
+		this.dsTodo.filter("CAL_DATE=='"+"20230920"+"'");
+	}
+	
+	this.dsTodoGrid.copyData(this.dsTodo, true);
+	
+	this.dsTodo.filter("");
+	this.divMain.form.divTodolist.form.grdTodo.set_binddataset("dsTodoGrid");
+	this.dsTodo.set_enableevent(true);
+};
+
+//링크처리 URL..
+this.fnSetLinkUrl = function (sUrl)
+{
+	if(system.navigatorname == "nexacro"){
+		system.execBrowser(sUrl);
+	}else{
+		var newwin = window.open('about:blank');
+		newwin.location.href = sUrl;
+	}
+};
+
+// 월 1~9까지 앞에 0 붙임.
+this.fnMakeMonth =function(nMonth)
+{
+	if(this.gfnIsNull(nMonth)) return;
+	if(10 > nMonth)  nMonth = "0"+nMonth;
+	return nMonth;
+};
+
+// todoGrid - tooltiptext
+this.fnGetWriterDate = function(dataset, currow)
+{
+	var sTitle		= dataset.getColumn(currow, 'TITLE');
+	var nStartDay	= dataset.getColumn(currow,'START_DAY');
+	var nEndDay	 	= dataset.getColumn(currow,'END_DAY');
+	var nStartTime	= dataset.getColumn(currow,'START_TIME');
+	var nStartMinutes = dataset.getColumn(currow, 'START_MINUTES');
+	var nEndTime	= dataset.getColumn(currow, 'END_TIME');
+	var nEndMinutes	= dataset.getColumn(currow, 'END_MINUTES');
+	var sRtn	  = "";
+	
+	if(nStartDay == nEndDay){
+		sRtn = sTitle + " [" + nStartDay.substr(0,4) + "." + nStartDay.substr(4,2) + "." + nStartDay.substr(6,2) + "(" + this.gfnGetDayKor(nStartDay) + ") " 
+			   + nStartTime + ":" + nStartMinutes + " ~ " + nEndTime + ":" + nEndMinutes + "]" ;		
+	}else{
+		sRtn = sTitle + " [" + nStartDay.substr(0,4) + "." + nStartDay.substr(4,2) + "." + nStartDay.substr(6,2) + "(" + this.gfnGetDayKor(nStartDay) + ") " 
+			   + nStartTime + ":" + nStartMinutes +  " ~ " 
+			   + nEndDay.substr(0,4) + "." + nEndDay.substr(4,2) + "." + nEndDay.substr(6,2) + "(" + this.gfnGetDayKor(nEndDay) + ") " + nEndTime + ":" + nEndMinutes + "]"; 
+	}
+
+	return sRtn;	
+}
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+//캘린더 하단에 . 표시(일정이 있을 경우);
+this.fnSetCalImage = function()
+{
+	this.dsTodo.set_enableevent(false);
+	this.dsTodo.addColumn("CAL_IMAGE", "STRING");
+ 	for(var i=0; i<this.dsTodo.getRowCount(); i++){
+ 		this.dsTodo.setColumn(i, "CAL_IMAGE", "url('theme://images/cal_MF_Dot.png') no-repeat center bottom");
+ 	}
+	this.dsTodo.set_enableevent(true);
+}
+
+//TODO
+this.divMain_divCalendar_calTodo_ondayclick = function(obj:nexacro.Calendar,e:nexacro.CalendarDayClickEventInfo)
+{	
+	//this.fvDate = e.date;
+	//2022.08.03 분기 후 값 대입하는 것으로 변경.
+	
+	//다른 달을 클릭하면 해당 월 일정 조회
+	if(e.date.substr(0,6)!=this.fvDate.substr(0,6)){
+		this.fvDate = e.date;
+	}else{
+		this.fvDate = e.date;
+		this.fnSetTodoList();
+	}
+};
+
+//Link 클릭
+this.btnLink_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sUrl = obj.uLinkUrl;
+	var sLinkType = obj.uLinkType;
+
+	//링크타입별 처리
+	switch(sLinkType) {
+		case "url":
+			this.fnSetLinkUrl(sUrl);
+			break;
+	}
+};
+
+// 캘린더 <>버튼
+this.divMain_divCalendar_calTodo_onlbuttonup = function(obj:nexacro.Calendar,e:nexacro.MouseEventInfo)
+{
+	var sName = e.fromreferenceobject.name;
+	if(sName=='nextbutton'){
+		this.fvDate = this.gfnAddMonth(this.fvDate.substr(0,6)+"01", +1);
+		if(this.fvDate.substr(0,6)==this.gfnGetDate().substr(0,6))  this.fvDate = this.gfnGetDate();	
+	}else if(sName=='prevbutton'){
+		this.fvDate = this.gfnAddMonth(this.fvDate.substr(0,6)+"01", -1);
+		if(this.fvDate.substr(0,6)==this.gfnGetDate().substr(0,6))  this.fvDate = this.gfnGetDate();
+	}
+};
+
+// 캘린더 년도,월 변경 후 엔터 눌렀을 경우.
+this.divMain_divCalendar_calTodo_onkeydown = function(obj:nexacro.Calendar,e:nexacro.KeyEventInfo)
+{	
+	if( e.keycode == "13" && e.fromreferenceobject.name =="spinedit"){
+		var nSpinYyyy	= this.divMain.form.divCalendar.form.calTodo.datepicker.head.yearspin.spinedit.value;
+		var nSpinMm		= this.fnMakeMonth(this.divMain.form.divCalendar.form.calTodo.datepicker.head.monthspin.spinedit.value);
+		var nTodayYyyy	= this.gfnGetDate().substr(0,4);
+		var nTodayMm	= this.gfnGetDate().substr(4,2);
+		var nTodayDd	= this.gfnGetDate().substr(6,2);
+		
+		if(nSpinYyyy+nSpinMm == nTodayYyyy+nTodayMm){
+			obj.set_value(nTodayYyyy+nTodayMm+nTodayDd);
+			this.fvDate = nTodayYyyy+nTodayMm; 
+		}else{
+			obj.set_value(nSpinYyyy+nSpinMm+"01");
+			this.fvDate = nSpinYyyy+nSpinMm; 
+		}	
+	}
+};
+]]></Script>
+    <Objects>
+      <Dataset id="dsNotiList">
+        <ColumnInfo>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="INPT_DTTM" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="TITLE">Nexacro 24 버전 출시</Col>
+            <Col id="INPT_DTTM">2023-10-30</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">프로젝트형 넥사크로 전문가 양성과정 안내</Col>
+            <Col id="INPT_DTTM">2023-10-27</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">투비소프트 고객지원 사이트 리뉴얼</Col>
+            <Col id="INPT_DTTM">2023-10-27</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">하반기 개발자 채용 공고</Col>
+            <Col id="INPT_DTTM">2023-10-25</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">법정의무교육 시행의 건</Col>
+            <Col id="INPT_DTTM">2023-10-24</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">하반기 신규입사자 교육 안내</Col>
+            <Col id="INPT_DTTM">2023-10-20</Col>
+          </Row>
+          <Row>
+            <Col id="TITLE">공휴일 및 주말 당직제도 안내</Col>
+            <Col id="INPT_DTTM">2023-10-19</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsTodo">
+        <ColumnInfo>
+          <Column id="INPT_EMP_NO" type="string" size="32"/>
+          <Column id="START_TIME" type="string" size="32"/>
+          <Column id="LAST_DATE" type="string" size="32"/>
+          <Column id="CHGE_IP" type="string" size="32"/>
+          <Column id="SCD_SECT_CD" type="string" size="32"/>
+          <Column id="START_MINUTES" type="string" size="32"/>
+          <Column id="END_DAY" type="string" size="32"/>
+          <Column id="FILE_ID" type="undefined" size="0"/>
+          <Column id="CHGE_ID" type="string" size="32"/>
+          <Column id="CAL_DATE" type="string" size="32"/>
+          <Column id="INPT_IP" type="string" size="32"/>
+          <Column id="FIRST_DATE" type="string" size="32"/>
+          <Column id="END_TIME" type="string" size="32"/>
+          <Column id="SCD_ID" type="bigdecimal" size="16"/>
+          <Column id="CHGE_DTTM" type="datetime" size="17"/>
+          <Column id="SCD_NM" type="string" size="32"/>
+          <Column id="TITLE" type="string" size="32"/>
+          <Column id="SSC_CD_KORN_NM" type="string" size="32"/>
+          <Column id="INPT_DTTM" type="datetime" size="17"/>
+          <Column id="END_MINUTES" type="string" size="32"/>
+          <Column id="SCD_CD" type="string" size="32"/>
+          <Column id="START_DAY" type="string" size="32"/>
+          <Column id="INPT_ID" type="string" size="32"/>
+          <Column id="CLASSID" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="INPT_EMP_NO">관리자</Col>
+            <Col id="START_TIME">10</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.205</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000002</Col>
+            <Col id="CAL_DATE">20230920</Col>
+            <Col id="INPT_IP">172.10.11.205</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">12</Col>
+            <Col id="SCD_ID">2281</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅팀</Col>
+            <Col id="TITLE">모바일 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230920</Col>
+            <Col id="INPT_ID">0000000002</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">강남</Col>
+            <Col id="START_TIME">10</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.205</Col>
+            <Col id="SCD_SECT_CD">VC</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000002</Col>
+            <Col id="CAL_DATE">20230920</Col>
+            <Col id="INPT_IP">172.10.11.205</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">12</Col>
+            <Col id="SCD_ID">2281</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅팀</Col>
+            <Col id="TITLE">개인휴가</Col>
+            <Col id="SSC_CD_KORN_NM">휴가</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230920</Col>
+            <Col id="INPT_ID">0000000002</Col>
+            <Col id="CLASSID">label03</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">홍길동</Col>
+            <Col id="START_TIME">14</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.205</Col>
+            <Col id="SCD_SECT_CD">MT</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000002</Col>
+            <Col id="CAL_DATE">20230920</Col>
+            <Col id="INPT_IP">172.10.11.205</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">16</Col>
+            <Col id="SCD_ID">2561</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅팀</Col>
+            <Col id="TITLE">프로젝트 투입관련 미팅</Col>
+            <Col id="SSC_CD_KORN_NM">미팅</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230920</Col>
+            <Col id="INPT_ID">0000000002</Col>
+            <Col id="CLASSID">label01</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">이순신</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230920</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅팀</Col>
+            <Col id="TITLE">컨버팅 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230920</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">철수</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230929</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230927</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">nexacro 24</Col>
+            <Col id="TITLE">넥사크로 버전 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230927</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">짱구</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230906</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230906</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">지원</Col>
+            <Col id="TITLE">템플릿 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230906</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">투비</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230908</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">지원</Col>
+            <Col id="TITLE">개선된 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230908</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">에즈이즈</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230922</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230911</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">테스트</Col>
+            <Col id="TITLE">통합테스트 사전 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230911</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">test</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230912</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230912</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅사업1팀</Col>
+            <Col id="TITLE">교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230911</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">김김철수</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230914</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230914</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">컨설팅사업1팀</Col>
+            <Col id="TITLE">단위테스트 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230914</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+          <Row>
+            <Col id="INPT_EMP_NO">홍철수</Col>
+            <Col id="START_TIME">09</Col>
+            <Col id="LAST_DATE">20230930</Col>
+            <Col id="CHGE_IP">172.10.11.171</Col>
+            <Col id="SCD_SECT_CD">ED</Col>
+            <Col id="START_MINUTES">00</Col>
+            <Col id="END_DAY">20230914</Col>
+            <Col id="CHGE_ID">0000000009</Col>
+            <Col id="CAL_DATE">20230914</Col>
+            <Col id="INPT_IP">172.10.11.171</Col>
+            <Col id="FIRST_DATE">20230827</Col>
+            <Col id="END_TIME">18</Col>
+            <Col id="SCD_ID">2601</Col>
+            <Col id="CHGE_DTTM">20230811141943000</Col>
+            <Col id="SCD_NM">모듈테스트</Col>
+            <Col id="TITLE">모듈테스트 교육</Col>
+            <Col id="SSC_CD_KORN_NM">교육</Col>
+            <Col id="INPT_DTTM">20230811141943000</Col>
+            <Col id="END_MINUTES">00</Col>
+            <Col id="SCD_CD">1010410</Col>
+            <Col id="START_DAY">20230914</Col>
+            <Col id="INPT_ID">0000000009</Col>
+            <Col id="CLASSID">label05</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsTodoGrid">
+        <ColumnInfo>
+          <Column id="CAL_IMAGE" type="STRING" size="256"/>
+          <Column id="TODO_DATE" type="STRING" size="256"/>
+          <Column id="TODO_TITLE" type="STRING" size="256"/>
+          <Column id="TODO_TIME" type="STRING" size="256"/>
+          <Column id="CAL_DATE" type="STRING" size="256"/>
+          <Column id="SCD_CD" type="STRING" size="256"/>
+          <Column id="SCD_ID" type="STRING" size="256"/>
+          <Column id="SCD_SECT_CD" type="STRING" size="256"/>
+          <Column id="SSC_CD_KORN_NM" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="START_DAY" type="STRING" size="256"/>
+          <Column id="START_TIME" type="STRING" size="256"/>
+          <Column id="START_MINUTES" type="STRING" size="256"/>
+          <Column id="END_DAY" type="STRING" size="256"/>
+          <Column id="END_TIME" type="STRING" size="256"/>
+          <Column id="END_MINUTES" type="STRING" size="256"/>
+          <Column id="FILE_ID" type="STRING" size="256"/>
+          <Column id="INPT_ID" type="STRING" size="256"/>
+          <Column id="INPT_IP" type="STRING" size="256"/>
+          <Column id="INPT_DTTM" type="STRING" size="256"/>
+          <Column id="CHGE_ID" type="STRING" size="256"/>
+          <Column id="CHGE_IP" type="STRING" size="256"/>
+          <Column id="CHGE_DTTM" type="STRING" size="256"/>
+          <Column id="INPT_EMP_NO" type="STRING" size="256"/>
+          <Column id="CLASSID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

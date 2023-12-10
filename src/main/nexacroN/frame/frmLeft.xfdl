@@ -1,0 +1,656 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="frmLeft" width="210" height="850" titletext="LeftFrame" onload="form_onload" cssclass="frm_LF_Bg">
+    <Layouts>
+      <Layout height="850" width="210">
+        <Div id="divLnb" taborder="0" left="0" top="0" right="0" bottom="0" text="">
+          <Layouts>
+            <Layout>
+              <Static id="sta00" taborder="5" left="0" top="82" cssclass="sta_LF_MenuBg" right="0" bottom="0"/>
+              <Grid id="grdMenu" taborder="1" left="1" top="94" binddataset="dsMenu" treeuseline="false" treeusecheckbox="false" treeuseimage="false" treeinitstatus="expand,all" cssclass="grd_LF_Menu" extendsizetype="row" bottom="0" autofittype="col" right="1" autosizingtype="row" oncellclick="grdMenu_oncellclick" scrollbardecbuttonsize="0" scrollbarincbuttonsize="0">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="199"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell text="bind:MENU_NM" displaytype="treeitemcontrol" edittype="tree" treelevel="bind:MENU_LV" treestartlevel="0" cssclass="expr:MENU_LV=='1'?'cell_LF_Lev':''" tooltiptext="bind:MENU_NM"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Button id="btnMenu" taborder="0" left="0" top="42" width="50%" height="40" cssclass="btn_LF_MenuS" tooltiptext="전체메뉴" onclick="btnMenu_onclick"/>
+              <Button id="btnMyMenu" taborder="2" top="42" height="40" cssclass="btn_LF_Fav" left="btnMenu:0" tooltiptext="즐겨찾기메뉴" onclick="btnMenu_onclick" right="0"/>
+              <Grid id="grdMyMenu" taborder="3" left="30" top="128" binddataset="dsMyMenu" treeuseline="false" treeusecheckbox="false" treeuseimage="false" treeinitstatus="expand,all" cssclass="grd_LF_Menu" extendsizetype="row" bottom="0" autofittype="col" right="1" visible="false" oncellclick="divLnb_grdMyMenu_oncellclick" scrollbardecbuttonsize="0" scrollbarincbuttonsize="0">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="152"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="28"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell text="bind:MENU_NM" tooltiptext="bind:MENU_NM"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Div id="divMyMenuEdit" taborder="4" text="div00" left="15" top="95" width="182" height="28" visible="false">
+                <Layouts>
+                  <Layout>
+                    <Button id="btnEdit" taborder="0" text="편집" top="0" width="32" height="20" cssclass="btn_LF_Edit" onclick="divLnb_btnEdit_onclick" left="150"/>
+                    <Button id="btnCancel" taborder="1" text="취소" top="0" width="40" height="20" cssclass="btn_LF_Cancel" visible="false" onclick="divLnb_btnCancel_onclick" left="107"/>
+                    <Button id="btnSave" taborder="2" text="저장" top="0" width="40" height="20" cssclass="btn_LF_Save" visible="false" onclick="divLnb_btnSave_onclick" left="64"/>
+                    <Button id="btnUp" taborder="3" height="20" cssclass="btn_LF_Up" left="0" top="0" width="20" visible="false" onclick="divLnb_btnUp_onclick"/>
+                    <Button id="btnDown" taborder="4" top="0" cssclass="btn_LF_Down" height="20" left="23" width="20" visible="false" onclick="divLnb_btnDown_onclick"/>
+                    <Static id="staLine" taborder="5" left="0" top="25" height="1" cssclass="sta_LF_Line" visible="false" width="182"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+        <PopupDiv id="pdivSearchMenu" visible="false" left="226" top="44" width="210" height="220" cssclass="pdiv_LF_Sch">
+          <Layouts>
+            <Layout>
+              <Grid id="grdMenuList" taborder="0" left="20" top="10" binddataset="dsMenuSearch" treeuseline="false" treeusecheckbox="false" treeuseimage="false" treeinitstatus="expand,all" cssclass="grd_LF_Menu" extendsizetype="row" bottom="0" autofittype="col" right="0" oncellclick="pdivSearchMenu_grdMenuList_oncellclick" onkeyup="pdivSearchMenu_grdMenuList_onkeyup" scrollbardecbuttonsize="0" scrollbarincbuttonsize="0">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="152"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="28"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell text="bind:MENU_NM"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Edit id="edtMenuSearch" taborder="3" left="0" top="0" height="42" cssclass="edi_LF_Sch" displaynulltext="메뉴 찾기" right="0" onkeyup="edtMenuSearch_onkeyup"/>
+        <Button id="btnMenuSearch" taborder="4" top="7" width="27" height="25" cssclass="btn_LF_Sch" onclick="btnMenuSearch_onclick" left="edtMenuSearch:-36"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsMenu">
+        <ColumnInfo>
+          <Column id="MENU_ID" type="STRING" size="256"/>
+          <Column id="MENU_NM" type="STRING" size="256"/>
+          <Column id="MENU_LV" type="STRING" size="256"/>
+          <Column id="HIPO_MENU_ID" type="STRING" size="256"/>
+          <Column id="MENU_GRP_ID" type="STRING" size="256"/>
+          <Column id="PRGM_ID" type="STRING" size="256"/>
+          <Column id="LEAF_YN" type="STRING" size="256"/>
+          <Column id="MENU_URL" type="STRING" size="256"/>
+          <Column id="MENU_STS" type="STRING" size="256"/>
+          <Column id="SYTM_FLAG_CD" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsMenuSearch"/>
+      <Dataset id="dsMyMenu">
+        <ColumnInfo>
+          <Column id="PRGM_FULL_PATH" type="STRING" size="32"/>
+          <Column id="SORT_ORDR" type="BIGDECIMAL" size="16"/>
+          <Column id="MENU_ID" type="STRING" size="32"/>
+          <Column id="MENU_NM_EN" type="STRING" size="32"/>
+          <Column id="MENU_NM" type="STRING" size="32"/>
+          <Column id="PRGM_ID" type="STRING" size="32"/>
+          <Column id="PRGM_PATH" type="STRING" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	frmLeft.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+this.objApp = nexacro.getApplication();
+
+this.fvMenuStatus	= "close";		// Left 메뉴 접기/펼치기 상태값 (open, close)
+this.fvIsBackSpace 	= "N";			// 메뉴검색에서 백스페이스 눌렀는 지 여부
+this.fvMenuType		= "menu";		// menu, mymenu
+this.fvMyMenuEdit	= false; 
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+/**
+ * @description 화면 오픈
+ */
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	//this.gfnFormOnload(obj); //필수함수
+	
+	this.divLnb.form.set_scrollbartype("none");
+
+	// 마이메뉴 gdsMyMenu 카피
+	this.fnCopyMyMenu();
+	
+	// 그리드 Row Size 셋팅
+	this.fnSetGridRowSize();
+	
+	// 메뉴 찾기 셋팅
+	this.fnSetMenuSearch();
+};
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+/**
+ * @description 메세지 콜백
+*/
+this.fnMsgCallback = function (sMsgId, sVal)
+{
+	// 해당 메뉴를 즐겨찾기 목록에서 삭제하시겠습니까?
+	if(sMsgId =="msg.confirm")
+	{		
+		if(sVal == true)
+		{		
+			var delRow = this.objApp.gdsMyMenu.getColumn(this.objApp.gdsMyMenu.rowposition, "MENU_ID"); 
+			this.objApp.gdsMyMenu.deleteRow(delRow);
+
+		} 
+	}
+};
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+/**
+ * @description 마이메뉴 gdsMyMenu 카피
+ */
+this.fnCopyMyMenu = function()
+{
+	var objGdsMyMenu = this.objApp.gdsMyMenu;
+	
+	this.dsMyMenu.clear();
+	this.dsMyMenu.copyData(objGdsMyMenu);
+	for(var i=0; i<this.objApp.gdsOpenMenu.rowcount;i++){
+		var objGdsOpenMenu = this.objApp.gdsOpenMenu;
+		var sWinId = objGdsOpenMenu.getColumn(i, this.FRAME_MENUCOLUMNS.winId);
+		var objForm = this.objApp.gvFrsWork.all[sWinId];	// 삭제할 메뉴 화면
+		var objTitleForm = objForm.form.divTitle.form;	
+		objTitleForm.btnMyMenu.set_cssclass("btn_WF_Bookmark");
+	}
+
+	for(var i=0; i<this.dsMyMenu.rowcount;i++){
+		var objGdsOpenMenu = this.objApp.gdsOpenMenu;
+		var nFindRow = objGdsOpenMenu.findRow(this.FRAME_MENUCOLUMNS.menuId, this.dsMyMenu.getColumn(i,"MENU_ID"))
+
+		//삭제할 마이메뉴가 MDI 에 열려있으면 ★ -> ☆ 로 변경하기 위함.
+		if (nFindRow > -1)
+		{
+			// 삭제할 메뉴
+			var sWinId = objGdsOpenMenu.getColumn(nFindRow, this.FRAME_MENUCOLUMNS.winId);
+			var objForm = this.objApp.gvFrsWork.all[sWinId];	// 삭제할 메뉴 화면
+			var objTitleForm = objForm.form.divTitle.form;		// 삭제할 메뉴 화면의 Title 영역 화면
+			objTitleForm.fnSetBookmarkCss(objTitleForm.btnMyMenu);
+		}
+	}
+};
+	
+/**
+ * @description 좌측 메뉴 변경
+ * @param 필수 {string} sClickMenuId – 클릭한 메뉴 ID
+ */
+this.fnChangeLeftMenu = function(sClickMenuId)
+{
+	var nClickMenuRow = -1;
+	var nFirstMenuRow = -1;
+	
+	nFirstMenuRow = this.gfnFindData(this.objApp.gdsMenu, this.FRAME_MENUCOLUMNS.menuId, this.dsMenu.getColumn(0, this.FRAME_MENUCOLUMNS.menuId));
+	nClickMenuRow = this.gfnFindData(this.objApp.gdsMenu, this.FRAME_MENUCOLUMNS.menuId, sClickMenuId);
+
+	if( nClickMenuRow > -1 ) {
+		this.fnSetGridRowSize();
+	}
+};
+
+/**
+ * @description 메뉴 접기/펼치기 상태값 가져오기
+ */
+this.fnGetMenuOpenClose = function()
+{
+	return this.fvMenuStatus;
+};
+
+/**
+ * @description 메뉴 접기/펼치기 상태값 셋팅
+ */
+this.fnSetMenuOpenClose = function(sStatus)
+{
+	if (sStatus == "open") 
+	{
+		this.gfnShowLeftFrame();
+	} else if (sStatus == "close")
+	{
+		this.gfnHideLeftFrame();
+	}
+};
+
+/**
+ * @description FORM오픈 [공통함수호출]
+*/
+this.fnFormOpen = function (sMenuId, objParam)
+{
+	if(this.gfnIsNull(sMenuId)) return;
+
+	this.gfnOpenMenu(sMenuId, objParam, false);
+};
+
+/**
+ * @description 그리드 RowSize 셋팅
+*/
+this.fnSetGridRowSize = function()
+{
+	var objGrid = this.divLnb.form.grdMenu;
+	objGrid.set_enableredraw(false);
+	
+	for(var i=0; i < this.dsMenu.rowcount; i++)
+	{
+		var grdRow = objGrid.getTreeRow(i);
+		var css = objGrid.getCellPropertyValue(grdRow, 0, "cssclass");
+		
+		if( css == "cell_LF_Lev"){
+			objGrid.setRealRowSize(grdRow,"50");
+		}else{
+			objGrid.setRealRowSize(grdRow,"28");
+		}
+	}
+	objGrid.set_enableredraw(true);
+};
+
+/**
+ * @description 메뉴 찾기 셋팅(Menu List Box 생성)
+*/
+this.fnSetMenuSearch = function()
+{
+	// 메뉴 검색 팝업DIV 위치 에디트 하단으로 이동
+	this.pdivSearchMenu.move(0, 42);
+	
+	// 메뉴 Datset 복사
+	this.fnSetMenuSearchDataset();
+};
+
+/**
+ * @description Menu List Control
+*/
+this.fnSetSearchGrid = function(searchValue)
+{
+	if(this.gfnIsNull(searchValue) || this.dsMenuSearch.getRowCount() < 1)
+	{
+		// 메뉴검색 팝업 닫기
+		this.fnCloseMenuSearchPopup();
+	} else 
+	{
+		var iSearchCount = this.dsMenu.getCaseCount("(String(" + this.FRAME_MENUCOLUMNS.menuNm + ").toLowerCase()).indexOf('" + sSearchValue + "') >= 0");
+		var sSearchValue = searchValue.toLowerCase();
+		if(iSearchCount >= 0)
+		{
+			// 메뉴검색 팝업 열기
+			this.fnOpenMenuSearchPopup();
+			
+			this.dsMenuSearch.filter("(String(" + this.FRAME_MENUCOLUMNS.menuNm + ").toLowerCase()).indexOf('" + sSearchValue + "') >= 0"
+									+" && ("+ this.FRAME_MENUCOLUMNS.prgmFileNm +" != undefined)");
+
+			if(this.dsMenuSearch.getRowCount() > 1)
+			{
+				this.dsMenuSearch.set_rowposition(0);
+			}
+		}
+	}
+	
+	this.edtMenuSearch.setFocus();
+};
+
+/**
+ * @description 전체메뉴 dataset 변경 함수
+*/
+this.fnSetMenuSearchDataset = function()
+{
+	var filterExpr = "";
+
+	if (this.fvMenuType == "menu"){
+		// 메뉴일 경우
+		this.objApp.gdsMenu.set_enableevent(false);
+		this.dsMenuSearch.set_enableevent(false);
+		this.objApp.gdsMenu.filter(filterExpr);
+		
+		this.dsMenuSearch.copyData(this.objApp.gdsMenu, true);
+		this.objApp.gdsMenu.filter("");
+		
+		this.objApp.gdsMenu.set_enableevent(true);
+		this.dsMenuSearch.set_enableevent(true);
+	} else {
+		// 마이메뉴일 경우
+		this.objApp.gdsMyMenu.set_enableevent(false);
+		this.dsMenuSearch.set_enableevent(false);
+		
+		this.dsMenuSearch.copyData(this.objApp.gdsMyMenu, true);
+		this.dsMenuSearch.filter(filterExpr);
+		
+		this.objApp.gdsMyMenu.set_enableevent(true);
+		this.dsMenuSearch.set_enableevent(true);
+	}
+};
+
+/**
+ * @description 메뉴 검색시 셋팅 & 메뉴 이동
+*/
+this.fnSetMenuMove = function(obj)
+{
+	// 검색 Column Name Setting
+	var sColNm = "";
+	if(obj.name == "edtMenuSearch") sColNm = this.FRAME_MENUCOLUMNS.menuNm;
+	else sColNm = this.FRAME_MENUCOLUMNS.menuId;
+	
+	// 메뉴ID 검색
+	var nMenuRow = 0;
+
+	var nRow = this.dsMenuSearch.rowposition;
+	var sMenuId = this.dsMenuSearch.getColumn(nRow, this.FRAME_MENUCOLUMNS.menuId);
+	
+	// 그리드에서 선택된 값을 텍스트 에디터로 입력
+	if(obj.name == "grdMenuList")
+	{
+		var selectValue = this.dsMenuSearch.getColumn(nRow, this.FRAME_MENUCOLUMNS.menuNm);
+		this.edtMenuSearch.set_value(selectValue);
+	}
+	
+	// 존재하지 않는 메뉴를 검색을 했을 경우 미진행
+	if(this.gfnIsNull(sMenuId)) return;
+
+	// Dataset Row Number
+	nMenuRow = this.dsMenu.findRow(sColNm, sMenuId);
+	
+	// 그리드 선택
+	var objGrid = this.divLnb.form.grdMenu;
+
+	// 메뉴 선택
+	var curRow = objGrid.getTreeRow(nMenuRow);
+	objGrid.selectRow(curRow);
+	
+	// 검색한 메뉴 선택
+	if(this.gfnIsNull(sMenuId) == false)
+	{			
+		// 메뉴 화면 호출
+		this.fnFormOpen(sMenuId);
+	}
+};
+
+/**
+ * @description 메뉴 검색 팝업 열기
+ */
+this.fnOpenMenuSearchPopup = function()
+{
+	if(!this.pdivSearchMenu.isPopup())
+	{
+		this.pdivSearchMenu.trackPopupByComponent(this.edtMenuSearch, 0, 0 + this.edtMenuSearch.height, 210, 220, "", false);
+	}
+};
+
+/**
+ * @description 메뉴 검색 팝업 닫기
+ */
+this.fnCloseMenuSearchPopup = function()
+{
+	if(this.pdivSearchMenu.isPopup()) 
+	{
+		this.pdivSearchMenu.closePopup();
+		return;
+	}
+};
+
+/**
+ * @description 메뉴/마이메뉴 설정
+ */
+this.fnSetMenuType = function(sType)
+{
+	if(sType == "menu")	{
+		// 메뉴
+		this.divLnb.form.grdMenu.set_visible(true);
+		this.divLnb.form.grdMyMenu.set_visible(false);
+		this.divLnb.form.btnMenu.set_cssclass("btn_LF_MenuS");
+		this.divLnb.form.btnMyMenu.set_cssclass("btn_LF_Fav");
+		this.divLnb.form.divMyMenuEdit.set_visible(false);
+	} else{
+		 // 마이메뉴
+		this.divLnb.form.grdMyMenu.set_visible(true);
+		this.divLnb.form.grdMenu.set_visible(false);
+		this.divLnb.form.btnMenu.set_cssclass("btn_LF_Menu");
+		this.divLnb.form.btnMyMenu.set_cssclass("btn_LF_FavS");
+		this.divLnb.form.divMyMenuEdit.set_visible(true);
+	}						
+
+	this.fvMenuType = sType;
+};
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+/**
+ * @description 그리드 메뉴 click
+ */
+this.grdMenu_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	// Tree 이미지 클릭시 리턴
+	if(e.clickitem == "treeitembutton") return;
+	
+	var nRow = obj.getTreeRow(e.row);
+	
+	// true 는 false 로 false 는 true 로 변경^1
+	var nStat = obj.getTreeStatus(nRow)^1;
+
+	// 자식이 없으면
+	if(nStat != 2) obj.setTreeStatus(nRow ,nStat);
+	
+	// Click시 해당 메뉴 호출
+	var sMenuId = this.dsMenu.getColumn(this.dsMenu.rowposition, this.FRAME_MENUCOLUMNS.menuId);
+	var sPageUrl = this.dsMenu.getColumn(this.dsMenu.rowposition, this.FRAME_MENUCOLUMNS.menuUrl);
+	
+	if(!(this.gfnIsNull(sMenuId) || this.gfnIsNull(sPageUrl))){			
+		// 메뉴 화면 호출
+		this.fnFormOpen(sMenuId);
+	}
+};
+
+/**
+ * @description  메뉴/마이메뉴 버튼 클릭
+*/
+this.btnMenu_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.fvMyMenuClick = true;
+	var sType = String(obj.name).substr(3).toLowerCase();
+	var sCssClass = obj.cssclass;
+	
+	if (sCssClass.indexOf("S") == sCssClass.length -1) return;
+	
+	// 메뉴 설정
+	this.fnSetMenuType(sType);
+	
+	// 메뉴검색 Dataset 변경
+	this.fnSetMenuSearchDataset();
+};
+
+/**
+ * @description  마이메뉴 그리드 삭제버튼 클릭
+*/
+this.divLnb_grdMyMenu_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	var nCellIdx = e.cell;
+	
+	// 선택한 메뉴 아이디
+	var sMenuId = this.dsMyMenu.getColumn(this.dsMyMenu.rowposition, this.FRAME_MENUCOLUMNS.menuId);
+	
+	if (nCellIdx == 0){
+		if(this.fvMyMenuEdit) return;
+		// 메뉴 클릭일 경우
+		this.fnFormOpen(sMenuId);
+	} else if (nCellIdx == 1) {
+		if(!this.fvMyMenuEdit) return;
+		// X 버튼일 경우
+		this.dsMyMenu.deleteRow(obj.getDatasetRow(e.row));
+	}
+};
+
+/**
+ * @description 메뉴 검색 버튼 클릭 이벤트
+ */
+this.btnMenuSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objEdit = this.edtMenuSearch;
+	var sMenuStr = objEdit.value;
+	if(this.gfnIsNull(sMenuStr))
+	{
+		return;
+	}
+	this.fnSetSearchGrid(objEdit.value);
+};
+
+/**
+ * @description 메뉴 검색 입력창 키입력 이벤트
+ */
+this.edtMenuSearch_onkeyup = function(obj:nexacro.Edit,e:nexacro.KeyEventInfo)
+{
+	 var searchValue = obj.value;
+	 
+	if(e.keycode == "40"){
+		// 아래 화살표를 눌렀을 경우 : 리스트 선택하기
+		if(this.pdivSearchMenu.isPopup()){
+			var nRow = this.dsMenuSearch.rowposition;
+			this.pdivSearchMenu.form.grdMenuList.setFocus();
+			
+			if (nRow == this.dsMenuSearch.getRowCount() -1){
+				this.dsMenuSearch.set_rowposition(0);
+			} else {
+				this.dsMenuSearch.set_rowposition(nRow + 1);
+			}
+		}
+		return;
+	}else if(e.keycode == "13"){
+		//enter
+		this.fvIsBackSpace = "N";
+		this.dsMenuSearch.set_enableevent(false);
+		this.dsMenuSearch.filter("");
+		this.fnSetSearchGrid(searchValue);
+		this.dsMenuSearch.set_enableevent(true);
+	}else if(e.keycode == "27"){
+		//Esc키를 눌렀을 경우 : 그리드를 사라지게 구성
+		this.fnCloseMenuSearchPopup();
+		return;
+	}
+};
+
+/**
+ * @description 메뉴 검색 그리드 oncellclick 이벤트
+*/
+this.pdivSearchMenu_grdMenuList_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	this.fnSetMenuMove(obj);
+    this.fnCloseMenuSearchPopup();
+};
+
+/**
+ * @description  메뉴 검색 그리드 onkeyup 이벤트
+*/
+this.pdivSearchMenu_grdMenuList_onkeyup = function(obj:nexacro.Grid,e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13"){
+		// 그리드에서 Enter키를 눌렀을 경우 : 선택된 값을 TextBox에 입력하고 그리드는 사라지게 구성
+		// 메뉴 이동 및 호출
+		this.fnSetMenuMove(obj);
+		
+		// 메뉴 호출 후 그리드 닫기
+		this.fnCloseMenuSearchPopup();
+	}else if(e.keycode == "27"){
+		// 그리드에서 Esc키를 눌렀을 경우 : 그리드를 사라지게 구성
+		this.fnCloseMenuSearchPopup();
+	}
+};
+
+this.divLnb_btnUp_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this.dsMyMenu.rowposition != 0){
+		var nSortOrdr1 = this.dsMyMenu.getColumn(this.dsMyMenu.rowposition-1,"SORT_ORDR");
+		var nSortOrdr2 = this.dsMyMenu.getColumn(this.dsMyMenu.rowposition,"SORT_ORDR");	
+		this.dsMyMenu.setColumn(this.dsMyMenu.rowposition, "SORT_ORDR", nSortOrdr1);
+		this.dsMyMenu.setColumn(this.dsMyMenu.rowposition-1, "SORT_ORDR", nSortOrdr2);
+		this.dsMyMenu.exchangeRow(this.dsMyMenu.rowposition,this.dsMyMenu.rowposition-1);
+		
+	}	
+};
+
+this.divLnb_btnDown_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this.dsMyMenu.rowposition < this.dsMyMenu.rowcount-1){
+		var nSortOrdr1 = this.dsMyMenu.getColumn(this.dsMyMenu.rowposition+1,"SORT_ORDR");
+		var nSortOrdr2 = this.dsMyMenu.getColumn(this.dsMyMenu.rowposition,"SORT_ORDR");
+		this.dsMyMenu.setColumn(this.dsMyMenu.rowposition, "SORT_ORDR", nSortOrdr1);
+		this.dsMyMenu.setColumn(this.dsMyMenu.rowposition+1, "SORT_ORDR", nSortOrdr2);	
+		this.dsMyMenu.exchangeRow(this.dsMyMenu.rowposition,this.dsMyMenu.rowposition+1);
+		
+	}	
+};
+
+this.divLnb_btnSave_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if (this.gfnDsIsUpdated(this.dsMyMenu) == false) {
+		// 저장할 데이터가 없습니다.
+		this.gfnAlert("msg.save.nochange");
+		return;
+	}
+	var sMsgId = "msg.confirm";
+	var sPopId = sMsgId;
+	var sCallback = "fnMsgCallback";
+	var arrArg = ["즐겨찾기 목록을 저장하시겠습니까?"];
+	
+	// 해당 메뉴를 즐겨찾기 목록에서 삭제하시겠습니까?
+	this.gfnAlert(sMsgId, arrArg, sPopId, sCallback);		
+};
+
+this.divLnb_btnEdit_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.fvMyMenuEdit = true;
+	this.divLnb.form.divMyMenuEdit.form.btnUp.set_visible(true);
+	this.divLnb.form.divMyMenuEdit.form.btnDown.set_visible(true);
+	this.divLnb.form.divMyMenuEdit.form.btnSave.set_visible(true);
+	this.divLnb.form.divMyMenuEdit.form.btnCancel.set_visible(true);
+	this.divLnb.form.divMyMenuEdit.form.btnEdit.set_enable(false);
+	this.divLnb.form.grdMyMenu.set_formats('<Formats><Format id="default"><Columns><Column size="152"/><Column size="40"/></Columns><Rows><Row size="24"/></Rows><Band id="body"><Cell text="bind:MENU_NM"/><Cell col="1" displaytype="buttoncontrol" edittype="button"/></Band></Format></Formats>');
+};
+
+this.divLnb_btnCancel_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.fvMyMenuEdit = false;
+	this.divLnb.form.divMyMenuEdit.form.btnUp.set_visible(false);
+	this.divLnb.form.divMyMenuEdit.form.btnDown.set_visible(false);
+	this.divLnb.form.divMyMenuEdit.form.btnSave.set_visible(false);
+	this.divLnb.form.divMyMenuEdit.form.btnCancel.set_visible(false);
+	this.divLnb.form.divMyMenuEdit.form.btnEdit.set_enable(true);
+	this.divLnb.form.grdMyMenu.set_formats('<Formats><Format id="default"><Columns><Column size="152"/></Columns><Rows><Row size="24"/></Rows><Band id="body"><Cell text="bind:MENU_NM"/></Band></Format></Formats>');
+	this.dsMyMenu.reset();
+};
+]]></Script>
+  </Form>
+</FDL>

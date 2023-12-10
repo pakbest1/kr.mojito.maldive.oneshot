@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="samplePopup" width="1050" height="850" titletext="팝업 샘플" onload="form_onload">
+    <Layouts>
+      <Layout height="850" mobileorientation="landscape" width="1050">
+        <Static id="staBg00" taborder="1" left="2" top="0" height="196" cssclass="sta_WF_LabelBg" right="20"/>
+        <Static id="staTitle00" taborder="0" text="모달팝업&#13;&#10;(callback - string)" left="0" top="0" width="150" height="196" cssclass="sta_WF_Label"/>
+        <TextArea id="txaShowModal" taborder="2" left="staTitle00:4" top="5" height="185" readonly="true" value="var sTitle = &quot;모달팝업(Default)&quot;;&#10;&#9;var oArg   = {pvString:&quot;abcdedd&quot;, pvNumber:555555, pvDataset:this.dsData};&#10;&#9;var oOption = {&#10;&#9;&#9;top:100&#10;&#9;&#9;,left:100&#9;&#9;&#9;//top,left 지정하지않음 center,middle 적용&#10;&#9;&#9;,width:700&#10;&#9;&#9;,height:300&#9;&#9;&#9;//width,height 지정하지 않음 popup form size적용&#10;&#9;&#9;,popuptype:&quot;modal&quot;&#9;//modal,modaless&#10;&#9;&#9;,autosize:false&#10;&#9;&#9;,title:sTitle&#10;&#9;&#9;,resize:false&#10;&#9;&#9;,titlebar:true};&#10;&#9;var sPopupCallBack = &quot;fnPopupCallback&quot;;&#10;&#9;this.gfnOpenPopup(&quot;popupModalDefault&quot;, &quot;sample::samplePopupP.xfdl&quot;, oArg, sPopupCallBack, oOption);" right="90"/>
+        <Button id="btnShowModal" taborder="3" text="show" top="5" width="60" height="185" onclick="btnShowModal_onclick" right="25"/>
+        <Static id="staBg00_00" taborder="4" left="2" top="195" height="196" cssclass="sta_WF_LabelBg" right="20"/>
+        <Static id="staTitle00_00" taborder="5" text="모달팝업&#13;&#10;(callback -function)" left="0" top="195" width="150" height="196" cssclass="sta_WF_Label"/>
+        <TextArea id="txaShowModal00" taborder="6" left="staTitle00_00:4" top="200" height="185" readonly="true" value="var sTitle = &quot;모달팝업(callback-Function)&quot;;&#10;&#9;var oArg   = {pvString:&quot;abcdedd&quot;, pvNumber:555555, pvDataset:this.dsData};&#10;&#9;var oOption = {&#10;&#9;&#9;popuptype:&quot;modal&quot;&#9;//modal,modaless&#10;&#9;&#9;,autosize:true&#10;&#9;&#9;,title:sTitle&#10;&#9;&#9;,resize:true&#10;&#9;&#9;,titlebar:true};&#10;&#9;this.gfnOpenPopup(&quot;popupModalFunc&quot;, &quot;sample::samplePopupP.xfdl&quot;, oArg, function(sPopupId, sRtn){&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;trace(&quot;callback 함수를 function object로 지정&quot;);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;var rtn = JSON.parse(sRtn);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;this.dsRtn.loadXML(rtn.rtnPvDataset);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;trace(&quot;sPopupId : &quot; + sPopupId +&quot; 2. rtnPvString : &quot; + rtn.rtnPvString + &quot; 3. rtnPvNumber : &quot; + rtn.rtnPvNumber);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;//trace(this.dsRtn.saveXML());&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}, oOption);" right="90"/>
+        <Button id="btnShowModalFun" taborder="7" text="show" top="200" width="60" height="185" onclick="btnShowModalFun_onclick" right="25"/>
+        <Static id="staBg00_00_00" taborder="8" left="2" top="390" height="196" cssclass="sta_WF_LabelBg" right="20"/>
+        <Static id="staTitle00_00_00" taborder="9" text="모달리스팝업&#13;&#10;(callback -String)" left="0" top="390" width="150" height="196" cssclass="sta_WF_Label"/>
+        <TextArea id="txaShowModal00_00" taborder="10" left="154" top="395" height="185" readonly="true" value="var sTitle = &quot;모달리스(Default)&quot;;&#10;&#9;var oArg   = {pvString:&quot;abcdedd&quot;, pvNumber:555555, pvDataset:this.dsData};&#10;&#9;var oOption = {&#10;&#9;&#9;width:700&#10;&#9;&#9;,height:394&#9;&#9;&#9;//모달리스는 width,height 필수지정&#10;&#9;&#9;,popuptype:&quot;modeless&quot;&#9;//modal,modaless&#10;&#9;&#9;,dual:this.chkDualMonitor.value&#10;&#9;&#9;,autosize:false&#10;&#9;&#9;,title:sTitle&#10;&#9;&#9;,resize:false&#10;&#9;&#9;,titlebar:true};&#10;&#9;var sPopupCallBack = &quot;fnPopupCallback&quot;;&#10;&#9;this.gfnOpenPopup(&quot;popupModaless&quot;, &quot;sample::samplePopupP.xfdl&quot;, oArg, sPopupCallBack, oOption);" right="90"/>
+        <Button id="btnShowModaless" taborder="11" text="show" top="395" width="60" height="185" onclick="btnShowModaless_onclick" right="25"/>
+        <Static id="staBg00_00_00_00" taborder="12" left="2" top="585" height="196" cssclass="sta_WF_LabelBg" right="20"/>
+        <Static id="staTitle00_00_00_00" taborder="13" text="모달리스팝업&#13;&#10;(callback -Function)" left="0" top="585" width="150" height="196" cssclass="sta_WF_Label"/>
+        <TextArea id="txaShowModal00_00_00" taborder="14" left="154" top="590" height="185" readonly="true" value="var sTitle = &quot;모달리스(callback-Function)&quot;;&#10;&#9;var oArg   = {pvString:&quot;abcdedd&quot;, pvNumber:555555, pvDataset:this.dsData};&#10;&#9;var oOption = {&#10;&#9;&#9;popuptype:&quot;modeless&quot;&#9;//modal,modaless&#10;&#9;&#9;,title:sTitle&#10;&#9;&#9;,resize:true&#10;&#9;&#9;,titlebar:false};&#10;&#9;this.gfnOpenPopup(&quot;popupModalessFunc&quot;, &quot;sample::samplePopupP.xfdl&quot;, oArg, function(sPopupId, sRtn){&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;trace(&quot;callback 함수를 function object로 지정&quot;);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;var rtn = JSON.parse(sRtn);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;this.dsRtn.loadXML(rtn.rtnPvDataset);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;trace(&quot;sPopupId : &quot; + sPopupId +&quot; 2. rtnPvString : &quot; + rtn.rtnPvString + &quot; 3. rtnPvNumber : &quot; + rtn.rtnPvNumber);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;//trace(this.dsRtn.saveXML());&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}, oOption);" right="90"/>
+        <Button id="btnShowModalessFunc" taborder="15" text="show" top="590" height="185" onclick="btnShowModalessFunc_onclick" width="60" right="25"/>
+        <Button id="btnShowDebug" taborder="16" text="show debug" left="0" top="staTitle00_00_00_00:20" width="120" height="28" onclick="btnShowDebug_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	samplePopup.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction   
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+*******************************************************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj); //필수함수
+	
+};
+/*******************************************************************************************************************************
+ * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+*******************************************************************************************************************************/
+this.fnPopupCallback = function (sPopupId, sRtn)
+{
+	if (!this.gfnIsNull(sRtn))
+	{
+		var objRtn = JSON.parse(sRtn);
+		if (this.gfnIsNull(objRtn)) return;
+		
+		if (!this.gfnIsNull(objRtn.rtnId))
+		{
+			trace(" 1. rtnId : " + objRtn.rtnId);
+		}
+		if (!this.gfnIsNull(objRtn.rtnName)) 
+		{
+			trace(" 2. rtnName : " + objRtn.rtnName);
+		}
+		if (!this.gfnIsNull( objRtn.rtnDepartment))
+		{
+			trace(" 3. rtnDepartment : " + objRtn.rtnDepartment);
+		}	
+		if (!this.gfnIsNull( objRtn.rtnDescription))
+		{
+			trace(" 4. rtnDescription : " + objRtn.rtnDescription);
+		}
+	}
+};
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+*******************************************************************************************************************************/
+this.btnShowModal_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sTitle = "모달팝업(Default)";
+	var oArg   = {pvString:"abcdedd", pvNumber:555555, pvDataset:this.dsData};
+	var oOption = {
+		top:100
+		,left:100			//top,left 지정하지않음 center,middle 적용
+		,width:700
+		,height:394			//width,height 지정하지 않음 popup form size적용
+		,popuptype:"modal"	//modal,modaless
+		,autosize:false
+		,title:sTitle
+		,resize:false
+		,titlebar:true};
+	var sPopupCallBack = "fnPopupCallback";
+	this.gfnOpenPopup("popupModalDefault", "sample::samplePopupP.xfdl", oArg, sPopupCallBack, oOption);
+};
+
+this.btnShowModalFun_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sTitle = "모달팝업(callback-Function)";
+	var oArg   = {pvString:"abcdedd", pvNumber:555555, pvDataset:this.dsData};
+	var oOption = {
+		popuptype:"modal"	//modal,modaless
+		,autosize:true
+		,title:sTitle
+		,resize:true
+		,titlebar:true};
+	this.gfnOpenPopup("popupModalFunc", "sample::samplePopupP.xfdl", oArg, function(sPopupId, sRtn){
+																				if(!this.gfnIsNull(sRtn))
+																				{
+																					var objRtn = JSON.parse(sRtn);
+																					if(this.gfnIsNull(objRtn)) return;
+																					
+																					if(!this.gfnIsNull(objRtn.rtnId))
+																					{
+																						trace(" 1. rtnId : " + objRtn.rtnId);
+																					}
+																					if(!this.gfnIsNull(objRtn.rtnName)) 
+																					{
+																						trace(" 2. rtnName : " + objRtn.rtnName);
+																					}
+																					if(!this.gfnIsNull( objRtn.rtnDepartment))
+																					{
+																						trace(" 3. rtnDepartment : " + objRtn.rtnDepartment);
+																					}	
+																					if(!this.gfnIsNull( objRtn.rtnDescription))
+																					{
+																						trace(" 4. rtnDescription : " + objRtn.rtnDescription);
+																					}
+																				}
+																			}, oOption);
+};
+
+this.btnShowModaless_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sTitle = "모달리스(Default)";
+	var oArg   = {pvString:"abcdedd", pvNumber:555555, pvDataset:this.dsData};
+	var oOption = {
+		width:700
+		,height:394			//모달리스는 width,height 필수지정
+		,popuptype:"modeless"
+		,autosize:false
+		,title:sTitle
+		,resize:false
+		,titlebar:true		
+		};
+	var sPopupCallBack = "fnPopupCallback";
+	this.gfnOpenPopup("popupModaless", "sample::samplePopupP.xfdl", oArg, sPopupCallBack, oOption);
+};
+
+this.btnShowModalessFunc_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sTitle = "모달리스(callback-Function)";
+	var oArg   = {pvString:"abcdedd", pvNumber:555555, pvDataset:this.dsData};
+	var oOption = {
+		popuptype:"modeless"	//modal,modaless
+		,title:sTitle
+		,resize:true
+		,titlebar:false
+		};
+	this.gfnOpenPopup("popupModalessFunc", "sample::samplePopupP.xfdl", oArg, function(sPopupId, sRtn){
+																				if(!this.gfnIsNull(sRtn))
+																				{
+																					var objRtn = JSON.parse(sRtn);
+																					if(this.gfnIsNull(objRtn)) return;
+																					
+																					if(!this.gfnIsNull(objRtn.rtnId))
+																					{
+																						trace(" 1. rtnId : " + objRtn.rtnId);
+																					}
+																					if(!this.gfnIsNull(objRtn.rtnName)) 
+																					{
+																						trace(" 2. rtnName : " + objRtn.rtnName);
+																					}
+																					if(!this.gfnIsNull( objRtn.rtnDepartment))
+																					{
+																						trace(" 3. rtnDepartment : " + objRtn.rtnDepartment);
+																					}	
+																					if(!this.gfnIsNull( objRtn.rtnDescription))
+																					{
+																						trace(" 4. rtnDescription : " + objRtn.rtnDescription);
+																					}
+																				}
+																			}, oOption);
+};
+
+this.btnShowDebug_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var oOption = {
+		popuptype:"modeless"	//modal,modaless
+		,title:"DEBUG"
+		,resize:true
+		,titlebar:true};
+	this.gfnOpenPopup("debug", "common::cmmDebug.xfdl", null, "", oOption);
+};
+
+]]></Script>
+    <Objects>
+      <Dataset id="dsData">
+        <ColumnInfo>
+          <Column id="Column0" type="STRING" size="256"/>
+          <Column id="Column1" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="Column0">동해물과</Col>
+            <Col id="Column1">무궁화</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">백두산이</Col>
+            <Col id="Column1">삼천리</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">마르고</Col>
+            <Col id="Column1">화려강산</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">닳도록</Col>
+            <Col id="Column1">대한사람</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">하느님이</Col>
+            <Col id="Column1">대한으로</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">보우하사</Col>
+            <Col id="Column1">길이 </Col>
+          </Row>
+          <Row>
+            <Col id="Column0">우리나라만세</Col>
+            <Col id="Column1">보전하세</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>
