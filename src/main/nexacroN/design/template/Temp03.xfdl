@@ -449,11 +449,11 @@ this.cfnDel = function ()
  * 각 COMPONENT 별 EVENT 영역
 *******************************************************************************************************************************/
 this.grd00_onrbuttondown = function(obj:nexacro.Grid,e:nexacro.GridMouseEventInfo) {
-	//현재 클릭된 마우스 x 좌표값
-	var x = nexacro.toNumber(system.getCursorX()) – nexacro.toNumber(system.clientToScreenX(application.mainframe, 0))+10;
-
-	//현재 클릭된 마우스 y 좌표값
-	var y = nexacro.toNumber(system.getCursorY()) – nexacro.toNumber(system.clientToScreenY(application.mainframe, 0))+10;
+// 	//현재 클릭된 마우스 x 좌표값
+// 	var x = nexacro.toNumber(system.getCursorX()) – nexacro.toNumber(system.clientToScreenX(application.mainframe, 0))+10;
+// 
+// 	//현재 클릭된 마우스 y 좌표값
+// 	var y = nexacro.toNumber(system.getCursorY()) – nexacro.toNumber(system.clientToScreenY(application.mainframe, 0))+10;
 
 	//클릭된 그리드의 Col Index 값을 팝업메뉴 UserPropery로 설정
 	obj.targetPopupMenu.targetCol = e.col;

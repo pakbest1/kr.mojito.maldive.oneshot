@@ -1,0 +1,11 @@
+{
+	"name": "Mojito",
+	"version": "1.0.0.0",
+	"description": "Mojito Library for nexacro platform",
+	"license": "",
+	"scripts": [
+		"Mojito/Mojito.js",
+		"Mojito/Transaction.js",
+		"Mojito/Grid.js"
+	]
+}

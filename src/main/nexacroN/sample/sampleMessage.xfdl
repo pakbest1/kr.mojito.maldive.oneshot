@@ -123,6 +123,7 @@
           </Formats>
         </Grid>
         <Static id="staTitle" taborder="2" text="메세지조회" left="0" top="divSearch:0" width="342" height="43" cssclass="sta_WF_Title"/>
+        <Button id="btn00" taborder="4" text="Random String" left="890" top="163" width="127" height="36" cssclass="btn_WF_Search" onclick="btn00_onclick"/>
       </Layout>
     </Layouts>
     <Objects>
@@ -260,6 +261,18 @@ this.divSearch_btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEv
 {
 	this.cfnSearch();
 };
+
+this.btn00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	alert( nexacro.Mojito.getRandomString(16) );
+};
+
+
+
+
+
+
+
 ]]></Script>
   </Form>
 </FDL>

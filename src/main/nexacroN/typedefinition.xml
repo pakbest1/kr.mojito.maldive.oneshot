@@ -6,6 +6,7 @@
     <Module url="Grid.json"/>
     <Module url="ListView.json"/>
     <Module url="extlib::DesktopMDILib.json"/>
+    <Module url="extlib::Mojito.json"/>
   </Modules>
   <Components>
     <Component type="JavaScript" id="Button" classname="nexacro.Button" prefixid="btn"/>
@@ -33,6 +34,7 @@
     <Component type="JavaScript" id="ListView" classname="nexacro.ListView" prefixid="lst"/>
     <Component type="JavaScript" id="DataObject" classname="nexacro.DataObject" prefixid="doj"/>
     <Component type="JavaScript" id="WebBrowser" classname="nexacro.WebBrowser" prefixid="web"/>
+    <Component type="JavaScript" id="MultiCombo" classname="nexacro.MultiCombo"/>
   </Components>
   <Services>
     <Service prefixid="theme" type="resource" url="./_resource_/_theme_/" version="0" cachelevel="session" include_subdir="true"/>
@@ -42,12 +44,12 @@
     <Service prefixid="font" type="resource" url="./_resource_/_font_/" version="0" cachelevel="session" include_subdir="false"/>
     <Service prefixid="extlib" type="resource" url="./_extlib_/" version="0" cachelevel="session" include_subdir="true"/>
     <Service prefixid="svcUrl" type="JSP" version="0" cachelevel="none" include_subdir="false" communicationversion="0" url="./nexacroN/"/>
-    <Service prefixid="license" type="file" url="./license/" version="0" cachelevel="session" include_subdir="false" communicationversion="0"/>
-    <Service prefixid="DesktopMDILib" type="file" url="./_extlib_/DesktopMDILib/" version="0" cachelevel="session" include_subdir="true" communicationversion="0"/>
-    <Service prefixid="frame" type="form" url="./frame/" version="0" cachelevel="session" include_subdir="false" communicationversion="0"/>
-    <Service prefixid="common" type="form" url="./common/" version="0" cachelevel="session" include_subdir="false" communicationversion="0"/>
-    <Service prefixid="sample" type="form" url="./sample/" version="0" cachelevel="session" include_subdir="false" communicationversion="0"/>
-    <Service prefixid="design" type="form" url="./design/" version="0" cachelevel="session" include_subdir="true" communicationversion="0"/>
+    <Service prefixid="license" type="file" url="./license/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
+    <Service prefixid="_extlib_" type="file" url="./_extlib_/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
+    <Service prefixid="frame" type="form" url="./frame/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
+    <Service prefixid="common" type="form" url="./common/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
+    <Service prefixid="sample" type="form" url="./sample/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
+    <Service prefixid="design" type="form" url="./design/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
     <Service prefixid="samplefile" type="file" url="./samplefile/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
   </Services>
   <Protocols/>
