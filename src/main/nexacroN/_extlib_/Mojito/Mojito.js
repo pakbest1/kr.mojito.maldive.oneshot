@@ -27,7 +27,6 @@ pMojito.getRandomString = function(num=8) {
 
 pMojito = null; delete pMojito;
 
-
 // ============================================================================
 $m=mojito=nexacro.Mojito=new nexacro._Mojito();
 //$m.getRandomString();
