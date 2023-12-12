@@ -13,7 +13,7 @@ pGrid._conf = {
 	fzLnNmCell : '_FzLnCell',
 	fzLnNmRow  : '_FzLnRow' ,
 	
-	fzBkClrCell: '#48399A',
+	fzLnBkClr  : '#48399A'  ,
 };
 
 
@@ -105,43 +105,41 @@ pGrid.freezePanseCell = function(nCell) {
 	_grid.fixCol = nMaxCol;
 	var iCellCunt=_grid.getCellCount('head');
 	for (var i=0; i<iCellCunt; i++) {
-		_grid.setCellProperty('head', i, 'background', i >= 0 && i < nMaxCol ?_conf.fzBkClrCell : '');
+		_grid.setCellProperty('head', i, 'background', i >= 0 && i < nMaxCol ?_conf.fzLnBkClr : '');
 	}
 	
 	_grid.set_enableredraw(true);
 };
 pGrid.freezePanseRow = function(nRow) {
-	let o_conf=this._conf, oGrid=this, oForm=oGrid.form;
+	let _conf=this._conf, _grid=this, _form=_conf.form;
 	if (nRow < 0) return;  // 선택된 Row가 없을 경우 리턴
 	
 	// TODO : 현행화 해야함.
 	//그래픽스로 라인그리기 - setFixedRow보다 먼저 수행되야 제대로 수행됨.
-	var nBorder = 2;
+	var nBorder = _conf.fzLnBorder;
 	//임시로 2px씩 떨어뜨려줌..
-	var objGraphics;
+	
 	//행고정시 라인 object
-	var nLeft = nexacro.toNumber(nexacro.toNumber(oGrid.left));  // nexacro.toNumber(
-	var nWidth = oGrid.width == null ? null : oGrid.width - (2 * nBorder);
+	var nLeft = nexacro.toNumber(nexacro.toNumber(_grid.left));  // nexacro.toNumber(
+	var nWidth = _grid.width == null ? null : _grid.width - (2 * nBorder);
 	var nHeight = nBorder;
-	var nRight = nexacro.toNumber(nexacro.toNumber(oGrid.right)) + (oGrid.vscrollbar.width);
-	var nBottom = oGrid.bottom;
+	var nRight = nexacro.toNumber(nexacro.toNumber(_grid.right)) + (_grid.vscrollbar.width);
+	var nBottom = _grid.bottom;
 
-	var nTop = oGrid.getOffsetTop() + oGrid.getRealRowFullSize('head') + (oGrid.getFormatRowSize(1) * (nRow + 1));
+	var nTop = _grid.getOffsetTop() + _grid.getRealRowFullSize('head') + (_grid.getFormatRowSize(1) * (nRow + 1));
 
 	//스크롤 한다음에 고정했을 때, top위치를 그마만큼 올려주기.
-	if (nexacro.toNumber(oGrid.vscrollbar.pos, 0) > 0) {
-		nTop = nTop - parseInt(oGrid.vscrollbar.pos / oGrid.getFormatRowSize(1)) * oGrid.getFormatRowSize(1)
+	if (nexacro.toNumber(_grid.vscrollbar.pos, 0) > 0) {
+		nTop = nTop - parseInt(_grid.vscrollbar.pos / _grid.getFormatRowSize(1)) * _grid.getFormatRowSize(1)
 	}
 
-	objGraphics = new Graphics('rowFixLine',nLeft,nTop,nWidth,nHeight,nRight,null);
-	// Add Object to Parent Form
-	this.addChild("rowFixLine", objGraphics);
-	// Show Object
-	objGraphics.set_background("#48399A");
-	objGraphics.show();
+	let _fzlnRowId=_grid.id+_conf.fzLnNmRow, _fzlnRow = new Graphics(_fzlnRowId,nLeft,nTop,nWidth,nHeight,nRight,null);
+	_form.addChild(_fzlnRowId, _fzlnRow);  // Add Object to Parent Form
+	_fzlnRow.set_background(_conf.fzLnBkClr);
+	_fzlnRow.show();  // Show Object
 
 	//선택된 Row로 행 고정
-	objGrid.setFixedRow(nRow);
+	_grid.setFixedRow(nRow);
 };
 
 pGrid.freePanse = function() {
@@ -166,10 +164,10 @@ pGrid.freePanseRow = function() {
 	let _conf=this._conf, _grid=this, _form=_conf.form;
 	_grid.set_enableredraw(false);
 	
-	var _FzLnRow = _form.components[_grid.id + _conf.fzLnNmRow];  // 라인초기화
-	if (_FzLnRow) {
-		_FzLnRow.destroy();
-		_FzLnRow = null;
+	var _fzlnRow = _form.components[_grid.id + _conf.fzLnNmRow];  // 라인초기화
+	if (_fzlnRow) {
+		_fzlnRow.destroy();
+		_fzlnRow = null;
 	}
 	_grid.setFixedRow(-1);  // 행고정 초기화
 	
