@@ -185,6 +185,8 @@ this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
 {
 	this.gfnFormOnload(obj); //필수함수
 	nexacro.setEnvironmentVariable("evMessagePopup", "true");
+	
+	this.grdList.initFunctions(obj);
 };
 /*******************************************************************************************************************************
  * 공통함수영역 (cfnSearch : 조회 / cfnSave : 저장 / cfnAdd : 신규 / cfnDel : 삭제 / cfnPrint : 인쇄..)

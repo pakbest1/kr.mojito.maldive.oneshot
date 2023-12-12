@@ -765,6 +765,70 @@
         <Column id="BTTN_STYLE" type="STRING" size="256"/>
       </ColumnInfo>
     </Dataset>
+    <Dataset id="gdsGridContext">
+      <ColumnInfo>
+        <Column id="grp" type="STRING" size="256"/>
+        <Column id="id" type="STRING" size="256"/>
+        <Column id="level" type="STRING" size="256"/>
+        <Column id="icon" type="STRING" size="256"/>
+        <Column id="caption" type="STRING" size="256"/>
+        <Column id="enable" type="STRING" size="256"/>
+        <Column id="userData" type="STRING" size="256"/>
+        <Column id="upmenu" type="STRING" size="256"/>
+        <Column id="bandtype" type="STRING" size="256"/>
+        <Column id="curselect" type="STRING" size="256"/>
+        <Column id="enableMenu" type="STRING" size="256"/>
+      </ColumnInfo>
+      <Rows>
+        <Row>
+          <Col id="grp">filter</Col>
+          <Col id="id">Filter</Col>
+          <Col id="caption">Filter</Col>
+          <Col id="enable">true</Col>
+          <Col id="bandtype">head</Col>
+          <Col id="level">0</Col>
+          <Col id="icon">url('theme://images/btn_WF_Filter.png')</Col>
+        </Row>
+        <Row>
+          <Col id="caption">-</Col>
+          <Col id="enable">true</Col>
+          <Col id="level">0</Col>
+          <Col id="bandtype">head</Col>
+        </Row>
+        <Row>
+          <Col id="grp">panse</Col>
+          <Col id="caption">Freezze Panse</Col>
+          <Col id="enable">true</Col>
+          <Col id="id">FreezzePanse</Col>
+          <Col id="level">0</Col>
+          <Col id="bandtype">head</Col>
+        </Row>
+        <Row>
+          <Col id="caption">-</Col>
+          <Col id="enable">true</Col>
+          <Col id="level">0</Col>
+          <Col id="bandtype">head</Col>
+        </Row>
+        <Row>
+          <Col id="grp">personal</Col>
+          <Col id="id">SavePsnSettings</Col>
+          <Col id="caption">Save Personal Settings</Col>
+          <Col id="enable">true</Col>
+          <Col id="level">0</Col>
+          <Col id="bandtype">head</Col>
+          <Col id="icon">url('theme://images/btn_WF_TempSave.png')</Col>
+        </Row>
+        <Row>
+          <Col id="grp">personal</Col>
+          <Col id="id">RestoreDefaultSettings</Col>
+          <Col id="caption">Restore Default Settings</Col>
+          <Col id="enable">true</Col>
+          <Col id="level">0</Col>
+          <Col id="bandtype">head</Col>
+          <Col id="icon">url('theme://images/img_POP_Confirm.png')</Col>
+        </Row>
+      </Rows>
+    </Dataset>
   </Datasets>
   <Variables>
     <Variable id="gvSytmFlagCd" initval="PC"/>
