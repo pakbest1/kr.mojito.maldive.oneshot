@@ -42,28 +42,9 @@ public class UUIDRepository {
 		} else {
 			sMesg += " is exists.";
 		}
-		logger.debug(sMesg);
+		logger.info(sMesg);
 
-		// 기존 발행된 uuid 조회
-		try {
-			sRepo.clear();
-			String sLine = null;
-			BufferedReader brRepo = new BufferedReader(new FileReader(fRepo));
-			while((sLine = brRepo.readLine()) != null) {
-				sLine = sLine.trim();
-				if ("".equals(sLine)) { continue; }
-				sRepo.add( sLine );
-			}
-			brRepo.close();
-
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		//repo.addAll(Arrays.asList(fRoot.list()));
-
-
-
+		loadUUID();  // 기존 발행된 uuid 조회 및 Set에 탑재
 
 //		this.fileRepo = new HashMap<String, Object>(){private static final long serialVersionUID = 1L;{
 //			put("a", new FileVO("A", "0", "a", "영화_인터스텔라_포스트_2014.jpg" , ROOT_FILE+"/2023/202312/20231220/a.jpg"));
@@ -77,22 +58,41 @@ public class UUIDRepository {
 		do {
 			sUUID = UUID.randomUUID().toString();
 		} while(sRepo.contains(sUUID));
-
-		// file에 기록
-		try {
-			BufferedWriter brRepo = new BufferedWriter(new FileWriter(fRepo, true));
-			brRepo.write(sUUID + sLnsp);
-			brRepo.close();
-			logger.debug("Generated UUID : ["+ sUUID + "]");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		saveUUID(sUUID);  // file에 기록
 
 		return sUUID;
 	}
 
 	public String get() {
 		return getPartitionBy(null);
+	}
+
+
+	private void loadUUID() {
+		try {
+			sRepo.clear();
+			String sLine = null;
+			BufferedReader brRepo = new BufferedReader(new FileReader(fRepo));
+			while((sLine = brRepo.readLine()) != null) {
+				sLine = sLine.trim();
+				if ("".equals(sLine)) { continue; }
+				sRepo.add( sLine );
+			}
+			brRepo.close();
+		} catch(Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	private void saveUUID(String sUUID) {
+		try {
+			BufferedWriter brRepo = new BufferedWriter(new FileWriter(fRepo, true));
+			brRepo.write(sUUID + sLnsp);
+			brRepo.close();
+			logger.debug("Generated UUID : ["+ sUUID + "]");
+		} catch(Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 }
