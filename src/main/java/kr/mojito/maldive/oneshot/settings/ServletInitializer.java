@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.settins;
+package kr.mojito.maldive.oneshot.settings;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
