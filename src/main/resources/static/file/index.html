@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-File Parallel Upload</title>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>Multi-File Parallel Upload</h1>
+    <input type="file" id="fileInput" multiple>
+    <button id="uploadButton">Upload</button>
+    <div id="progress"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#uploadButton").on("click", function () {
+                var files = $("#fileInput")[0].files;
+
+                if (files.length > 0) {
+                    // 모든 파일을 병렬로 업로드하기 위해 각 파일에 대한 Promise 배열 생성
+                    var uploadPromises = [];
+
+                    // 선택한 각 파일에 대해 업로드 Promise 생성
+                    $.each(files, function (index, file) {
+                        var uploadPromise = new Promise(function (resolve, reject) {
+                            var formData = new FormData();
+                            formData.append("file", file);
+
+                            $.ajax({
+                                url: "upload.php", // 업로드할 서버 스크립트의 경로
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (response) {
+                                    resolve(response);
+                                },
+                                error: function (error) {
+                                    reject(error);
+                                }
+                            });
+                        });
+
+                        uploadPromises.push(uploadPromise);
+                    });
+
+                    // 모든 Promise를 병렬로 실행
+                    Promise.all(uploadPromises)
+                        .then(function (responses) {
+                            $("#progress").text("Upload Complete!");
+                            console.log(responses);
+                        })
+                        .catch(function (errors) {
+                            console.log("Error:", errors);
+                        });
+                } else {
+                    alert("Please select files to upload.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

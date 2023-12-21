@@ -35,7 +35,7 @@ public class FileController {
 	
 	@PostMapping("/upload")
 	public Object upload(MultipartFile file) throws Exception {
-		
+		logger.debug("execute upload");
 		
 		
 		return null;
