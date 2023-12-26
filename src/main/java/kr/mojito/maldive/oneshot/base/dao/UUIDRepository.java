@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Repository;
 public class UUIDRepository {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Value("${path.mojito.random.uuid:C:/SVC-WMS/nas/mojito/random/uuid}")
+	@Value("${path.mojito.random.uuid}")
 	private String REPO_FILE;
 
 	private String sLnsp = System.getProperty("line.separator"); // System.lineSeparator()
@@ -32,17 +33,21 @@ public class UUIDRepository {
 	private void postConstruct() {
 		String sMesg = "[REPO_FILE:"+ REPO_FILE +"]";
 		fRepo = new File(REPO_FILE);
-		if (!fRepo.exists()) {
-			try {
-				fRepo.createNewFile();
-			} catch(Exception e) {
-				e.printStackTrace();
+
+		try {
+			if (!fRepo.getParentFile().exists()) {
+				fRepo.getParentFile().mkdir();
 			}
-			sMesg += " is created.";
-		} else {
-			sMesg += " is exists.";
+			if (!fRepo.exists()) {
+					fRepo.createNewFile();
+				sMesg += " is created.";
+			} else {
+				sMesg += " is exists.";
+			}
+			logger.info(sMesg);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		logger.info(sMesg);
 
 		loadUUID();  // 기존 발행된 uuid 조회 및 Set에 탑재
 
