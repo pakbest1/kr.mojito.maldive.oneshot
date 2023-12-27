@@ -7,7 +7,7 @@ pDataset.switchEvent = function(bOn=false) {
 }
 
 // Dataset RowType Code
-pDataset._rowTypeCodes = {
+nexacro.datasetRowTypeInfo = {
 	 0: { code: 'E', name: 'EMPTY'  },
 	 1: { code: 'N', name: 'NORMAL' },
 	 2: { code: 'I', name: 'INSERT' },
@@ -20,7 +20,7 @@ pDataset._rowTypeCodes = {
 pDataset.getRowTypeInfo = function(rowidx) {
 	let rowcount = this.getRowCount();
 	if (rowcount < 1 || rowcount <= rowidx) { return null; }
-	let rtIdx = this.getRowType(rowidx), rowType = this._rowTypeCodes[rtIdx];
+	let rtIdx = this.getRowType(rowidx), rowType = nexacro.datasetRowTypeInfo[rtIdx];
 	return rowType;
 }
 
@@ -91,7 +91,7 @@ pDataset.isModified = function() {
 pDataset.getRowTypeInfoNF = function(rowidx) {
 	rowcountNF = this.getRowCountNF();
 	if (rowcountNF<1 || rowcountNF <= rowidx) { return null; }
-	let rtIdx = this.getRowTypeNF(rowidx), rowType = this._rowTypeCodes[rtIdx];
+	let rtIdx = this.getRowTypeNF(rowidx), rowType = nexacro.datasetRowTypeInfo[rtIdx];
 	return rowType;
 }
 
