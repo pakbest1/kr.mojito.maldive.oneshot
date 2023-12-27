@@ -5,6 +5,7 @@
 	"license": "",
 	"scripts": [
 		"Mojito/Mojito_Transaction.js",
+		"Mojito/Mojito_Dataset.js",
 		"Mojito/Mojito_Grid.js",
 		"Mojito/Mojito.js"
 	]

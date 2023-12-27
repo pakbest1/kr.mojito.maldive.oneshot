@@ -1,5 +1,16 @@
 var pGrid = nexacro.Grid.prototype;
 
+// Grid Event 발생여부
+pGrid.switchEvent = function(bOn=false) {
+	this.set_enableevent ( bOn );
+	this.set_enableredraw( bOn );
+	
+	let dataset = this.getBindDataset();
+	if (!dataset) { return; }
+	dataset.set_enableevent  ( bOn );
+	dataset.set_updatecontrol( bOn );
+}
+
 // 환경설정
 pGrid.form  = null;
 pGrid._conf = {
