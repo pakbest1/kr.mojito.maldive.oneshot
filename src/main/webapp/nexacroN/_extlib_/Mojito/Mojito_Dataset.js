@@ -1,9 +1,9 @@
 var pDataset = nexacro.Dataset.prototype;
 
 // Dataset Event 발생여부
-pDataset.switchEvent = function(bOn=false) {
+pDataset.switchEvent = function(bOn=false, bForce=false) {
 	this.set_enableevent  ( bOn );
-	this.set_updatecontrol( bOn );
+	if (bForce) { this.set_updatecontrol( bOn ); }
 }
 
 // Dataset RowType Code
