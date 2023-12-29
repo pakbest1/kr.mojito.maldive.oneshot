@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -17,10 +16,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UUIDRepository {
+public class RandomRepository {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Value("${path.mojito.random.uuid:C:/SVC-WMS/nas/mojito/random/uuid}")
+	@Value("${path.mojito.random.string:C:/SVC-WMS/nas/mojito/random/string}")
 	private String REPO_FILE;
 
 	private String sLnsp = System.getProperty("line.separator"); // System.lineSeparator()
@@ -56,11 +55,21 @@ public class UUIDRepository {
 //		}};
 	}
 
-	public String getPartitionBy(String sPartitionBy) {
+	private final String randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+	
+	public String getPartitionBy(int iDigit, String sPartitionBy) {
 		String s = null;
 
 		do {
-			s = UUID.randomUUID().toString();
+			//s = RandomStringUtils.random() ;  // UUID.randomUUID().toString();
+			int maxChars = randomChars.length();
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < iDigit; i++) {
+				int iCharAt = (int) Math.floor(Math.random() * maxChars);
+				sb.append(randomChars.charAt(iCharAt));
+			}
+			s = sb.toString();
+			
 		} while(sRepo.contains(s));
 		save(s);  // file에 기록
 
@@ -68,7 +77,11 @@ public class UUIDRepository {
 	}
 
 	public String get() {
-		return getPartitionBy(null);
+		int iDigit = 64;
+		return getPartitionBy(iDigit, null);
+	}
+	public String get(int iDigit) {
+		return getPartitionBy(iDigit, null);
 	}
 
 
@@ -77,13 +90,13 @@ public class UUIDRepository {
 			sRepo.clear();
 			String sLine = null;
 			BufferedReader brRepo = new BufferedReader(new FileReader(fRepo));
-			while((sLine = brRepo.readLine()) != null) {
+			while ((sLine = brRepo.readLine()) != null) {
 				sLine = sLine.trim();
 				if ("".equals(sLine)) { continue; }
 				sRepo.add( sLine );
 			}
 			brRepo.close();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
@@ -93,7 +106,7 @@ public class UUIDRepository {
 			BufferedWriter brRepo = new BufferedWriter(new FileWriter(fRepo, true));
 			brRepo.write(s + sLnsp);
 			brRepo.close();
-			logger.debug("Generated UUID : ["+ s + "]");
+			logger.debug("Generated Random : ["+ s + "]");
 		} catch(Exception e) {
 			logger.error(e.getMessage(), e);
 		}
