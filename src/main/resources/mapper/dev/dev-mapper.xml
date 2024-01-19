@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.mojito.maldive.oneshot.dev">
+
+<select id="callSpMojitoTest" parameterType="HashMap" resultType="HashMap" statementType="CALLABLE">>
+{CALL SP_MOJITO_TEST(
+	#{id   , mode=IN , jdbcType=VARCHAR}
+	, #{grp  , mode=IN , jdbcType=VARCHAR}
+	, #{oId  , mode=OUT, jdbcType=VARCHAR}
+	, #{oMesg, mode=OUT, jdbcType=VARCHAR}
+)}
+</select>
+
+</mapper>

@@ -5,8 +5,8 @@
 
 <mapper namespace="com.example.vue.menu.mapper.MenuMapper">
 
-	<select id="selectMenu" resultType="menuVO">
-		SELECT * FROM t_vue_menu_m
-	</select>
-	
+<select id="selectMenu" resultType="HashMap">
+SELECT * FROM t_vue_menu_m
+</select>
+
 </mapper>
