@@ -16,28 +16,28 @@ public class RandomController {
 
 	@Autowired
 	private RandomRepository randomRepository;
-	
+
 	@GetMapping(value="/string")
 	public @ResponseBody String string() {
 		return randomRepository.get();
 	}
-	
+
 	@GetMapping(value={ "/string{sDigit}", "/string/{sDigit}" })  // , "/string/{digit}" })
 	public @ResponseBody String stringDigit(@PathVariable String sDigit) {
 		sDigit = sDigit != null ? sDigit : "64";
-		
+
 		int iDigit = -1;
 		try { iDigit = Integer.parseInt(sDigit, 10); } catch (Exception e) { iDigit = 32; }
-		
+
 		return randomRepository.get(iDigit);
 	}
-	
+
 	@Autowired
 	private UUIDRepository uuidRepository;
-	
+
 	@GetMapping("/uuid")
 	public @ResponseBody String uuid() {
 		return uuidRepository.get();
 	}
-	
+
 }
