@@ -186,5 +186,15 @@ pGrid.freePanseRow = function() {
 };
 
 
+/**
+ * Checkbox Cell 여부
+ */
+pGrid.isCheckboxCell = function(e, colId='chk') {
+	let grid = this, area = e.row < 0 ? 'head' : 'body';
+	let isCheckboxDisplaytype = 'checkboxcontrol' === grid.getCellProperty(area, e.cell, 'displaytype');
+	let isCheckboxEdittype    = 'checkbox'        === grid.getCellProperty(area, e.cell, 'edittype'   );
+	let isCheckboxCol         =  colId            === grid.getCellProperty(area, e.cell, 'text'       ).replace(/bind:|expr:/g, '');
+	return isCheckboxDisplaytype && isCheckboxEdittype && isCheckboxCol;
+};
 
 pGrid = null; delete pGrid;

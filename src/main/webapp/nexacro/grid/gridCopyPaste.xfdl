@@ -1,0 +1,702 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="gridCopyPaste" width="840" height="530" titletext="Grid Copy &amp; Paste" onload="gridCopyPaste_onload">
+    <Layouts>
+      <Layout height="530" mobileorientation="landscape" width="840">
+        <Grid id="Grid00" taborder="0" left="25" top="30" height="310" binddataset="dsList00" autofittype="col" right="25" selecttype="area">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="60"/>
+                <Column size="350"/>
+              </Columns>
+              <Rows>
+                <Row size="25" band="head"/>
+                <Row size="25"/>
+              </Rows>
+              <Band id="head">
+                <Cell style="background: ;" text="성명"/>
+                <Cell col="1" style="background: ;" text="시대"/>
+                <Cell col="2" text="업적"/>
+                <Cell col="3" text="날짜"/>
+                <Cell col="4" text="금액"/>
+                <Cell col="5" style="background: ;" text="기타"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:name" displaytype="normal"/>
+                <Cell col="1" text="bind:times" displaytype="normal"/>
+                <Cell col="2" text="bind:job" displaytype="normal"/>
+                <Cell col="3" text="bind:date" displaytype="date"/>
+                <Cell col="4" text="bind:num1" displaytype="number"/>
+                <Cell col="5" style="align:left;" text="bind:etc" textAlign="left" displaytype="normal"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="Grid01" taborder="1" left="25" top="385" height="310" binddataset="dsList01" autofittype="col" right="25" selecttype="area">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="60"/>
+                <Column size="350"/>
+              </Columns>
+              <Rows>
+                <Row size="25" band="head"/>
+                <Row size="25"/>
+              </Rows>
+              <Band id="head">
+                <Cell style="background: ;" text="성명"/>
+                <Cell col="1" style="background: ;" text="시대"/>
+                <Cell col="2" text="업적"/>
+                <Cell col="3" text="날짜"/>
+                <Cell col="4" text="금액"/>
+                <Cell col="5" style="background: ;" text="기타"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:name" displaytype="normal"/>
+                <Cell col="1" text="bind:times" displaytype="normal"/>
+                <Cell col="2" text="bind:job" displaytype="normal"/>
+                <Cell col="3" text="bind:date" displaytype="date"/>
+                <Cell col="4" text="bind:num1" displaytype="number"/>
+                <Cell col="5" style="align:left;" text="bind:etc" textAlign="left" displaytype="normal"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsList00" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="type" type="STRING" size="256"/>
+          <Column id="address" type="STRING" size="256"/>
+          <Column id="num1" type="BIGDECIMAL" size="256"/>
+          <Column id="date" type="STRING" size="256"/>
+          <Column id="num2" type="BIGDECIMAL" size="256"/>
+          <Column id="times" type="STRING" size="256"/>
+          <Column id="job" type="STRING" size="256"/>
+          <Column id="etc" type="STRING" size="256"/>
+          <Column id="Column7" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="num1">321458</Col>
+            <Col id="date">20170101</Col>
+            <Col id="num2">321458</Col>
+            <Col id="name">강감찬</Col>
+            <Col id="address">서울특별시 중구 세종대로 40</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">고려시대 명장. 본관은 금주, 초명은 은천. 귀주대첩 승리</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">명장</Col>
+          </Row>
+          <Row>
+            <Col id="num1">425862</Col>
+            <Col id="date">20170201</Col>
+            <Col id="num2">425862</Col>
+            <Col id="name">김부식</Col>
+            <Col id="address">경상북도 경주시 불국로 873-243</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">고려시대 문신. 본관은 경주, 자는 입지, 시호는 문열</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">57786</Col>
+            <Col id="date">20170601</Col>
+            <Col id="num2">57786</Col>
+            <Col id="name">정몽주</Col>
+            <Col id="address">경기도 수원시 장안구 연무동 190</Col>
+            <Col id="type">수정</Col>
+            <Col id="etc">고려 말 문신. 본관은 연일, 자는 달가. 시조 단심가를 지음</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">51651</Col>
+            <Col id="date">20170931</Col>
+            <Col id="num2">51651</Col>
+            <Col id="name">김유신</Col>
+            <Col id="address">경상북도 영주시 부석사로 345</Col>
+            <Col id="type">삭제</Col>
+            <Col id="etc">삼국통일을 이룩한 신라 장군. 본관은 김해. 가야국의 시조 김수로왕(金首露王)의 12대손. 흥무대왕으로 추존</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">신라</Col>
+            <Col id="job">장군</Col>
+          </Row>
+          <Row>
+            <Col id="num1">216548</Col>
+            <Col id="date">20171005</Col>
+            <Col id="num2">216548</Col>
+            <Col id="name">최무선</Col>
+            <Col id="address">충청남도 부여군 정림로 83</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">고려 말, 조선 초 발명가. 본관은 영주. 원나라에서 화포제작법을 배워 우리나라에서도 제작함</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">발명가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">216218</Col>
+            <Col id="date">20171111</Col>
+            <Col id="num2">216218</Col>
+            <Col id="name">정중부</Col>
+            <Col id="address">경기도 여주시 북내면 상교리 411-1</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">고려시대 무신. 본관은 해주. 무신의 난으로 정권을 잡음</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">954561</Col>
+            <Col id="date">20170101</Col>
+            <Col id="num2">954561</Col>
+            <Col id="name">김부식</Col>
+            <Col id="address">서울특별시 종로구 종로 99</Col>
+            <Col id="type">수정</Col>
+            <Col id="etc">고려시대 문신. 본관은 경주, 자는 입지, 시호는 문열</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">2121684</Col>
+            <Col id="date">20170201</Col>
+            <Col id="num2">2121684</Col>
+            <Col id="name">안중근</Col>
+            <Col id="address">경상북도 경주시 대경로 4859</Col>
+            <Col id="type">삭제</Col>
+            <Col id="etc">한말의 독립운동가. 본관은 순흥. 1909년(융희 2년)에 만주 하얼빈에서 이토 히로부미를 죽임. 건국훈장 대한민국장을 수상</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">6549845</Col>
+            <Col id="date">20170601</Col>
+            <Col id="num2">6549845</Col>
+            <Col id="name">안창호</Col>
+            <Col id="address">경기도 이천시 관고동 501-7</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">한말의 독립운동가·사상가. 호는 도산. 신민회를 조직. 《신한민보(新韓民報)》를 창간. 건국훈장 대한민국장을 수상함</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">65150</Col>
+            <Col id="date">20170931</Col>
+            <Col id="num2">65150</Col>
+            <Col id="name">유관순</Col>
+            <Col id="address">충청남도 부여군 부여읍 동남리 산16-9</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">한말의 독립운동가. 충남 천안 출생. 1919년 아우내 장터에서 3000여 군중에게 태극기를 나눠 주며 시위를 지휘하다가 일본 헌병대에 체포. 1920년 옥사함. 건국훈장 독립장을 수상</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">이종무</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">전라북도 익산시 금마면 동고도리 1086</Col>
+            <Col id="num1">158886</Col>
+            <Col id="date">20170429</Col>
+            <Col id="num2">158886</Col>
+            <Col id="etc">고려 말, 조선 초 무신. 본관은 장수. 일본 대마도를 정벌</Col>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">한명회</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">부산광역시 연제구 경기장로 28</Col>
+            <Col id="num1">258624</Col>
+            <Col id="date">20170111</Col>
+            <Col id="num2">258624</Col>
+            <Col id="etc">조선 전기의 문신. 본관은 청주, 자는 자준. 예종비 장순왕후와 성종비 공혜왕후의 부. 계유정난으로 정권을 받음. 세조 묘정에 배향</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">정몽주</Col>
+            <Col id="type">수정</Col>
+            <Col id="address">제주특별자치도 제주시 일주동로 17</Col>
+            <Col id="num1">4569985</Col>
+            <Col id="date">20170829</Col>
+            <Col id="num2">4569985</Col>
+            <Col id="etc">고려 말 문신. 본관은 연일, 자는 달가. 시조 단심가를 지음</Col>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">문익점</Col>
+            <Col id="type">삭제</Col>
+            <Col id="address">경상남도 합천군 가야면 해인사길 122</Col>
+            <Col id="num1">1245568</Col>
+            <Col id="date">20170605</Col>
+            <Col id="num2">1245568</Col>
+            <Col id="etc">고려시대 학자. 본관은 남평, 자는 일신, 시호는 충선. 원에서 목화씨를 가져와 재배함</Col>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">학자</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">최영</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">서울특별시 종로구 훈정동 1</Col>
+            <Col id="num1">336985</Col>
+            <Col id="date">20170614</Col>
+            <Col id="num2">336985</Col>
+            <Col id="etc">고려 말 무신. 시호는 무민. 본관은 동주. 위화도회군으로 정권을 잃음</Col>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">장영실</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">전라북도 남원시 산내면 대정리 975</Col>
+            <Col id="num1">578962</Col>
+            <Col id="date">20170231</Col>
+            <Col id="num2">578962</Col>
+            <Col id="etc">조선 시대의 과학자. 본관은 아산. 기생의 아들. 해시계, 문시계, 측우기를 발명</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">과학자</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">곽재우</Col>
+            <Col id="type">수정</Col>
+            <Col id="address">전라남도 구례군 마산면 화엄사로 539</Col>
+            <Col id="num1">11235</Col>
+            <Col id="date">20170723</Col>
+            <Col id="num2">11235</Col>
+            <Col id="etc">조선 중기의 의병장. 본관은 현풍, 자는 계수. 임진왜란때 의병을 일으켜 왜군들을 무찌름. '망우집'을 지음</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">의병장</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">김시민</Col>
+            <Col id="type">삭제</Col>
+            <Col id="address">경상북도 안동시 서후면 봉정사길 222</Col>
+            <Col id="num1">569875</Col>
+            <Col id="date">20170406</Col>
+            <Col id="num2">569875</Col>
+            <Col id="etc">조선 중기의 무신. 본관은 안동, 자는 면오. 임진왜란때 왜군들과 싸워 전사함. 선무공신 2등에 추록. 상락부원군에 추증</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">정양용</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">경상북도 영천시 청통면 거조길 400-67</Col>
+            <Col id="num1">5588966</Col>
+            <Col id="date">20170308</Col>
+            <Col id="num2">5588966</Col>
+            <Col id="etc">조선 후기의 학자.문신, 본관은 나주, 호는 다산, 여유당. 수원 화성을 계획함. 《정다산전서(丁茶山全書)》을 저술(목민심서 등)</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">학자</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">윤동주</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">전라북도 익산시 금마면 기양리 97번지</Col>
+            <Col id="num1">639996</Col>
+            <Col id="date">20171205</Col>
+            <Col id="num2">639996</Col>
+            <Col id="etc">시인. 북간도에서 충생. 《서시(序詩)》,《또 다른 고향》,《별 헤는 밤》을 지음</Col>
+            <Col id="Column7"/>
+            <Col id="job">시인</Col>
+            <Col id="times">조선</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">이중섭</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">충청남도 보령시 성주면 성주리 80-4</Col>
+            <Col id="num1">859648</Col>
+            <Col id="date">20170925</Col>
+            <Col id="num2">859648</Col>
+            <Col id="etc">한국의 서양화과. 호는 대향. 평양 출생. 작품으로 《소》《흰 소》등이 있음</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">화가</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">박문수</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">충청남도 천안시 서북구 성환읍 대홍리 319-8</Col>
+            <Col id="num1">15698</Col>
+            <Col id="date">20170722</Col>
+            <Col id="num2">15698</Col>
+            <Col id="etc">조선 후기의 문신. 본관은 고령, 자는 성보. 영조때 정미환국으로 영남 엄행어사로 나가 부정관리들을 적발함</Col>
+            <Col id="Column7"/>
+            <Col id="job">문신</Col>
+            <Col id="times">조선</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">황진이</Col>
+            <Col id="type">수정</Col>
+            <Col id="address">서울특별시 종로구 율곡로 99</Col>
+            <Col id="num1">75489</Col>
+            <Col id="date">20170614</Col>
+            <Col id="num2">75489</Col>
+            <Col id="etc">조선시대 시인, 명기(기생). 기생명은 명월.  《만월대 회고시》《박연폭포시》《봉별소양곡시》를 지음</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">시인</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">김정호</Col>
+            <Col id="type">삭제</Col>
+            <Col id="address">충청북도 충주시 중앙탑면 탑평리 11</Col>
+            <Col id="num1">63963</Col>
+            <Col id="date">20170416</Col>
+            <Col id="num2">63963</Col>
+            <Col id="etc">조선 후기 지리학자. 본관은 청도, 자는 백원. 《대동여지도》를 만듬</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">학자</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">홍길동</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">서울특별시 용산구 서빙고로 137</Col>
+            <Col id="num1">668955</Col>
+            <Col id="date">20170814</Col>
+            <Col id="num2">668955</Col>
+            <Col id="etc">허균이 지은 '홍길동전'의 주인공. 실존인물</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">신숙주</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">인천광역시 강화군 길상면 전등사로 37-41</Col>
+            <Col id="num1">754896</Col>
+            <Col id="date">20170517</Col>
+            <Col id="num2">754896</Col>
+            <Col id="etc">조선 초기의 문신. 본관은 고령, 자는 범옹. 세종의 총애를 가장 많이 받은 학자이자, 계유정난으로 정난공신에 등록됨. 성종 묘정에 배향</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">한석봉</Col>
+            <Col id="type">수정</Col>
+            <Col id="address">경기도 안양시 만안구 예술공원로103번길 4</Col>
+            <Col id="num1">1258963</Col>
+            <Col id="date">20170318</Col>
+            <Col id="num2">1258963</Col>
+            <Col id="etc">조선 중기의 서예가. 본관은 삼화, 호가 석봉이다. 왕희지, 안진경의 필법을 익혀 해.행.초 등 각 서체에 모두 뛰어남</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">서예가</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">전봉준</Col>
+            <Col id="type">삭제</Col>
+            <Col id="address">경상북도 봉화군 춘양면 서원촌길 8-14</Col>
+            <Col id="num1">458962</Col>
+            <Col id="date">20170704</Col>
+            <Col id="num2">458962</Col>
+            <Col id="etc">조선 후기 동학농민운동의 지도자. 초명은 명숙, 별명이 녹두장군이다</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">김대건</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">경기도 여주시 북내면 상교리 419-3번지</Col>
+            <Col id="num1">15756</Col>
+            <Col id="date">20170114</Col>
+            <Col id="num2">15756</Col>
+            <Col id="etc">조선 최초의 신부. 본관은 김해, 세례명은 안드레아. 조선 후기 박해사건으로 가족들을 모두 잃음. 후에 25세로 순교함</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">신부</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">방정환</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">대구광역시 수성구 청호로 321</Col>
+            <Col id="num1">25896</Col>
+            <Col id="date">20170326</Col>
+            <Col id="num2">25896</Col>
+            <Col id="etc">아동문학의 보급과 아동보호운동의 선구자인 아동문학가. 호는 소파. 어린이날을 공포</Col>
+            <Col id="Column7"/>
+            <Col id="job">문신</Col>
+            <Col id="times">조선</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsList01" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="type" type="STRING" size="256"/>
+          <Column id="address" type="STRING" size="256"/>
+          <Column id="num1" type="BIGDECIMAL" size="256"/>
+          <Column id="date" type="STRING" size="256"/>
+          <Column id="num2" type="BIGDECIMAL" size="256"/>
+          <Column id="times" type="STRING" size="256"/>
+          <Column id="job" type="STRING" size="256"/>
+          <Column id="etc" type="STRING" size="256"/>
+          <Column id="Column7" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="num1">321458</Col>
+            <Col id="date">20170101</Col>
+            <Col id="num2">321458</Col>
+            <Col id="name">강감찬</Col>
+            <Col id="address">서울특별시 중구 세종대로 40</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">고려시대 명장. 본관은 금주, 초명은 은천. 귀주대첩 승리</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">명장</Col>
+          </Row>
+          <Row>
+            <Col id="num1">425862</Col>
+            <Col id="date">20170201</Col>
+            <Col id="num2">425862</Col>
+            <Col id="name">김부식</Col>
+            <Col id="address">경상북도 경주시 불국로 873-243</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">고려시대 문신. 본관은 경주, 자는 입지, 시호는 문열</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">57786</Col>
+            <Col id="date">20170601</Col>
+            <Col id="num2">57786</Col>
+            <Col id="name">정몽주</Col>
+            <Col id="address">경기도 수원시 장안구 연무동 190</Col>
+            <Col id="type">수정</Col>
+            <Col id="etc">고려 말 문신. 본관은 연일, 자는 달가. 시조 단심가를 지음</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">51651</Col>
+            <Col id="date">20170931</Col>
+            <Col id="num2">51651</Col>
+            <Col id="name">김유신</Col>
+            <Col id="address">경상북도 영주시 부석사로 345</Col>
+            <Col id="type">삭제</Col>
+            <Col id="etc">삼국통일을 이룩한 신라 장군. 본관은 김해. 가야국의 시조 김수로왕(金首露王)의 12대손. 흥무대왕으로 추존</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">신라</Col>
+            <Col id="job">장군</Col>
+          </Row>
+          <Row>
+            <Col id="num1">216548</Col>
+            <Col id="date">20171005</Col>
+            <Col id="num2">216548</Col>
+            <Col id="name">최무선</Col>
+            <Col id="address">충청남도 부여군 정림로 83</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">고려 말, 조선 초 발명가. 본관은 영주. 원나라에서 화포제작법을 배워 우리나라에서도 제작함</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">발명가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">216218</Col>
+            <Col id="date">20171111</Col>
+            <Col id="num2">216218</Col>
+            <Col id="name">정중부</Col>
+            <Col id="address">경기도 여주시 북내면 상교리 411-1</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">고려시대 무신. 본관은 해주. 무신의 난으로 정권을 잡음</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">954561</Col>
+            <Col id="date">20170101</Col>
+            <Col id="num2">954561</Col>
+            <Col id="name">김부식</Col>
+            <Col id="address">서울특별시 종로구 종로 99</Col>
+            <Col id="type">수정</Col>
+            <Col id="etc">고려시대 문신. 본관은 경주, 자는 입지, 시호는 문열</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">문신</Col>
+          </Row>
+          <Row>
+            <Col id="num1">2121684</Col>
+            <Col id="date">20170201</Col>
+            <Col id="num2">2121684</Col>
+            <Col id="name">안중근</Col>
+            <Col id="address">경상북도 경주시 대경로 4859</Col>
+            <Col id="type">삭제</Col>
+            <Col id="etc">한말의 독립운동가. 본관은 순흥. 1909년(융희 2년)에 만주 하얼빈에서 이토 히로부미를 죽임. 건국훈장 대한민국장을 수상</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">6549845</Col>
+            <Col id="date">20170601</Col>
+            <Col id="num2">6549845</Col>
+            <Col id="name">안창호</Col>
+            <Col id="address">경기도 이천시 관고동 501-7</Col>
+            <Col id="type">조회</Col>
+            <Col id="etc">한말의 독립운동가·사상가. 호는 도산. 신민회를 조직. 《신한민보(新韓民報)》를 창간. 건국훈장 대한민국장을 수상함</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="num1">65150</Col>
+            <Col id="date">20170931</Col>
+            <Col id="num2">65150</Col>
+            <Col id="name">유관순</Col>
+            <Col id="address">충청남도 부여군 부여읍 동남리 산16-9</Col>
+            <Col id="type">입력</Col>
+            <Col id="etc">한말의 독립운동가. 충남 천안 출생. 1919년 아우내 장터에서 3000여 군중에게 태극기를 나눠 주며 시위를 지휘하다가 일본 헌병대에 체포. 1920년 옥사함. 건국훈장 독립장을 수상</Col>
+            <Col id="chk"/>
+            <Col id="Column7"/>
+            <Col id="times">한말</Col>
+            <Col id="job">운동가</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">이종무</Col>
+            <Col id="type">조회</Col>
+            <Col id="address">전라북도 익산시 금마면 동고도리 1086</Col>
+            <Col id="num1">158886</Col>
+            <Col id="date">20170429</Col>
+            <Col id="num2">158886</Col>
+            <Col id="etc">고려 말, 조선 초 무신. 본관은 장수. 일본 대마도를 정벌</Col>
+            <Col id="Column7"/>
+            <Col id="times">고려</Col>
+            <Col id="job">무신</Col>
+          </Row>
+          <Row>
+            <Col id="chk"/>
+            <Col id="name">한명회</Col>
+            <Col id="type">입력</Col>
+            <Col id="address">부산광역시 연제구 경기장로 28</Col>
+            <Col id="num1">258624</Col>
+            <Col id="date">20170111</Col>
+            <Col id="num2">258624</Col>
+            <Col id="etc">조선 전기의 문신. 본관은 청주, 자는 자준. 예종비 장순왕후와 성종비 공혜왕후의 부. 계유정난으로 정권을 받음. 세조 묘정에 배향</Col>
+            <Col id="Column7"/>
+            <Col id="times">조선</Col>
+            <Col id="job">문신</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  techtip    grid copy & paste 
+*  @MenuPath   techtip > gridcopypaste
+*  @FileName	gridcopypaste.xfdl 
+*  @Desction	copy to excel and paste
+*******************************************************************************
+*  2019.11.06		nana			최초 생성
+*******************************************************************************
+*/
+
+include "grid::gridCopyPaste.xjs";
+
+// *******************************************************************************
+// Construction - Form Onload
+// *******************************************************************************
+this.setEventHandler('onload', function(form, e) {
+	console.log('this.setEventHandler => onload');
+
+	Object.assign(this.Grid00, {
+		ufunction: 'copypaste',
+	});
+	Object.assign(this.Grid01, {
+		ufunction: 'copypaste',
+	});
+	
+	this.form_onload();
+
+}, this);
+
+
+this.gridCopyPaste_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+// 	/*row, multi row type의 경우 오류가 발생할 수 있습니다.*/
+// 	var config = {
+// 		objGrid : this.Grid00
+// 	};
+// 	
+// 	this.fnSetGridCopyPaste(obj, config);
+};
+
+
+
+]]></Script>
+  </Form>
+</FDL>

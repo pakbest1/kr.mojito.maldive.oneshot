@@ -47,12 +47,15 @@
     <Service prefixid="extlib" type="resource" url="./_extlib_/" version="0" cachelevel="session" include_subdir="true"/>
     <Service prefixid="svcUrl" type="JSP" version="0" cachelevel="none" include_subdir="false" communicationversion="0" url="./nexacroN/"/>
     <Service prefixid="license" type="file" url="./license/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
+    <Service prefixid="nexacrolib" type="file" url="./nexacrolib/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
     <Service prefixid="_extlib_" type="file" url="./_extlib_/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
     <Service prefixid="frame" type="form" url="./frame/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
     <Service prefixid="common" type="form" url="./common/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
     <Service prefixid="sample" type="form" url="./sample/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
     <Service prefixid="design" type="form" url="./design/" version="0" cachelevel="none" include_subdir="true" communicationversion="0"/>
     <Service prefixid="samplefile" type="file" url="./samplefile/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
+    <Service prefixid="util" type="form" url="./util/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
+    <Service prefixid="grid" type="form" url="./grid/" version="0" cachelevel="none" include_subdir="false" communicationversion="0"/>
   </Services>
   <Protocols/>
   <DeviceAdaptors/>

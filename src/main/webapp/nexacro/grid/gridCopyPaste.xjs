@@ -1,0 +1,1079 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script version="1.0" type="xscript5.1"><![CDATA[/**
+*  techtip grid copy & paste 
+*  @MenuPath	techtip > gridcopypaste
+*  @FileName	gridcopypaste.xjs 
+*  @Desction	copy to excel and paste
+*******************************************************************************
+*  2019.11.06		nana			최초 생성
+*******************************************************************************
+*/
+if (!Object.prototype.deepclone) {
+	 Object.prototype.deepclone = function(o) {
+		let _deepclone = {};
+		
+		for (let k in o) {
+			_deepclone[k] = (typeof o[k] == 'object' && o[k] != null) ? this.deepclone(o[k]) : o[k];
+		}
+		
+		return _deepclone;
+	};
+};
+
+/**************************************************************************
+ * Form onload Stub
+ **************************************************************************/
+var pForm = nexacro.Form.prototype;
+var pGrid = nexacro.Grid.prototype;
+
+this.form_onload = function() {
+	let form = this;
+	
+	// ...
+	this.initFormComponents();
+	// ...
+}
+
+this.initFormComponents = function(form) {
+	form = form||this;
+	let comps = form.components;
+	if (!comps || comps.length < 0) { return; }
+	
+	for (let cix in comps._idArray) {
+		let comp = comps[cix];
+		
+		if (comp && comp instanceof nexacro.Div && comp.url) {
+			this.initFormComponents(comp.form);
+		}
+		else
+		if (comp instanceof nexacro.Tab) {
+			let pages = comp.tabpages.length;
+			for (let tix of comp.tabpages) {
+				let tab = comp.tabpages[tix];
+				if (tab && tab instanceof nexacro.Div && tab.url) {
+					this.initFormComponents(tab.form);
+				}
+			}
+		}
+		else
+		if (comp instanceof nexacro.Grid) {
+			this.initGridComponents(comp);
+		}
+	}
+}
+
+/**************************************************************************
+ * Grid Initialize
+ **************************************************************************/
+this.initGridComponents = function(grid) {
+	let ufunction = grid.ufunction;
+	
+	if (ufunction && ufunction == 'copypaste') {
+		this.gridCopyPaste_Activate(grid._getForm(), { grid: grid });
+	}
+};
+
+pGrid = null, delete pGrid;
+pForm = null, delete pForm;
+
+/**************************************************************************
+ * Grid Copy & Paste Function
+ **************************************************************************/
+ /**
+  * @description init blink data : gridCopyPaste_BlinkData --> empty target grid 
+ */
+this.gridCopyPaste_Activate = function(form, config) {
+	console.log('pGrid['+ config.grid.name +'].gridCopyPaste_Activate');
+	
+	form = form||this;
+	if (!form) { return; }
+
+	let env = {
+		navinames  : [ 'nexacro', 'IE' ],
+		naviversion: 12,
+	};
+	
+	form.config = config||{};
+	form.config.colSeperator = '\t';
+	
+	if ( env.navinames.includes (system.navigatorname) && system.navigatorversion < env.naviversion) {
+		form.config.targetGrid   = undefined;
+		
+		form.config.grid.addEventHandler('onkeydown', this.gridCopyPaste_ActionCheck, form);
+		form.config.grid.addEventHandler('onkeyup'  , this.gridCopyPaste_Action     , form);
+	} else {
+		form.config.targetGrid   = undefined;
+		form.config.targetEvent  = undefined;
+		
+		form            .addEventHandler('ontimer'  , this.gridCopyPaste_BlinkTimer , form);
+		form.config.grid.addEventHandler('onkeydown', this.gridCopyPaste_ActionEtc  , form);
+	}
+
+};
+
+/**
+ * @description init blink data : gridCopyPaste_BlinkData --> empty target grid 
+ * @param objFrom
+ * @return
+ */
+this.gridCopyPaste_BlinkData = function(form) {
+	var grid = form.config.targetGrid;
+	grid.targetGrid = null;
+}
+
+/**
+ * @description grid onkeydown event --> ctrl and c or v key down check  ( for nexacro & less than ie 11 )
+ */
+this.gridCopyPaste_ActionCheck = function(grid, e) {  // obj:nexacro.Grid,e:nexacro.KeyEventInfo
+// 	var keycode = e.keycode;
+// 		
+// 	// only ctrl key down
+// 	if (e.ctrlkey && !e.shiftkey && !e.altkey) {
+// 		if(keycode == 67)
+// 		{
+// 			obj.bGridCopy = true;
+// 		}//ctrl + v
+// 		else if(keycode == 86)
+// 		{
+// 			obj.bGridPaste = true;
+// 		}
+//	}
+	if (e.ctrlkey && !e.shiftkey && !e.altkey) {  // only ctrl key down
+		grid.bGridCopy  = e.keycode == 67;  // ctrl + c
+		grid.bGridPaste = e.keycode == 86;  // ctrl + v
+	}
+};
+
+/**
+ * @description grid onkeyup event --> ctrl and c or v key down excute  ( for nexacro & less than ie 11 )
+ */
+this.gridCopyPaste_Action = function(grid, e) {  // obj:nexacro.Grid,e:nexacro.KeyEventInfo
+// 	var form = obj.parent;
+// 	var keycode = e.keycode;
+	let form = grid.parent, keycode = e.keycode;  // grid._getForm()||
+	
+	// ctrl + c
+	if (grid.bGridCopy == true) {
+		grid.bGridCopy = false;
+		var startrow = nexacro.toNumber(grid.selectstartrow),
+			endrow   = nexacro.toNumber(grid.selectendrow),
+			startcol = nexacro.toNumber(grid.selectstartcol),
+			endcol   = nexacro.toNumber(grid.selectendcol);
+
+			var copyData = '';
+			var colSeperator = form.config.colSeperator;
+			//form.config.targetGrid = null;
+
+			for (var i = startrow; i <= endrow; i++) {
+				for (var j = startcol; j <= endcol; j++) {
+					var value = grid.getCellValue(i,j);
+
+					if (value) {  // if (!this.gfnIsNull(value)) {
+						if (j < grid.selectendcol) {
+							copyData += grid.getCellValue(i,j) + colSeperator;
+						} else {
+							copyData += grid.getCellValue(i,j);
+						}
+					}   // if (value)
+				}   // for (var j = startcol; j <= endcol; j++)
+
+				if (i < grid.selectendrow) {
+					copyData += "\r\n";
+				}   // if (i < grid.selectendrow)
+			}   // for (var i = startrow; i <= endrow; i++)
+
+			copyData += "\r\n";
+
+			// clipboard
+			system.clearClipboard();
+			system.setClipboard('CF_TEXT', copyData);
+
+			form.config.targetGrid = obj;
+	}
+	else
+	
+	// ctrl + v
+	if (grid.bGridPaste == true) {
+		grid.bGridPaste = false;
+		
+		//clipboard
+		var copyData     = new String(system.getClipboard('CF_TEXT'));  // copyData = new String(copyData);
+		var colSeperator = form.config.colSeperator;
+		var rowData      = copyData.split('\r\n');
+		var rowDataCount = rowData.length - 1;
+
+		if (rowDataCount < 1) {
+			e.stopPropagation();
+			return;
+		}
+
+		var ds = grid.getBindDataset();
+		ds.set_enableevent(false);
+		grid.set_enableevent(false);
+		grid.set_enableredraw(false);
+
+		var grdCellCount = grid.getCellCount('body');
+		var rowCount = ds.getRowCount();
+		var startrow = nexacro.toNumber(grid.selectstartrow),
+			endrow   = nexacro.toNumber(grid.selectendrow),
+			startcol = nexacro.toNumber(grid.selectstartcol),
+			endcol   = 0;
+
+		var currRow = startrow;
+		var cellIndex = startcol;
+		var maxColumnCount = 0;
+
+		//check current cell editType
+		for (var i = 0; i < rowDataCount; i++) {
+			if (rowCount <= currRow) { ds.addRow(); }
+
+			var columnData      = rowData[i].split(colSeperator);
+			var columnLoopCount = cellIndex + columnData.length;
+
+			if (columnLoopCount > grdCellCount   ) { columnLoopCount = grdCellCount   ; }
+			if (maxColumnCount  < columnLoopCount) { maxColumnCount  = columnLoopCount; }
+
+			var k = 0;
+			for (var j = cellIndex; j < columnLoopCount; j++) {
+				var colid = grid.getCellProperty('body', j, 'text').substr(5);
+				var tempValue = columnData[k];
+
+				if (tempValue) {  // if (!this.gfnIsNull(tempValue))
+					ds.setColumn(currRow, colid, tempValue);
+				}
+
+				k++;
+			}
+
+			currRow++;
+		}
+
+		ds.rowposition = currRow;
+
+		endrow = endrow + rowDataCount - 1;
+		endcol = maxColumnCount - 1;
+
+		system.clearClipboard();
+
+		ds.set_enableevent(true);
+		grid.set_enableevent(true);
+		grid.set_enableredraw(true);
+
+		grid.selectArea(startrow, startcol, endrow, endcol);
+
+		form.config.targetGrid = obj;
+
+		// grid enableredraw가 false일 경우
+		// event 전파과정에서 error발생을 막기위한 처리.2015.02.25 버전.
+		e.stopPropagation();
+	}
+};
+
+/**
+ * @description grid onkeydown event --> ctrl and c or v key down check  ( for edge : more than ie 12 & chrome, firefox .. )
+*/
+this.gridCopyPaste_ActionEtc = function(grid, e) {  // obj:nexacro.Grid,e:nexacro.KeyEventInfo
+	if ( !(e.ctrlkey && !e.shiftkey && !e.altkey) ) { return; }
+	if ( ![67, 86].includes(e.keycode)            ) { return; }
+	
+	let form = grid._getForm()||grid.parent, keycode = e.keycode, tgrid = form.config.targetGrid, ta = tgrid?tgrid.ta:undefined;  // grid._getForm()||
+	
+	//ctrl + c
+	if (keycode == 67) {
+		form.config.targetGrid = null;
+		
+// 		var startrow = nexacro.toNumber(grid.selectstartrow),
+// 			endrow   = nexacro.toNumber(grid.selectendrow  ),
+// 			startcol = nexacro.toNumber(grid.selectstartcol),
+// 			endcol   = nexacro.toNumber(grid.selectendcol  );
+// 		var clipText = '', colSeperator = form.config.colSeperator;
+// 		
+// 		for (var i = startrow; i <= endrow; i++) {
+// 			var copyData = [];
+// 			var styleData = [];
+// 
+// 			for (var j = startcol; j <= endcol; j++) {
+// 				var value = grid.getCellValue(i, j);
+// 				copyData.push(value);
+// 				clipText += value + (j < endcol ? colSeperator : '');
+// 			}
+// 
+// 			clipText += '\r\n';
+// 		}
+//		let clipData = this.gridCopyPaste_CopyData(grid), clipText = clipData.value;
+		
+		form.config.targetGrid    = tgrid = grid;
+//		form.config.targetGrid.ta = ta    = clipData;  // this.gridCopyPaste_CreateTextarea(clipText, tgrid);
+		// console.log('gridCopyPaste_ActionEtc => copy \ngrid: ' + (grid?grid.name:'') +' \nclipData: \n'+ (clipData?clipData.value:''));
+		
+		form.setTimer(777, 100);
+// 		if (!clipText) {  // if (!this.gfnIsNull(clipText))
+// 			form.setTimer(1000, 110);  // 지우는 루틴 ??? 왜 ???
+// 		}
+		e.stopPropagation();
+	}
+	else
+	
+	// ctrl + v
+	if (keycode == 86) {
+		// console.log('gridCopyPaste_ActionEtc => paste \ngrid: ' + (tgrid?tgrid.name:'') +' \nta: \n'+ (tgrid&&tgrid.ta?tgrid.ta.value:''));
+		
+		form.config.targetGrid    = grid;
+		form.config.targetEvent   = e;
+		
+		form.config.targetGrid    = form.config.targetGrid||grid;
+		// form.config.targetGrid.ta = this.gridCopyPaste_CreateTextarea('');  // 굳이 왜 비우지?
+		
+		form.setTimer(888, 100);  // this.gridCopyPaste_BlinkTimer => 888 루틴에서 Paste 처리함.
+		e.stopPropagation();
+	}
+
+}
+
+/**
+ * @description form ontimer event --> delay processing data time
+*/
+this.gridCopyPaste_BlinkTimer = function(form, e) {  // obj:nexacro.Form,e:nexacro.TimerEventInfo
+	var timerid = e.timerid;
+	form.killTimer(timerid);
+	
+	if (timerid >= 1000) {
+		var remainder = timerid%1000;			
+		if (remainder > 8) {
+			// this.gridCopyPaste_BlinkData(obj);
+		}
+	} else
+	if ([777, 888].includes(timerid)) {
+		
+		if (timerid == 777) { // after copy
+			var tgrid = form.config.targetGrid, ta = tgrid.ta;
+			//if (!ta) { return; }
+			
+			let clipData = this.gridCopyPaste_CopyData(tgrid), clipText = clipData.value;
+			form.config.targetGrid.ta = ta    = clipData;
+			if (!clipText) { form.setTimer(1000, 110); }  // 지우는 루틴 ??? 왜 ???
+			
+			console.log('gridCopyPaste_BlinkTimer => after copy \ngrid: ' + (tgrid?tgrid.name:'') +' \nta: \n'+ (ta?ta.value:''));
+		} 
+		else
+		if (timerid == 888) { // after paste
+			var tgrid = form.config.targetGrid, ta = form.clipData; /* tgrid.ta; */
+			if (!ta) { return; }
+			
+			let clipText = ta.value;
+			this.gridCopyPaste_PasteData(form, clipText);
+			
+			console.log('gridCopyPaste_BlinkTimer => after paste \ngrid: ' + (tgrid?tgrid.name:'') +' \nta: \n'+ (ta?ta.value:''));
+		}
+		
+// 		document.body.removeChild(ta);
+// 		obj.config.targetGrid.ta = undefined;
+	}		
+}
+
+/**
+* @description create textarea : createElementTextarea --> create document innerhtml : textarea
+* @param clipText
+* @return
+*/
+this.gridCopyPaste_CreateTextarea = function(s, tgrid) {
+	let ta = tgrid ? tgrid.ta : null;
+	if (!ta) {
+		ta = document.createElement('textarea');
+		ta.style.display  = 'none'    ;
+		ta.style.position = 'absolute';
+		ta.style.left     = '-1000px' ;
+		ta.style.top      = document.body.scrollTop + 'px';
+		
+		document.body.appendChild(ta);
+		if (tgrid) {
+			tgrid.ta = tgrid._getForm().clipData = ta;
+			// tgrid._getForm().clipData = ta.deepclone();
+		}
+	}
+	
+	ta.value = s;
+	ta.select();
+	
+	system.setClipboard('CF_TEXT', s);  // Nexacro Copy
+	if (document && document.execCommand) { document.execCommand('copy'); }  // Web (Chrome, Edge)
+
+	return ta;
+}
+
+/**
+ * @description paste data : gridCopyPaste_CopyData --> set copy grid component
+ * @param clipText
+ * @return
+ */
+this.gridCopyPaste_CopyData = function(grid, form) {
+	form = form||grid._getForm();
+	
+	let clipText = '', colSeperator = form.config.colSeperator;
+	let startrow = nexacro.toNumber(grid.selectstartrow),
+		endrow   = nexacro.toNumber(grid.selectendrow  ),
+		startcol = nexacro.toNumber(grid.selectstartcol),
+		endcol   = nexacro.toNumber(grid.selectendcol  );
+	
+	for (let i = startrow; i <= endrow; i++) {
+		let copyData = [], styleData = [];
+		for (let j = startcol; j <= endcol; j++) {
+			let value = grid.getCellValue(i, j);
+			copyData.push(value);
+			clipText += value + (j < endcol ? colSeperator : '');
+		}
+
+		clipText += '\r\n';
+	}
+	
+	let clipData = form.clipData = this.gridCopyPaste_CreateTextarea(clipText, grid);
+	if (grid.config && grid.config.targetGrid) { grid.config.targetGrid.ta = clipData; }
+	
+	return clipData;
+};
+
+/**
+* @description paste data : setPasteData --> set copy paste grid component
+* @param clipText
+* @return
+*/
+this.gridCopyPaste_PasteData      =  function(obj, clipText) {
+	if (!obj) { return; }
+	if ( (obj && obj instanceof nexacro.Form) || obj && obj instanceof nexacro.Grid ) {
+		this.gridCopyPaste_PasteData4Grid(obj, clipText);
+	} else
+	if ( (obj && obj instanceof nexacro.Textarea) ) {
+		
+	}
+};
+this.gridCopyPaste_PasteData4Grid =  function(obj, clipText) {
+	let form = null, grid = null, dset = null, evt = null;
+	
+	if (!obj) { return; }
+	if (obj && obj instanceof nexacro.Form) {
+		form = obj;
+		grid = form.config.targetGrid;
+		dset = grid.getBindDataset();
+		evt  = form.config.targetEvent;
+	} else
+	if (obj && obj instanceof nexacro.Grid) {
+		form = obj._getForm();
+		grid = obj;
+		dset = grid.getBindDataset();
+		evt  = form.config.targetEvent;
+	}
+// 	let tgrid = grid;                      // form.config.targetGrid;
+// 	let tdset = tgrid.getBindDataset();
+// 	let tevt  = form.config.targetEvent;   // 무 쓸모 ???
+
+	grid.set_enableredraw(false);
+	grid.set_enableevent(false);
+	dset.set_enableevent(false);
+
+	let grdCellCount = grid.getCellCount('body');
+	let rowCount     = dset.getRowCount();
+	
+	let startrow = nexacro.toNumber(grid.selectstartrow),
+		endrow   = nexacro.toNumber(grid.selectendrow),
+		startcol = nexacro.toNumber(grid.selectstartcol),
+		endcol   = nexacro.toNumber(grid.selectendcol);
+
+	let currRow   = startrow;
+	let cellIndex = startcol;
+
+	copyData = clipText;
+	let seperator = form.config.colSeperator;
+
+	let rowData = copyData.split(/[\n\f\r]/), rowDataCount = rowData.length - 1;
+	let colData = null                      , colDataCount = -1;
+	let checkIndex = {};
+
+	for (let i = 0; i < rowDataCount; i++) {
+		if (rowCount <= currRow) { dset.addRow(); }
+
+		colData      = rowData[i].split(seperator);
+		colDataCount = cellIndex + colData.length;
+		colDataCount = (colDataCount > grdCellCount) ? grdCellCount : colDataCount;
+
+		let k = 0;
+		for (let j = cellIndex; j < colDataCount; j++) {
+			let colid = grid.getCellProperty('body', j, 'text').substr(5);
+			let colvl = colData[k];
+			if (colvl) {
+				dset.setColumn(currRow, colid, colvl);
+			}
+			k++;
+		}
+
+		currRow++;
+	}
+
+	dset.rowposition = currRow;
+
+	endrow = endrow + rowDataCount - 1;
+	endcol = colDataCount - 1;
+
+	dset.set_enableevent(true);
+	grid.set_enableevent(true);
+	grid.set_enableredraw(true);
+
+	grid.selectArea(startrow, startcol, endrow, endcol);
+	form.config.targetEvent = undefined;
+}
+this.gridCopyPaste_PasteDataOLD =  function(form, clipText) {
+	let tgrid = form.config.targetGrid;
+	let tdset = tgrid.getBindDataset();
+	let tevt  = form.config.targetEvent;
+
+	tgrid.set_enableredraw(false);
+	tgrid.set_enableevent(false);
+	tdset.set_enableevent(false);
+
+	let grdCellCount = tgrid.getCellCount('body');
+	let rowCount     = tdset.getRowCount();
+	
+	let startrow = nexacro.toNumber(tgrid.selectstartrow),
+		endrow   = nexacro.toNumber(tgrid.selectendrow),
+		startcol = nexacro.toNumber(tgrid.selectstartcol),
+		endcol   = nexacro.toNumber(tgrid.selectendcol);
+
+	let currRow = startrow;
+	let cellIndex = startcol;
+
+	copyData = clipText;
+	let seperator = form.config.colSeperator;
+
+	let rowData = copyData.split(/[\n\f\r]/), rowDataCount = rowData.length - 1;
+	let colData = null                      , colDataCount = -1;
+	let checkIndex = {};
+
+	for (let i = 0; i < rowDataCount; i++) {
+		if (rowCount <= currRow) { tdset.addRow(); }
+
+		colData      = rowData[i].split(seperator);
+		colDataCount = cellIndex + colData.length;
+		colDataCount = (colDataCount > grdCellCount) ? grdCellCount : colDataCount;
+
+		let k = 0;
+		for (let j = cellIndex; j < colDataCount; j++) {
+			let colid = tgrid.getCellProperty('body', j, 'text').substr(5);
+			let colvl = colData[k];
+			if (colvl) {
+				tdset.setColumn(currRow, colid, colvl);
+			}
+			k++;
+		}
+
+		currRow++;
+	}
+
+	tdset.rowposition = currRow;
+
+	endrow = endrow + rowDataCount - 1;
+	endcol = colDataCount - 1;
+
+	tdset.set_enableevent(true);
+	tgrid.set_enableevent(true);
+	tgrid.set_enableredraw(true);
+
+	tgrid.selectArea(startrow, startcol, endrow, endcol);
+	// form.config.targetEvent = undefined;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+pGrid = null, delete pGrid;
+pForm = null, delete pForm;
+
+
+
+
+
+/**************************************************************************
+ * 사용자 FUNCTION 영역
+ **************************************************************************/
+/**
+* @description form onload : fnSetGridCopyPaste --> set copy paste grid component
+* @param objForm : form,
+*		 objConfig : {objGrid}
+* @return
+*/
+this.fnSetGridCopyPaste = function (objForm, objConfig)
+{
+	/*
+	//boolean : nexacro or IE browser 11 is true
+	var isNavigator = false;
+	
+	if(system.navigatorname == "nexacro")
+	{
+		isNavigator = true;
+	}
+	else if(system.navigatorname == "IE" && system.navigatorversion < 12)
+	{
+		isNavigator = true;
+	}
+	*/
+	objForm.config = objConfig;
+	
+	if (system.navigatorname == "nexacro" || system.navigatorname == "IE" && system.navigatorversion < 12) 
+	{
+		objForm.config.colSeperator = "	";
+		objForm.config.targetGrid = null; 
+	
+		objForm.config.objGrid.addEventHandler("onkeydown", this.grdCopyPasteStateChk, objForm);
+		objForm.config.objGrid.addEventHandler("onkeyup", this.grdCopyPaste, objForm);		
+	}
+	else
+	{
+		objForm.config.colSeperator = "	";
+		objForm.config.targetGrid  = undefined;
+		objForm.config.targetEvent = undefined;
+		
+		objForm.addEventHandler("ontimer", this.blinkTimerHandler, objForm);	
+		objForm.config.objGrid.addEventHandler("onkeydown", this.grdCopyPasteEtc, objForm);
+	}
+}
+
+/**
+* @description paste data : setPasteData --> set copy paste grid component
+* @param clipText
+* @return
+*/
+this.setPasteData =  function(objForm,clipText)
+{
+	//var pThis = objForm;
+	var obj = objForm.config.targetGrid;
+	var e = objForm.config.targetEvent;
+	
+	obj.set_enableevent(false);
+	obj.set_enableredraw(false); 
+	
+	var ds = obj.getBindDataset();
+	ds.set_enableevent(false); 
+	
+	var grdCellCount = obj.getCellCount("body");
+	var rowCount = ds.getRowCount();
+	var startrow = nexacro.toNumber(obj.selectstartrow),
+		endrow   = nexacro.toNumber(obj.selectendrow),
+		startcol = nexacro.toNumber(obj.selectstartcol),
+		endcol   = nexacro.toNumber(obj.selectendcol);
+	
+	var currRow = startrow;
+	var cellIndex = startcol;
+	
+	copyData = clipText;
+	var seperator = objForm.config.colSeperator;
+	
+	var rowData = copyData.split(/[\n\f\r]/); 
+	var rowDataCount = rowData.length - 1;
+	var checkIndex = {};	
+
+	for (var i = 0; i < rowDataCount; i++) 
+	{
+		if(rowCount <= currRow)
+		{
+			ds.addRow();
+		}
+		
+		var columnData = rowData[i].split(seperator);
+		var columnLoopCount = cellIndex + columnData.length;
+		
+		if(columnLoopCount > grdCellCount) 
+		{
+			columnLoopCount = grdCellCount;
+		}
+		
+		var k = 0;
+		for(var j = cellIndex; j < columnLoopCount; j++)
+		{
+			var colid = obj.getCellProperty("body", j, "text").substr(5);
+			var tempValue = columnData[k];
+			if(!this.gfnIsNull(tempValue))
+			{
+				ds.setColumn(currRow, colid, tempValue);
+			}
+			
+			k++;									
+		}
+		
+		currRow++;
+	}									
+
+	ds.rowposition = currRow;	
+	
+	endrow = endrow + rowDataCount - 1;
+	endcol = columnLoopCount - 1;		
+									
+	obj.set_enableredraw(true);
+	obj.set_enableevent(true);
+	ds.set_enableevent(true); 
+	
+	obj.selectArea(startrow, startcol, endrow, endcol);
+									
+	objForm.config.targetEvent = undefined;			
+}
+
+/**
+* @description create textarea : createElementTextarea --> create document innerhtml : textarea
+* @param clipText
+* @return
+*/
+this.createElementTextarea = function(innerText)
+{
+	var txtValue = document.createElement('textarea');
+	txtValue.style.position = 'absolute';
+	txtValue.style.left = '-1000px';
+	txtValue.style.top = document.body.scrollTop + 'px';
+	txtValue.value = innerText;
+	document.body.appendChild(txtValue);
+	txtValue.select();
+
+	return txtValue;
+}
+
+/**
+* @description init blink data : initBlinkData --> empty target grid 
+* @param objFrom
+* @return
+*/
+this.initBlinkData = function(objFrom)
+{
+	var grid = objFrom.config.targetGrid;	
+	grid.targetGrid = null;
+}
+
+/**************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ **************************************************************************/
+/**
+ * @description grid onkeydown event --> ctrl and c or v key down check  ( for nexacro & less than ie 11 )
+*/
+this.grdCopyPasteStateChk = function(obj:nexacro.Grid,e:nexacro.KeyEventInfo)
+{
+	var keycode = e.keycode;
+		
+	//only ctrl key down
+	if(e.ctrlkey && !e.shiftkey && !e.altkey)
+	{
+		//ctrl + c
+		if(keycode == 67)
+		{
+			obj.bGridCopy = true;
+		}//ctrl + v
+		else if(keycode == 86)
+		{
+			obj.bGridPaste = true;
+		}
+	}
+};
+
+/**
+ * @description grid onkeyup event --> ctrl and c or v key down excute  ( for nexacro & less than ie 11 )
+ */
+this.grdCopyPaste = function(obj:nexacro.Grid,e:nexacro.KeyEventInfo)
+{
+	var objForm = obj.parent;
+	var keycode = e.keycode;
+	//ctrl + c
+	if(obj.bGridCopy == true)
+	{
+		obj.bGridCopy = false;
+		var startrow = nexacro.toNumber(obj.selectstartrow),
+			endrow   = nexacro.toNumber(obj.selectendrow),
+			startcol = nexacro.toNumber(obj.selectstartcol),
+			endcol   = nexacro.toNumber(obj.selectendcol);
+		
+			var copyData = "";
+			var colSeperator = objForm.config.colSeperator;
+			
+			objForm.config.targetGrid = null;
+											
+			for (var i = startrow; i <= endrow; i++) 
+			{
+				for (var j = startcol; j <= endcol; j++) 
+				{							
+					var value = obj.getCellValue(i,j);
+
+					if(!this.gfnIsNull(value))
+					{
+						if (j < obj.selectendcol) 
+						{
+							copyData += obj.getCellValue(i,j) + colSeperator;
+						} 
+						else 
+						{
+							copyData += obj.getCellValue(i,j);
+						}
+					}
+				}
+				
+				if (i < obj.selectendrow)
+				{
+					copyData += "\r\n";
+				}
+			}
+			
+			copyData += "\r\n";
+			
+			//clipboard
+			system.clearClipboard();
+			system.setClipboard("CF_TEXT",copyData);
+			
+			objForm.config.targetGrid = obj;
+			
+	} //ctrl + v
+	else if(obj.bGridPaste == true)
+	{
+		obj.bGridPaste = false;
+		//clipboard
+		var copyData = system.getClipboard("CF_TEXT");
+		copyData = new String(copyData);
+		var colSeperator = objForm.config.colSeperator;
+		var rowData = copyData.split("\r\n");
+		var rowDataCount = rowData.length - 1;
+		
+		if(rowDataCount < 1)
+		{
+			e.stopPropagation();
+			return;
+		}
+	
+		obj.set_enableevent(false);
+		obj.set_enableredraw(false); 
+						
+		var ds = obj.getBindDataset();
+		ds.set_enableevent(false); 
+		
+		var grdCellCount = obj.getCellCount("body");
+		var rowCount = ds.getRowCount();
+		var startrow = nexacro.toNumber(obj.selectstartrow),
+			endrow   = nexacro.toNumber(obj.selectendrow),
+			startcol = nexacro.toNumber(obj.selectstartcol),
+			endcol = 0;
+		
+		var currRow = startrow;
+		var cellIndex = startcol;
+		var maxColumnCount = 0;
+						
+		//check current cell editType 
+		for (var i = 0; i < rowDataCount; i++)
+		{
+			if(rowCount <= currRow)
+			{
+				ds.addRow();
+			}
+			
+			var columnData = rowData[i].split(colSeperator);
+			var columnLoopCount = cellIndex + columnData.length;
+			
+			if(columnLoopCount > grdCellCount) 
+			{
+				columnLoopCount = grdCellCount;
+			}
+			
+			if(maxColumnCount < columnLoopCount)
+			{
+				maxColumnCount = columnLoopCount;
+			}
+			
+			var k = 0;
+			for(var j = cellIndex; j < columnLoopCount; j++)
+			{											
+				var colid = obj.getCellProperty("body", j, "text").substr(5);						
+				var tempValue = columnData[k];
+				
+				if(!this.gfnIsNull(tempValue))
+				{
+					ds.setColumn(currRow, colid, tempValue);
+				}
+				
+				k++;									
+			}
+			
+			currRow++;
+		}									
+		
+		ds.rowposition = currRow;	
+		
+		endrow = endrow + rowDataCount - 1;
+		endcol = maxColumnCount - 1;
+		
+		system.clearClipboard();
+										
+		obj.set_enableredraw(true);
+		obj.set_enableevent(true);
+		ds.set_enableevent(true); 
+		
+		obj.selectArea(startrow, startcol, endrow, endcol);				
+		
+		objForm.config.targetGrid = obj;
+										
+		//grid enableredraw가 false일 경우 
+		//event 전파과정에서 error발생을 막기위한 처리.2015.02.25 버전.
+		e.stopPropagation();	
+		
+	}	
+};
+
+/**
+ * @description grid onkeydown event --> ctrl and c or v key down check  ( for edge : more than ie 12 & chrome, firefox .. )
+*/
+this.grdCopyPasteEtc = function(obj:nexacro.Grid,e:nexacro.KeyEventInfo)
+{
+	var objForm = obj.parent;
+	var keycode = e.keycode;
+
+	if(e.ctrlkey && !e.shiftkey && !e.altkey)
+	{	//ctrl + c
+		if(keycode == 67)
+		{
+			var startrow = nexacro.toNumber(obj.selectstartrow),
+				endrow   = nexacro.toNumber(obj.selectendrow),
+				startcol = nexacro.toNumber(obj.selectstartcol),
+				endcol   = nexacro.toNumber(obj.selectendcol);		
+			
+			objForm.config.targetGrid = undefined;
+			
+			var clipText = "";
+			var colSeperator = objForm.config.colSeperator;
+			for (var i = startrow; i <= endrow; i++) 
+			{
+				var copyData = [];
+				var styleData = [];
+				
+				for (var j = startcol; j <= endcol; j++)
+				{
+					var value = obj.getCellValue(i,j);
+					copyData.push(value);
+					
+					if (j < endcol) 
+					{
+						clipText += value + colSeperator;
+					} 
+					else 
+					{
+						clipText += value;
+					}						
+				}
+				
+				clipText += "\r\n";
+			}
+			
+			objForm.config.targetGrid = obj;		
+			
+			var ta = this.createElementTextarea(clipText);								
+			objForm.config.targetGrid["ta"] = ta;
+							
+			objForm.setTimer(777, 100);
+			
+			if (!this.gfnIsNull(clipText)) 
+			{
+				objForm.setTimer(1000, 110);
+			}
+											
+			e.stopPropagation();												
+		}//ctrl + v
+		else if(keycode == 86)
+		{
+			objForm.config.targetGrid = obj;
+			objForm.config.targetEvent = e;
+			
+			var ta = this.createElementTextarea('');
+			objForm.config.targetGrid["ta"] = ta;		
+							
+			objForm.setTimer(888, 100);		
+
+			e.stopPropagation();			
+		}
+	}
+		
+}
+
+/**
+ * @description form ontimer event --> delay processing data time
+*/
+this.blinkTimerHandler = function(obj:nexacro.Form,e:nexacro.TimerEventInfo)
+{
+	var timerid = e.timerid;
+	obj.killTimer(timerid);
+	
+	if(timerid >= 1000) 
+	{
+		var remainder = timerid%1000;			
+		if(remainder > 8) 
+		{
+			this.initBlinkData(obj);
+		}
+	} 
+	else 
+	{
+		if(timerid == 777) 
+		{ //after copy			
+			var ta = obj.config.targetGrid["ta"];
+			if(!ta)
+			{
+				return;	
+			}
+			
+			document.body.removeChild(ta);
+			obj.config.targetGrid["ta"] = undefined;				
+		} 
+		else if(timerid == 888)
+		{ //after paste
+			var ta = obj.config.targetGrid["ta"];				
+			if(!ta)
+			{
+				return;	
+			}
+			
+			var clipText = ta.value;
+			document.body.removeChild(ta);
+			this.setPasteData(obj,clipText);
+			obj.config.targetGrid["ta"] = undefined;
+		}
+	}		
+}
+
+/**************************************************************************
+*  공통 함수 처리 영역
+   해당 함수의 경우 프로젝트 사용 시 프로젝트 공통함수로 전환을 권장 드립니다.
+**************************************************************************/
+/**
+ * Function Name : gfnIsNull
+ * Description   : 입력값이 null에 해당하는 경우 모두를 한번에 체크한다.
+ * Arguments     : sValue - 체크할 문자열( 예 : null 또는 undefined 또는 "" 또는 "abc" )
+ * Return        : Boolean sValue이 undefined, null, NaN, "", Array.length = 0인 경우 true
+*/
+this.gfnIsNull = function (sValue)
+{
+	if (new String(sValue).valueOf() == "undefined") 
+	{
+		return true;
+	}
+	if (sValue == null) 
+	{
+		return true;
+	}
+
+	var v_ChkStr = new String(sValue);
+
+	if (v_ChkStr == null) 
+	{
+		return true;
+	}
+	if (v_ChkStr.toString().length == 0) 
+	{
+		return true;
+	}
+
+	return false;
+};]]></Script>
