@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script version="1.0" type="xscript5.1"><![CDATA[this._clipboard_comp = null;
+this._clipboard_prop = {paramAction: null, paramGrid: null, paramCallback: null, paramTarget: null};
+this.isUseClipboard = (nexacro._Browser == "Chrome" || nexacro._Browser == "Gecko" || nexacro._Browser == "Opera" || nexacro._Browser == "Edge") ? false : true;
+
+this.isEmpty = function(str) {
+	if(str == "" || str == null || str == undefined) return true;
+	return false;
+}
+
+this.eventInit = function(parent) {
+	if(this.isUseClipboard == false && this._clipboard_comp == null) {	
+		var objDiv = new Div();  
+		objDiv.init("Div", 0, 0, 1, 1, null, null);					
+		parent.addChild("_div_clipboard", objDiv); 
+		objDiv.show(); 
+				
+		var objTxt = new TextArea();
+		objTxt.init("TextArea", 0, 0, 100, 100, null, null);					
+		objDiv.form.addChild("txt_clipboard", objTxt);
+		objTxt.show();
+		
+		this._clipboard_comp = objTxt;
+		
+		this._clipboard_comp.addEventHandler("onkeyup", this._clipboard_comp_onkeyup, this);
+		this._clipboard_comp.set_enable(false);
+	}
+
+	var arr = parent.components;
+	for(var i = 0; i < arr.length; i++) {
+		if(arr[i] instanceof Grid) {
+			arr[i].addEventHandler("onkeydown", this._grid_onkeydown, this);
+		} else if(arr[i] instanceof Tab) {
+			this.eventInit(arr[i]);
+		} else if(arr[i] instanceof Div || arr[i] instanceof Tabpage) {
+			if(this.isEmpty(arr[i].url)) {
+				this.eventInit(arr[i].form);
+			}
+		}	
+	}
+}			
+	
+//Col index에 해당되는 Cell Idx 구함.
+this.getCellIdx = function(_grid, _band, _col, _subrow)
+{
+	var rtn_cell = -1;
+	var rtn_subcell = -1;
+	
+	//2021.11.30.HY. Header 가 다중Row 이고 body가 1 일때
+	var nHeadRowCnt = 0;
+	var nBodyRowCnt = 0;
+	for(var i = 0; i < _grid.getFormatRowCount(); i++) {
+		var sBand = _grid.getFormatRowProperty(i, "band");
+		if(sBand == "head") {
+			nHeadRowCnt++;
+		} else if(sBand == "body") {
+			nBodyRowCnt++;
+		}
+	}
+
+	if(nHeadRowCnt > nBodyRowCnt) {
+		_subrow = _subrow + (nHeadRowCnt - nBodyRowCnt);
+	}
+
+	for(var i = 0; i < _grid.getCellCount(_band); i++) {
+		var cell_row = _grid.getCellProperty(_band, i, "row");
+		var cell_col = _grid.getCellProperty(_band, i, "col");
+		if(_subrow < cell_row) return [rtn_cell, rtn_subcell];
+		//if else 순서 바뀌면 안됨!
+		if(_col == cell_col) {
+		//조건 우선순위1
+			rtn_cell = i;
+			rtn_subcell = _grid.getSubCellCount(_band, i) > 0 ? 0 : -1;
+
+			if(_subrow == cell_row ) {	
+				return [rtn_cell, rtn_subcell];
+			}
+		} else if(cell_col <= _col && _col <= (cell_col + _grid.getSubCellCount(_band, i) - 1)) {
+			//조건 우선순위2
+			rtn_cell = i;
+			rtn_subcell = _col - cell_col;
+
+			if(_subrow == cell_row ) {
+				return [rtn_cell, rtn_subcell];
+			}
+		} else if(cell_col <= _col && _col <= (cell_col + _grid.getCellProperty(_band, i, "colspan") - 1)) {
+			//조건 우선순위3
+			rtn_cell = i;
+			rtn_subcell = -1;
+
+			if(_subrow == cell_row ) {	
+				return [rtn_cell, rtn_subcell];
+			}		 
+		} 
+	}
+	return [rtn_cell, rtn_subcell];
+}
+
+this._grid_onkeydown = function(obj, e)
+{
+	if(e.ctrlkey && e.keycode == 67) {//Ctrl+C	
+		this._enClipboard(obj);
+	} else if(e.ctrlkey && e.keycode == 86) {//Ctrl+V
+		this._getClipboard2("CF_TEXT", this._deClipboard, this, obj);
+	}
+}
+		
+this._setClipboard2 = function (format, data, oGrid) {
+	if(this.isUseClipboard) {
+		system.setClipboard(format, data);	
+	} else {			
+		if (format == "CF_TEXT") {
+			this._clipboard_comp.set_enable(true);
+			
+			this._clipboard_prop["paramAction"] = "copy";
+			this._clipboard_prop["paramGrid"] = oGrid;
+			this._clipboard_comp.setFocus();	
+			this._clipboard_comp.set_value(data);				
+			this._clipboard_comp.setSelect(0, -1);
+							
+		}
+	}
+}
+
+this._getClipboard2 = function (format, callback, target, oGrid) {
+	if(this.isUseClipboard) {
+		var data = system.getClipboard(format);
+		if (target) {
+			callback.call(target, data, oGrid);
+		} else {
+			callback(data, oGrid);
+		}	
+	} else {		
+		if (format == "CF_TEXT") {	
+			this._clipboard_comp.set_enable(true);
+			this._clipboard_prop["paramAction"] = "paste";
+			this._clipboard_prop["paramGrid"] = oGrid;
+			this._clipboard_prop["paramCallback"] = callback;
+			this._clipboard_prop["paramTarget"] = target;	
+			this._clipboard_comp.setFocus();					
+		}	
+	}
+}
+
+this._enClipboard = function(obj) {
+	if(obj.readonly) return;
+
+	var startrow = nexacro.toNumber(obj.selectstartrow[0]);
+	var endrow = nexacro.toNumber(obj.selectendrow[0]);
+	var startcell =  this.getCellIdx(obj, "body", obj.selectstartcol, obj.selectstartsubrow)[0];
+	var endcell = this.getCellIdx(obj, "body", obj.selectendcol, obj.selectendsubrow)[0];
+
+	var selectText = obj.getEditSelectedText();
+
+	var dataset = obj.getBindDataset();
+	if(dataset == null) return;	
+	var clip = "";
+	if(startrow > endrow) {
+		var v = startrow;
+		startrow = endrow;
+		endrow = v;
+	}
+	if(startcell > endcell) {
+		var v = startcell;
+		startcell = endcell;
+		endcell = v;
+	}
+	for(var row = startrow; row <= endrow; row++) {
+		for(var cell = startcell; cell <= endcell; cell++) {
+			var sData = obj.getCellValue(row, cell);					
+			if(String(sData).indexOf("\n") > 0) {
+				sData = '"' + sData + '"';
+			}
+			clip += sData;
+			
+			if(cell < endcell) {
+				clip += "\t";
+			}
+		}
+		
+		if(row < endrow) {
+			clip += "\r\n";			
+		}
+	}
+
+	this._setClipboard2("CF_TEXT", clip, obj);
+}
+
+this._deClipboard = function(clip, oGrid) 
+{
+	var cCellNL = "\b";			
+	if(oGrid == null) return;
+	if(oGrid.readonly) return;
+	if(this.isEmpty(clip)) return;
+	var dataset = oGrid.getBindDataset();
+	if(dataset == null) return;
+
+	var start_cell = oGrid.getCellPos();
+	var start_row = oGrid.selectstartrow[0];
+
+	//엑셀붙여넣기시 Cell 내부 MultiLine 처리
+	if(this.isUseClipboard == false) {
+		var newClip = "";
+		var nPos = -1;
+		var nPrePos = -1;		
+		var nStartPos = -1;
+		var bEnd = false;
+		
+		nPos = clip.indexOf('"');
+		while(nPos >= 0) {
+			bEnd = false;
+			//Start
+			if(nPos == 0) {
+				nStartPos = nPos;				
+			} else if(clip.substr(nPos - 1, 1) == "\t" || clip.substr(nPos - 1, 1) == "\n") {
+				nStartPos = nPos;			
+			//End
+			} else if(nPos == clip.length - 1) {
+				bEnd = true;
+			} else if(clip.substr(nPos + 1, 1) == "\t" || clip.substr(nPos + 1, 1) == "\n") {
+				bEnd = true;
+			}
+			
+			if(bEnd) {
+				if(nStartPos > -1) {
+					var cellstr = clip.substr(nStartPos, nPos - nStartPos + 1);
+					cellstr = nexacro.replaceAll(cellstr, "\n", cCellNL);
+					newClip += clip.substr(nPrePos + 1, nStartPos - nPrePos - 1);
+					newClip += cellstr;
+				}
+				nStartPos = -1;		
+				nPrePos = nPos;
+			}
+			
+			nPos = clip.indexOf('"', nPos + 1);
+		}
+		
+		if(nPrePos != -1) {
+			clip = newClip + clip.substr(nPrePos + 1);		
+		}
+		clip = nexacro.replaceAll(clip, "\r\n", "\n");
+	}
+	
+	var rows = null;
+
+	if(this.isUseClipboard) {
+		rows = clip.split("\r\n");
+	} else {
+		rows = clip.split("\n");				
+	}
+	
+	if(this.isEmpty(rows[rows.length - 1])) {		
+		rows.splice(rows.length - 1, 1);
+	}
+	
+	var colids = [];
+	for(var i = 0; i < rows.length; i++) {				
+		var cells = rows[i].split("\t");
+		
+		if(dataset.rowcount <= i + start_row) {
+			dataset.addRow();
+		}
+
+		for(var j = 0; j < cells.length; j++) {
+			if(oGrid.getCellCount("body") <= j + start_cell) break;
+			var edittype = oGrid.getCellProperty("body", j + start_cell, "edittype");
+			
+			if(edittype == "none" || edittype == "readonly") continue;
+			
+			var sData = cells[j];
+			if(edittype == "date") {
+				sData = String(sData).replace(/-|:|\s/g, "");
+			}
+			if(this.isEmpty(colids[j])) {
+				var cell_text = oGrid.getCellProperty("body", j + start_cell, "text");
+				if(this.isEmpty(cell_text)) continue;
+				if(cell_text.substr(0, 5) == "bind:") {
+					colids[j] = cell_text.substr(5);
+				}
+			}
+			if(!this.isEmpty(colids[j])) {
+				if(sData.substr(0, 1) == '"' && sData.substr(sData.length - 1, sData.length) == '"') {
+					sData = sData.substr(1, sData.length - 2);
+				}
+				
+				if(edittype == "combo") {
+					var combodataset = oGrid.getCellProperty("body", j + start_cell, "combodataset");
+					var combocodecol = oGrid.getCellProperty("body", j + start_cell, "combocodecol");
+					var combodatacol = oGrid.getCellProperty("body", j + start_cell, "combodatacol");
+					
+					if(!this.isEmpty(combodataset)) {
+						var objComboDs = oGrid.parent[combodataset];
+					
+						if(objComboDs) {
+							//ComboCode 우선
+							var nFindRow = objComboDs.findRow(combocodecol, sData);										
+							if(nFindRow < 0) {
+								nFindRow = objComboDs.findRow(combodatacol, sData);
+							
+								if(nFindRow >= 0) {
+									dataset.setColumn(i + start_row, colids[j], objComboDs.getColumn(nFindRow, combocodecol));
+									continue;
+								}
+							}									
+						}
+					}
+				}
+				
+				if(this.isUseClipboard == false) {
+					sData = nexacro.replaceAll(sData, cCellNL, "\n");
+				}
+				dataset.setColumn(i + start_row, colids[j], sData);
+			}
+		}
+	}			
+	oGrid.showEditor(false);
+}
+
+this._clipboard_comp_onkeyup = function(obj) {
+	var oProp = this._clipboard_prop;
+	var oGrid = oProp["paramGrid"];
+	if(oProp["paramAction"] == "paste") {
+		var data = obj.text;		
+		var callback = oProp["paramCallback"];
+		var target = oProp["paramTarget"];				
+		if (callback && (typeof callback == "function")) {					
+			if (target) {
+				callback.call(target, data, oGrid);
+			} else {
+				callback(data, oGrid);
+			}					
+		}	
+	}
+	oProp["paramAction"] = null;
+	oProp["paramGrid"] = null;
+	oProp["paramCallback"] = null;
+	oProp["paramTarget"] = null;	
+	obj.set_value("");
+	this._clipboard_comp.set_enable(false);		
+	oGrid.setFocus();
+}
+]]></Script>

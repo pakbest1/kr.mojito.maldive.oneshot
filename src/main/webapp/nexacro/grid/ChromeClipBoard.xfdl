@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="ChromeClipBoard" width="1280" height="720" titletext="New Form" onload="ChromeClipBoard_onload" oninit="ChromeClipBoard_oninit">
+    <Layouts>
+      <Layout height="720" width="1280">
+        <Grid id="Grid00" taborder="0" left="10" top="25" binddataset="ds_org" right="35" bottom="55.00%" onkeydown="Grid_onkeydown" selecttype="area">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="35"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="Column0"/>
+                <Cell col="1" text="Column1"/>
+                <Cell col="2" text="Column2"/>
+                <Cell col="3" text="Column3"/>
+                <Cell col="4" text="Column4"/>
+                <Cell col="5" text="Column5"/>
+                <Cell col="6" text="Column6"/>
+                <Cell col="7" text="Column7"/>
+                <Cell col="8" text="Column8"/>
+                <Cell col="9" text="Column9"/>
+                <Cell col="10" text="Column10"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:Column0" edittype="textarea" wordWrap="char"/>
+                <Cell col="1" text="bind:Column1" edittype="textarea" wordWrap="char"/>
+                <Cell col="2" text="bind:Column2" edittype="textarea" wordWrap="char"/>
+                <Cell col="3" text="bind:Column3" edittype="textarea" wordWrap="char"/>
+                <Cell col="4" text="bind:Column4" edittype="textarea" wordWrap="char"/>
+                <Cell col="5" text="bind:Column5" edittype="textarea" wordWrap="char"/>
+                <Cell col="6" text="bind:Column6" edittype="textarea" wordWrap="char"/>
+                <Cell col="7" text="bind:Column7" edittype="textarea" wordWrap="char"/>
+                <Cell col="8" text="bind:Column8" edittype="textarea" wordWrap="char"/>
+                <Cell col="9" text="bind:Column9" edittype="textarea" wordWrap="char"/>
+                <Cell col="10" text="bind:Column10" edittype="textarea" wordWrap="char"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="Grid01" taborder="1" left="10" top="50%" binddataset="ds_tar" right="35" bottom="25" onkeydown="Grid_onkeydown" selecttype="cell">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="40"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="Column0"/>
+                <Cell col="1" text="Column1"/>
+                <Cell col="2" text="Column2"/>
+                <Cell col="3" text="Column3"/>
+                <Cell col="4" text="Column4"/>
+                <Cell col="5" text="Column5"/>
+                <Cell col="6" text="Column6"/>
+                <Cell col="7" text="Column7"/>
+                <Cell col="8" text="Column8"/>
+                <Cell col="9" text="Column9"/>
+                <Cell col="10" text="Column10"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:Column0" edittype="textarea" wordWrap="char"/>
+                <Cell col="1" text="bind:Column1" edittype="textarea" wordWrap="char"/>
+                <Cell col="2" text="bind:Column2" edittype="textarea" wordWrap="char"/>
+                <Cell col="3" text="bind:Column3" edittype="textarea" wordWrap="char"/>
+                <Cell col="4" text="bind:Column4" edittype="textarea" wordWrap="char"/>
+                <Cell col="5" text="bind:Column5" edittype="textarea" wordWrap="char"/>
+                <Cell col="6" text="bind:Column6" edittype="textarea" wordWrap="char"/>
+                <Cell col="7" text="bind:Column7" edittype="textarea" wordWrap="char"/>
+                <Cell col="8" text="bind:Column8" edittype="textarea" wordWrap="char"/>
+                <Cell col="9" text="bind:Column9" edittype="textarea" wordWrap="char"/>
+                <Cell col="10" text="bind:Column10" edittype="textarea" wordWrap="char"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="Button00" taborder="2" text="+" top="25" height="25" right="5" width="25" onclick="Button00_onclick"/>
+        <Button id="Button00_00" taborder="3" text="+" top="50%" width="25" height="25" right="5" onclick="Button00_00_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_org">
+        <ColumnInfo>
+          <Column id="Column0" type="STRING" size="256"/>
+          <Column id="Column1" type="STRING" size="256"/>
+          <Column id="Column2" type="STRING" size="256"/>
+          <Column id="Column3" type="STRING" size="256"/>
+          <Column id="Column4" type="STRING" size="256"/>
+          <Column id="Column5" type="STRING" size="256"/>
+          <Column id="Column6" type="STRING" size="256"/>
+          <Column id="Column7" type="STRING" size="256"/>
+          <Column id="Column8" type="STRING" size="256"/>
+          <Column id="Column9" type="STRING" size="256"/>
+          <Column id="Column10" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="Column0">11</Col>
+            <Col id="Column1">12</Col>
+            <Col id="Column2">13</Col>
+            <Col id="Column3">14</Col>
+            <Col id="Column4">15</Col>
+            <Col id="Column5">16</Col>
+            <Col id="Column6">17</Col>
+            <Col id="Column7">18</Col>
+            <Col id="Column8">19</Col>
+            <Col id="Column9">1A</Col>
+            <Col id="Column10">1B</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">A1</Col>
+            <Col id="Column1">A2</Col>
+            <Col id="Column2">A3</Col>
+            <Col id="Column3">A4</Col>
+            <Col id="Column4">A5</Col>
+            <Col id="Column5">A6</Col>
+            <Col id="Column6">A7</Col>
+            <Col id="Column7">A8</Col>
+            <Col id="Column8">A9</Col>
+            <Col id="Column9">AA</Col>
+            <Col id="Column10">AB</Col>
+          </Row>
+          <Row>
+            <Col id="Column0">아름</Col>
+            <Col id="Column1">다운</Col>
+            <Col id="Column2">우리</Col>
+            <Col id="Column3">나라
+만세</Col>
+            <Col id="Column4">대한</Col>
+            <Col id="Column5">독립</Col>
+            <Col id="Column6">만세</Col>
+            <Col id="Column7">독도는</Col>
+            <Col id="Column8">우리 땅!</Col>
+            <Col id="Column9">동해는</Col>
+            <Col id="Column10">우리 바다!</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_tar">
+        <ColumnInfo>
+          <Column id="Column0" type="STRING" size="256"/>
+          <Column id="Column1" type="STRING" size="256"/>
+          <Column id="Column2" type="STRING" size="256"/>
+          <Column id="Column3" type="STRING" size="256"/>
+          <Column id="Column4" type="STRING" size="256"/>
+          <Column id="Column5" type="STRING" size="256"/>
+          <Column id="Column6" type="STRING" size="256"/>
+          <Column id="Column7" type="STRING" size="256"/>
+          <Column id="Column8" type="STRING" size="256"/>
+          <Column id="Column9" type="STRING" size="256"/>
+          <Column id="Column10" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[include "grid::GridCommAPI.xjs";
+
+this.ChromeClipBoard_oninit = function(obj:nexacro.Form,e:nexacro.EventInfo)
+{
+	this.eventInit(this);
+};
+]]></Script>
+  </Form>
+</FDL>
