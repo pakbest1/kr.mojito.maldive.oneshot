@@ -711,6 +711,9 @@ pForm.gfnInitComp = function(objForm)
 			{
 				this.gfnSetGrid(arrComp[i]);
 			}
+			
+			// Clipboard 처리
+			this.initClipboardComponent( arrComp[i] );
 		}
 	}
 };

@@ -3,7 +3,7 @@
   <Form id="ChromeClipBoard" width="1280" height="720" titletext="New Form" onload="ChromeClipBoard_onload" oninit="ChromeClipBoard_oninit">
     <Layouts>
       <Layout height="720" width="1280">
-        <Grid id="Grid00" taborder="0" left="10" top="25" binddataset="ds_org" right="35" bottom="55.00%" onkeydown="Grid_onkeydown" selecttype="area">
+        <Grid id="Grid00" taborder="0" left="10" top="25" binddataset="ds_org" right="380" bottom="55.00%" onkeydown="Grid_onkeydown" selecttype="area">
           <Formats>
             <Format id="default">
               <Columns>
@@ -52,7 +52,7 @@
             </Format>
           </Formats>
         </Grid>
-        <Grid id="Grid01" taborder="1" left="10" top="50%" binddataset="ds_tar" right="35" bottom="25" onkeydown="Grid_onkeydown" selecttype="cell">
+        <Grid id="Grid01" taborder="1" left="10" top="50.00%" binddataset="ds_tar" right="380" bottom="25" onkeydown="Grid_onkeydown" selecttype="cell">
           <Formats>
             <Format id="default">
               <Columns>
@@ -103,6 +103,34 @@
         </Grid>
         <Button id="Button00" taborder="2" text="+" top="25" height="25" right="5" width="25" onclick="Button00_onclick"/>
         <Button id="Button00_00" taborder="3" text="+" top="50%" width="25" height="25" right="5" onclick="Button00_00_onclick"/>
+        <Combo id="cbo00" taborder="4" text="ALL" top="23" height="39" width="330" right="40" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" index="0" value="">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="datacolumn">ALL</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">A</Col>
+                <Col id="datacolumn">Group A</Col>
+              </Row>
+              <Row>
+                <Col id="datacolumn">Group B</Col>
+                <Col id="codecolumn">B</Col>
+              </Row>
+              <Row>
+                <Col id="datacolumn">Group C</Col>
+                <Col id="codecolumn">C</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Combo>
+        <Edit id="edt00" taborder="5" top="72" height="39" value="edt00" text="edt00" width="330" right="40"/>
+        <MaskEdit id="msk00" taborder="6" top="120" height="50" value="000" width="330" right="40"/>
+        <TextArea id="txa00" taborder="7" top="177" width="330" height="78" value="txa00" right="40"/>
       </Layout>
     </Layouts>
     <Objects>
@@ -182,12 +210,13 @@
         </Rows>
       </Dataset>
     </Objects>
-    <Script type="xscript5.1"><![CDATA[include "grid::GridCommAPI.xjs";
+    <Script type="xscript5.1"><![CDATA[// include "grid::ClipboardAPI.xjs";
 
 this.ChromeClipBoard_oninit = function(obj:nexacro.Form,e:nexacro.EventInfo)
 {
-	this.eventInit(this);
+	this.gfnFormOnload(obj);
 };
+
 ]]></Script>
   </Form>
 </FDL>

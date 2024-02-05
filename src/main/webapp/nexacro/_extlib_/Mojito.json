@@ -4,10 +4,10 @@
 	"description": "Mojito Library for nexacro platform",
 	"license": "",
 	"scripts": [
+		"Mojito/Mojito.js",
 		"Mojito/Mojito_Transaction.js",
+		"Mojito/Mojito_Clipboard.js",
 		"Mojito/Mojito_Dataset.js",
 		"Mojito/Mojito_Grid.js",
-		"Mojito/Mojito_Grid_Copypaste.js",
-		"Mojito/Mojito.js"
 	]
 }
