@@ -457,7 +457,7 @@ this.fonload = function(obj, e) {
 		uFunction: 'filter:search',
 	});
 
-	this.GridFilterSearch_show(this.gridFltr);
+	this.Grid_FilterSearch_show(this.gridFltr);
 	
 	nxform = this;
 };

@@ -9,7 +9,7 @@ var pForm = nexacro.Form.prototype;
 pForm.Grid_FilterSearch_show = function(obj) {
 	trace('this.Grid_FilterSearch_show()');
 	
-	Object.assign(grid.config, {  // Filter Config
+	obj.config = Object.assign(obj.config||{}, {  // Filter Config
 		type: 'search',
 		css : 'filter',
 	});
