@@ -3,10 +3,18 @@
  ************************************************************************/
 var pForm = nexacro.Form.prototype;
 
-pForm.GridFilterSearch_show = function(obj) {
-	trace('this.GridFilterSearch_show()');
+/*******************************************************************************************************************************
+ * Grid Filter Search Function - show
+ *******************************************************************************************************************************/
+pForm.Grid_FilterSearch_show = function(obj) {
+	trace('this.Grid_FilterSearch_show()');
 	
-	let form = obj._getForm(), grid = obj, cssfltr = 'filter';
+	Object.assign(grid.config, {  // Filter Config
+		type: 'search',
+		css : 'filter',
+	});
+	
+	let form = obj._getForm(), grid = obj, config = grid.config, cssfltr = config.css;
 	let mxCell = grid.getCellCount('head'), mxCellCss = grid.getCellProperty('head', mxCell-1, 'cssclass'), hrix = null;  // grid.appendContentsRow('head'), ;
 	if ( mxCellCss && mxCellCss.indexOf(cssfltr)>-1 ) {  // 마지막 Cell이 filter 속성을 가진다면 Row 생성하지않고 마지막값 설정함.
 		hrix = grid._curFormat._headrows.length - 1;  // grid.getFormatRowCount('head')-1;
@@ -14,11 +22,7 @@ pForm.GridFilterSearch_show = function(obj) {
 		hrix = grid.appendContentsRow('head');
 		mxCell = grid.getCellCount('head');
 	}
-	
-	grid.filter = {  // filter config
-		type: 'search',
-		row : hrix,
-	};
+	grid.config.row = hrix;
 	
 	let hrheight = grid.getFormatRowProperty(hrix-1, 'size'); hrheight = hrheight > 34 ? hrheight : 34;
 	grid.setFormatRowProperty(hrix, 'size', hrheight);
@@ -50,35 +54,44 @@ pForm.GridFilterSearch_show = function(obj) {
 	hrix = grid.appendContentsRow('head');
 	grid.setFormatRowProperty(hrix, 'size', 0);  // Blank Head Row
 	
-	grid.addEventHandler('onkeyup', this.GridFilterSearch_onKeyup, form);
+	grid.addEventHandler('onkeyup', this.Grid_FilterSearch_onkeyup, form);
 	
 // 	grid.addEventHandler('oninput', function(obj, e) {  // obj:nexacro.Grid,e:nexacro.GridInputEventInfo
 // 		trace('[oninput:'+ obj.getEditValue() +']');
 // 	}, form);
 };
 
-pForm.GridFilterSearch_hide = function(obj) {
-	let form = obj._getForm(), grid = obj, filter = grid.filter, cssfltr = 'filter';
+/*******************************************************************************************************************************
+ * Grid Filter Search Function - hide
+ *******************************************************************************************************************************/
+pForm.Grid_FilterSearch_hide = function(obj) {
+	let form = obj._getForm(), grid = obj, config = grid.config, cssfltr = config.css;
 	
-	grid.deleteContentsRow('head', filter.row+1);
-	grid.deleteContentsRow('head', filter.row  );
+	grid.deleteContentsRow('head', config.row+1);
+	grid.deleteContentsRow('head', config.row  );
 	
-	grid.removeEventHandler('onkeyup', form.GridFilterSearch_onKeyup, form);
+	grid.removeEventHandler('onkeyup', form.Grid_FilterSearch_onkeyup, form);
 }
 
-pForm.GridFilterSearch_onKeyup = function(obj, e) {  // obj:nexacro.Grid,e:nexacro.KeyEventInfo
-	let form = obj._getForm(), grid = obj, filter = grid.filter, cssfltr = 'filter';
+/*******************************************************************************************************************************
+ * Grid Filter Search Function - keyup
+ *******************************************************************************************************************************/
+pForm.Grid_FilterSearch_onkeyup = function(obj, e) {  // obj:nexacro.Grid,e:nexacro.KeyEventInfo
+	let form = obj._getForm(), grid = obj, config = grid.config, cssfltr = config.css;
 	
 	let isFilterEvent = (e.fromreferenceobject.cssclass+e.fromreferenceobject.parent.cssclass).indexOf(cssfltr)>-1;
 	if (isFilterEvent && [13].includes(e.keycode)) {
 		e.preventDefault();
-		this.GridFilterSearch_ApplyFilter(grid, e.fromreferenceobject._unique_id);
+		this.Grid_FilterSearch_apply(grid, e.fromreferenceobject._unique_id);
 	}
 };
 
-pForm.GridFilterSearch_ApplyFilter = function(obj, uid) {
+/*******************************************************************************************************************************
+ * Grid Filter Search Function - apple
+ *******************************************************************************************************************************/
+pForm.Grid_FilterSearch_apply = function(obj, uid) {
 	//trace('Grid Filter Search Apply Filter start');
-	let form = obj._getForm(), grid = obj, ds = grid.getBindDataset(), cssfltr = 'filter', strFltr = '', logs = [];
+	let form = obj._getForm(), grid = obj, ds = grid.getBindDataset(), config = grid.config, cssfltr = config.css, strFltr = '', logs = [];
 	let mxCell = grid.getCellCount('head');
 	for (let i=0; i<mxCell; i++) {
 		let clhx = grid.getCellProperty('head', i, 'col');
