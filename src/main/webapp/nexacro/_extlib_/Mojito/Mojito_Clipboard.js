@@ -1,3 +1,6 @@
+/************************************************************************
+ * Nexacro Clipboard Handler
+ ************************************************************************/
 var pForm = nexacro.Form.prototype;
 
 // /************************************************************************
@@ -33,10 +36,8 @@ pForm.initClipboardComponent = function(comp) {
 	comp.addEventHandler('onkeydown', this.nxCopyPaste_OnKeydown, this);
 };
 
-pForm.getClipboard = function() {
-	if (!top.nexacro.clipboardData) {
-		top.nexacro.clipboardData = new DataTransfer();
-	}
+pForm.getNexaClipboard = function() {
+	if (!top.nexacro.clipboardData) { top.nexacro.clipboardData = new DataTransfer(); }
 	return top.nexacro.clipboardData;
 };
 
@@ -64,7 +65,7 @@ pForm.nxCopyPaste_OnKeydown = function(obj, e) {
  ************************************************************************/
 // Clipboard > Copy Action
 pForm.nxCopyPaste_ActionCopy = function(comp, isSlient=false) {
-	let clipboard = this.getClipboard(), clipdata = null;
+	let clipboard = this.getNexaClipboard(), clipdata = null;
 	
 	if ( comp instanceof nexacro.Grid ) {
 		clipdata = this._enClipboard( comp );
@@ -79,7 +80,7 @@ pForm.nxCopyPaste_ActionCopy = function(comp, isSlient=false) {
 };
 
 pForm.nxCopyPaste_ActionCut = function(comp) {
-	let clipboard = this.getClipboard(), clipdata = null;
+	let clipboard = this.getNexaClipboard(), clipdata = null;
 	
 	this.nxCopyPaste_ActionCopy(comp, true);  // isSlient
 	if ( comp && comp.set_value ) { comp.set_value(''); }
@@ -89,7 +90,7 @@ pForm.nxCopyPaste_ActionCut = function(comp) {
 
 // Clipboard > Paste Action
 pForm.nxCopyPaste_ActionPaste = function(comp) {
-	let clipboard = this.getClipboard(), clipdata = clipboard.getData('text');
+	let clipboard = this.getNexaClipboard(), clipdata = clipboard.getData('text');
 	if (!clipdata) { return; }
 	
 	if ( comp instanceof nexacro.Grid ) {
@@ -107,33 +108,66 @@ pForm.nxCopyPaste_ActionPaste = function(comp) {
  * Clipboard Functions
  ************************************************************************/
 // Clipboard Copy for Grid
-pForm._enClipboard = function(obj) {
-	if(obj.readonly) return;
-
-	var startrow  = nexacro.toNumber(obj.selectstartrow[0]);
-	var endrow    = nexacro.toNumber(obj.selectendrow[0]);
-	var startcell = this.getCellIdx(obj, 'body', obj.selectstartcol, obj.selectstartsubrow)[0];
-	var endcell   = this.getCellIdx(obj, 'body', obj.selectendcol, obj.selectendsubrow)[0];
-
-	var selectText = obj.getEditSelectedText();
-
-	var dataset = obj.getBindDataset();
-	if (dataset == null) return;
-	var clip = '';
-	if (startrow > endrow) {
-		var v = startrow;
-		startrow = endrow;
-		endrow = v;
+pForm._enClipboard = function(grid) {
+	if (!grid || grid.readonly || !grid.getBindDataset()) return;
+	
+	let selecttype  = grid.selecttype;  // ['row', 'multirow', 'cell', 'area', 'multiarea']
+	
+	let errMesg = 'The grid clipboard copy function supports only selection types row and area cell.';
+	if (grid.selectstartrow.length > 1) {
+		this.alert(errMesg);
+		return;
 	}
-	if (startcell > endcell) {
-		var v = startcell;
-		startcell = endcell;
-		endcell = v;
+	
+	// ['cell', 'area'].includes( seletype )
+	var startrow  = nexacro.toNumber(grid.selectstartrow[0]);
+	var endrow    = nexacro.toNumber(grid.selectendrow  [0]);
+	var startcell = this.getCellIdx(grid, 'body', grid.selectstartcol, grid.selectstartsubrow)[0];
+	var endcell   = this.getCellIdx(grid, 'body', grid.selectendcol  , grid.selectendsubrow  )[0];
+
+	if ('row'       == selecttype) {
+		startcell = 0;
+		endcell   = grid.getCellCount('body');
+	} else
+// 	if ('area'      == selecttype) {
+// 		startrow  = nexacro.toNumber(grid.selectstartrow[0]);
+// 		endrow    = nexacro.toNumber(grid.selectendrow  [0]);
+// 		startcell = this.getCellIdx(grid, 'body', grid.selectstartcol, grid.selectstartsubrow)[0];
+// 		endcell   = this.getCellIdx(grid, 'body', grid.selectendcol  , grid.selectendsubrow  )[0];
+// 	} else
+	if ('multirow'  == selecttype) {
+		this.alert(errMesg);
+		return;
+	} else
+ 	if ('multiarea' == selecttype) {
+		alert(errMesg);
+		this.return;
 	}
+	
+	var selectText = grid.getEditSelectedText();
+
+	let dataset = grid.getBindDataset();
+	let clip = '';
+	
+// 	if (startrow > endrow) {
+// 		var v = startrow;
+// 		startrow = endrow;
+// 		endrow = v;
+// 	}
+// 	if (startcell > endcell) {
+// 		var v = startcell;
+// 		startcell = endcell;
+// 		endcell = v;
+// 	}
+	startrow  = Math.min(startrow , endrow );
+	endrow    = Math.max(startrow , endrow );
+	startcell = Math.min(startcell, endcell);
+	endcell   = Math.max(startcell, endcell);
+	
 	for (var row = startrow; row <= endrow; row++) {
 		for (var cell = startcell; cell <= endcell; cell++) {
-			var sData = obj.getCellValue(row, cell)||'';
-			if (String(sData).indexOf('\n') > 0) {
+			var sData = grid.getCellValue(row, cell)||'';
+			if (String(sData).indexOf('\n') > -1) {
 				sData = '"' + sData + '"';
 			}
 			clip += sData;
@@ -148,8 +182,8 @@ pForm._enClipboard = function(obj) {
 		}
 	}
 
-// 	//this._setClipboard2('CF_TEXT', clip, obj);
-// 	let clipboard = this.getClipboard();
+// 	//this._setClipboard2('CF_TEXT', clip, grid);
+// 	let clipboard = this.getNexaClipboard();
 // 	clipboard.setData('text', clip);
 	
 	return clip;

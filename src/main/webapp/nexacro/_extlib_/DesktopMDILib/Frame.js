@@ -712,7 +712,8 @@ pForm.gfnInitComp = function(objForm)
 				this.gfnSetGrid(arrComp[i]);
 			}
 			
-			// Clipboard 처리
+			// [sg.park] Clipboard 처리
+			if (arrComp[i] instanceof nexacro.Grid) { arrComp[i].initComponent(); }
 			this.initClipboardComponent( arrComp[i] );
 		}
 	}

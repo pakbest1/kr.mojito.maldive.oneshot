@@ -62,7 +62,7 @@
 			/* application exit */
 		}
 	</script>
-	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard.js"></script>
+	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard_Handler.js"></script>
 </body>
 </html>
   
@@ -142,7 +142,7 @@
 		/* application exit */
 	}
 	</script>
-	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard.js"></script>
+	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard_Handler.js"></script>
 </body>
 </html>  
   ]]></Bootstrap>
@@ -206,7 +206,7 @@
 		nexacro._preparePopupFrame(window, document, urlParams#{USERFONT_INFORMATION});
   }
 	</script>
-	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard.js"></script>
+	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard_Handler.js"></script>
 </body>
 </html>
   ]]></Bootstrap>
@@ -287,7 +287,7 @@
 		/* application exit */
 	}
 	</script>
-	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard.js"></script>
+	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard_Handler.js"></script>
 </body>
 </html>
   ]]></Bootstrap>
@@ -347,7 +347,7 @@
 		/* application exit */
 	}
 	</script>
-	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard.js"></script>
+	<script src="./nexacrolib/component/Mojito/Mojito_Clipboard_Handler.js"></script>
 </body>
 </html>
   ]]></Bootstrap>

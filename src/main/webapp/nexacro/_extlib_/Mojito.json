@@ -5,9 +5,12 @@
 	"license": "",
 	"scripts": [
 		"Mojito/Mojito.js",
-		"Mojito/Mojito_Transaction.js",
-		"Mojito/Mojito_Clipboard.js",
 		"Mojito/Mojito_Dataset.js",
+		"Mojito/Mojito_Clipboard.js",
 		"Mojito/Mojito_Grid.js",
+		"Mojito/Mojito_GridFilterCombo.js",
+		"Mojito/Mojito_GridFilterSearch.js",
+		"Mojito/Mojito_Form.js",
+		"Mojito/Mojito_Transaction.js"
 	]
 }

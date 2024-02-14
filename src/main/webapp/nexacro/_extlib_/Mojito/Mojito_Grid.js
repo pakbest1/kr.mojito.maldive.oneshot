@@ -1,7 +1,10 @@
+/************************************************************************
+ * Nexacro Grid
+ ************************************************************************/
 var pGrid = nexacro.Grid.prototype;
 
 // Grid Event 발생여부
-pGrid.switchEvent = function(bOn=false) {
+pGrid.eventToggle = function(bOn=false) {
 	this.set_enableevent ( bOn );
 	this.set_enableredraw( bOn );
 	
@@ -28,33 +31,44 @@ pGrid._conf = {
 };
 
 
-pGrid.initFunctions = function(form) {
-	this.form=this._conf.form=form;
+pGrid.initComponent = pGrid.initGridComponent = function(grid) {
+	grid = grid ? grid : this;
+	this.form = this._getForm();
+	// this.form=this._conf.form=form;
 	
-	this.initContext();  // 컨텍스트메뉴
+	this.initGridResize();
+	
+	this.initGridContext();  // 컨텍스트메뉴
+};
+
+pGrid.initGridResize = function() {
+	this.set_cellsizingtype('both');
+	this.set_autosizingtype('row' );
+	this.set_extendsizetype('row' );
+	
 };
 
 // 컨텍스트메뉴
-pGrid.initContext = function() {
-	let _conf=this._conf, _grid=this, _gridId=_grid.id, _form=_conf.form;
+pGrid.initGridContext = function() {
+	let conf=this._conf, grid=this, form=grid._getForm();
 	let langCd = nexacro.getApplication().langCode;
 	
-	if (!_conf.cntxDs) {
-		_conf.cntxDs = new Dataset(_gridId+'CntxDs');
-		_conf.cntxDs.assign(nexacro.getApplication().gdsGridContext);
+	if (!conf.cntxDs) {
+		conf.cntxDs = new Dataset(grid.name+'CntxDs');
+		conf.cntxDs.assign(nexacro.getApplication().gdsGridContext);
 	}
-	if (!_conf.cntxMenu) {
-		_conf.cntxMenu = new PopupMenu(_gridId+'CntxMenu', 0, 0, 68, 65);
-		_form.addChild(_conf.cntxMenu.name, _conf.cntxMenu);
-		_conf.cntxMenu.grid = _grid;
+	if (!conf.cntxMenu) {
+		conf.cntxMenu = new PopupMenu(grid.name+'CntxMenu', 0, 0, 68, 65);
+		form.addChild(conf.cntxMenu.name, conf.cntxMenu);
+		conf.cntxMenu.grid = grid;
 		
-        _conf.cntxMenu.set_innerdataset (_conf.cntxDs);
-		_conf.cntxMenu.set_idcolumn     ('id'        );
-		_conf.cntxMenu.set_levelcolumn  ('level'     );
-		_conf.cntxMenu.set_iconcolumn   ('icon'      );
-		_conf.cntxMenu.set_enablecolumn ('enable'    );
-		_conf.cntxMenu.set_captioncolumn('caption'   );
-		//_conf.cntxMenu.set_cssclass     ('pm_basic01');
+        conf.cntxMenu.set_innerdataset (conf.cntxDs );
+		conf.cntxMenu.set_idcolumn     ('id'        );
+		conf.cntxMenu.set_levelcolumn  ('level'     );
+		conf.cntxMenu.set_iconcolumn   ('icon'      );
+		conf.cntxMenu.set_enablecolumn ('enable'    );
+		conf.cntxMenu.set_captioncolumn('caption'   );
+		//conf.cntxMenu.set_cssclass     ('pm_basic01');
 		
 // 		if (nexacro.getApplication().langCode == "ko")
 // 			pmnu.set_captioncolumn("caption_ko");
@@ -62,11 +76,11 @@ pGrid.initContext = function() {
 // 			pmnu.set_captioncolumn("caption_en");
 		//_conf.cntxMenu.set_captioncolumn( langCd == 'ko' ? 'caption_ko' : 'caption' );
 		
-		_conf.cntxMenu.addEventHandler('onmenuclick', this.clickContext, this);
-		_conf.cntxMenu.show();
+		conf.cntxMenu.addEventHandler('onmenuclick', this.clickContext, this);
+		conf.cntxMenu.show();
 	}
 	
-	_grid.addEventHandler('onrbuttondown', _grid.showContext, _form);
+	grid.addEventHandler('onrbuttondown', grid.showContext, form);
 };
 pGrid.showContext = function(obj, e) {
 	let _conf=obj._conf, _cntxDs=_conf.cntxDs,_cntxMenu=_conf.cntxMenu;
@@ -197,4 +211,113 @@ pGrid.isCheckboxCell = function(e, colId='chk') {
 	return isCheckboxDisplaytype && isCheckboxEdittype && isCheckboxCol;
 };
 
+
+
+
+
+
+
+
+
+/**
+ * Grid Row Height Override
+ */
+pGrid._getMaxSubRowSize = function(_a, _b, _c, _d, _e) {
+	var _f = this._curFormat;
+	var _g;
+	if (_a == -2) {
+		if (!_c) {
+			_c = this._curFormat._summcells;
+		}
+		_g = _f._summrows;
+	} else if (_a == -1) {
+		if (!_c) {
+			_c = this._curFormat._headcells;
+		}
+		_g = _f._headrows;
+	} else {
+		if (!_c) {
+			_c = this._curFormat._bodycells;
+		}
+		_g = _f._bodyrows;
+	}
+	if (!this._autoSizeRowProc && this.autosizingtype != "row" && this.autosizingtype != "both") {
+		return _g[_b].size;
+	}
+	var _h = 0;
+	var _i = _c.length;
+	var _j, _k, _l;
+	for (var _w = 0; _w < _i; _w++) {
+		_j = _c[_w]._row;
+		_k = _c[_w]._rowspan;
+		_l = _c[_w]._subcells;
+		if (_j == _b || (_l.length > 0 && _j <= _b && (_j + _k) > _b)) {
+			var _m = 0;
+			if (_l.length > 0) {
+				_m = this._getMaxSubRowSize(_a, _b - _j, _l, _j, _c[_w]);
+				_h = Math.max(_h, _m);
+			} else {
+				if (!_d) {
+					_d = 0;
+				}
+				var _n = _c[_w]._getAttrValue(_c[_w].autosizerow, _a);
+				var _o = _g[_b + _d].size;
+				var _p;
+				if (_n == "none") {
+					_p = _o;
+				} else {
+					var _q = _c[_w]._getDisplayTypeValue(_a);
+					if (_q == "checkboxcontrol") {
+						var _r = _c[_w]._getCheckboxsize(_a);
+						if (_r == undefined) {
+							_r = this._getCellStyleInfo(_c[_w]._cellidx, "checkboxsize", _a, false, _e, true);
+							_r = _r[1];
+						}
+						_p = _r + 6;
+					} else if (_q == "radioitemcontrol") {
+						var _r = _c[_w]._getRadioitemsize(_a);
+						if (_r == undefined) {
+							_r = this._getCellStyleInfo(_c[_w]._cellidx, "radioitemsize", _a, false, _e, true);
+							_r = _r[1];
+						}
+						_p = _r + 6;
+					} else {
+						var _s = _c[_w]._getVirtualMergeInfo(_a + 2) ? "" : _c[_w]._getDisplayText(_a);
+						var _t = this._getCellRowTextSize(_c[_w], _a, _s, _e);
+						_p = _t[1];
+						var _u = _c[_w]._curpadding
+						  , _v = _c[_w]._curborder;
+						if (_u === "bindexpr" || _u === undefined) {
+							_u = this._getCellStyleInfo(_w, "padding", _a, undefined, _e, true);
+						}
+						if (_v === "bindexpr" || _v === undefined) {
+							_v = this._getCellStyleInfo(_w, "border", _a, undefined, _e, true);
+						}
+						if (_u) {
+							_u = nexacro.PaddingObject(_u);
+							_p += _u.top + _u.bottom;
+						}
+						if (_v) {
+							_v = new nexacro.BorderObject(_v);
+							_p += _v.bottom._width;
+						}
+					}
+					_p += this._getDisplaytypeControlSize(false, _q, _c[_w], _e, _a);
+					if (_n == "limitmin") {
+						if (_p < _o) {
+							_p = _o;
+						}
+					} else if (_n == "limitmax") {
+						if (_p > _o) {
+							_p = _o;
+						}
+					}
+				}
+				_h = Math.max(_h, _p, _o);
+			}
+		}
+	}
+	return _h;
+};
+	
 pGrid = null; delete pGrid;

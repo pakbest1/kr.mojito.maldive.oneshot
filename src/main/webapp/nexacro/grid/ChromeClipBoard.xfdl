@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <FDL version="2.1">
-  <Form id="ChromeClipBoard" width="1280" height="720" titletext="New Form" onload="ChromeClipBoard_onload" oninit="ChromeClipBoard_oninit">
+  <Form id="ChromeClipBoard" width="1280" height="720" titletext="New Form">
     <Layouts>
       <Layout height="720" width="1280">
-        <Grid id="Grid00" taborder="0" left="10" top="25" binddataset="ds_org" right="380" bottom="55.00%" onkeydown="Grid_onkeydown" selecttype="area">
+        <Grid id="Grid00" taborder="0" left="10" top="25" binddataset="ds_org" right="380" bottom="55.00%" onkeydown="Grid_onkeydown" selecttype="row">
           <Formats>
             <Format id="default">
               <Columns>
@@ -20,8 +20,8 @@
                 <Column size="80"/>
               </Columns>
               <Rows>
-                <Row size="24" band="head"/>
-                <Row size="35"/>
+                <Row size="34" band="head"/>
+                <Row size="34"/>
               </Rows>
               <Band id="head">
                 <Cell text="Column0"/>
@@ -69,8 +69,8 @@
                 <Column size="80"/>
               </Columns>
               <Rows>
-                <Row size="24" band="head"/>
-                <Row size="40"/>
+                <Row size="34" band="head"/>
+                <Row size="34"/>
               </Rows>
               <Band id="head">
                 <Cell text="Column0"/>
@@ -214,8 +214,10 @@
 
 this.ChromeClipBoard_oninit = function(obj:nexacro.Form,e:nexacro.EventInfo)
 {
+	trace('ChromeClipBoard_oninit');
 	this.gfnFormOnload(obj);
 };
+this.setEventHandler('onload', this.ChromeClipBoard_oninit, this);
 
 ]]></Script>
   </Form>

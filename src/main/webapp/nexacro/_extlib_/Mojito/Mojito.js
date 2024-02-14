@@ -33,3 +33,5 @@ pMojito = null; delete pMojito;
 
 $m=mojito=nexacro.mojito=new nexacro.Mojito();
 //$m.getRandomString();
+
+var pForm = nexacro.Form.prototype;

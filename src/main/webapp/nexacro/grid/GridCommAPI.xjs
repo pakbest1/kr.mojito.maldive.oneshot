@@ -9,7 +9,7 @@ this.isEmpty = function(str) {
 }
 
 this.eventInit = function(parent) {
-	if(this.isUseClipboard == false && this._clipboard_comp == null) {	
+	if (this.isUseClipboard == false && this._clipboard_comp == null) {	
 		var objDiv = new Div();  
 		objDiv.init("Div", 0, 0, 1, 1, null, null);					
 		parent.addChild("_div_clipboard", objDiv); 
@@ -26,75 +26,98 @@ this.eventInit = function(parent) {
 		this._clipboard_comp.set_enable(false);
 	}
 
-	var arr = parent.components;
-	for(var i = 0; i < arr.length; i++) {
-		if(arr[i] instanceof Grid) {
-			arr[i].addEventHandler("onkeydown", this._grid_onkeydown, this);
-		} else if(arr[i] instanceof Tab) {
-			this.eventInit(arr[i]);
-		} else if(arr[i] instanceof Div || arr[i] instanceof Tabpage) {
-			if(this.isEmpty(arr[i].url)) {
-				this.eventInit(arr[i].form);
+//	var arr = parent.components;
+// 	for(var i = 0; i < arr.length; i++) {
+// 		if(arr[i] instanceof Grid) {
+// 			arr[i].addEventHandler("onkeydown", this._grid_onkeydown, this);
+// 		} else if(arr[i] instanceof Tab) {
+// 			this.eventInit(arr[i]);
+// 		} else if(arr[i] instanceof Div || arr[i] instanceof Tabpage) {
+// 			if(this.isEmpty(arr[i].url)) {
+// 				this.eventInit(arr[i].form);
+// 			}
+// 		}
+// 	}
+
+	var comps = parent.components;
+	for (let id of parent.components._idArray) {  // for (let comp of parent.components._idArray)
+		let comp = parent.components[id];
+		
+		if (comp instanceof nexacro.Tab) {
+			this.eventInit(comp);
+		} else
+		if (comp instanceof nexacro.Div || comp instanceof nexacro.Tabpage) {
+			if (!comp.url) {
+				this.eventInit(comp.form);
 			}
-		}	
-	}
-}			
-	
-//Col index에 해당되는 Cell Idx 구함.
-this.getCellIdx = function(_grid, _band, _col, _subrow)
-{
-	var rtn_cell = -1;
-	var rtn_subcell = -1;
-	
-	//2021.11.30.HY. Header 가 다중Row 이고 body가 1 일때
-	var nHeadRowCnt = 0;
-	var nBodyRowCnt = 0;
-	for(var i = 0; i < _grid.getFormatRowCount(); i++) {
-		var sBand = _grid.getFormatRowProperty(i, "band");
-		if(sBand == "head") {
-			nHeadRowCnt++;
-		} else if(sBand == "body") {
-			nBodyRowCnt++;
+		} else {
+			// if(arr[i] instanceof Grid) {
+			comp.addEventHandler('onkeydown', this.nxCopyPaste_onKeydown, this);
 		}
-	}
-
-	if(nHeadRowCnt > nBodyRowCnt) {
-		_subrow = _subrow + (nHeadRowCnt - nBodyRowCnt);
-	}
-
-	for(var i = 0; i < _grid.getCellCount(_band); i++) {
-		var cell_row = _grid.getCellProperty(_band, i, "row");
-		var cell_col = _grid.getCellProperty(_band, i, "col");
-		if(_subrow < cell_row) return [rtn_cell, rtn_subcell];
-		//if else 순서 바뀌면 안됨!
-		if(_col == cell_col) {
-		//조건 우선순위1
-			rtn_cell = i;
-			rtn_subcell = _grid.getSubCellCount(_band, i) > 0 ? 0 : -1;
-
-			if(_subrow == cell_row ) {	
-				return [rtn_cell, rtn_subcell];
-			}
-		} else if(cell_col <= _col && _col <= (cell_col + _grid.getSubCellCount(_band, i) - 1)) {
-			//조건 우선순위2
-			rtn_cell = i;
-			rtn_subcell = _col - cell_col;
-
-			if(_subrow == cell_row ) {
-				return [rtn_cell, rtn_subcell];
-			}
-		} else if(cell_col <= _col && _col <= (cell_col + _grid.getCellProperty(_band, i, "colspan") - 1)) {
-			//조건 우선순위3
-			rtn_cell = i;
-			rtn_subcell = -1;
-
-			if(_subrow == cell_row ) {	
-				return [rtn_cell, rtn_subcell];
-			}		 
-		} 
-	}
-	return [rtn_cell, rtn_subcell];
+	}   // for
 }
+
+// 넥사크로 모든 Components Keydown Event
+this.nxCopyPaste_onKeydown = function(obj, e) {
+	if ( !(e.ctrlkey && !e.altkey && !e.shiftkey) ) { return; }
+	
+	let efcomp = e.fromobject, ercomp = e.fromreferenceobject;
+	if (e.keycode == 67) {  // Ctrl+C
+		// console.log('Ctrl + C : Copy  - '+ efcomp.name);
+		this.nxCopyPaste_ActionCopy ( efcomp );
+	} else
+	if (e.keycode == 86) {  // Ctrl+V
+		console.log('Ctrl + V : Paste - '+ efcomp.name);
+		this.nxCopyPaste_ActionPaste( efcomp );
+	}
+}
+
+this.nxCopyPaste_ActionCopy = function(comp) {
+	let clipboard = top.window._clipboard = top.window._clipboard||new DataTransfer(), clipdata = null;
+	
+	if ( comp instanceof nexacro.Grid ) {
+		clipdata = this._enClipboard( comp );
+	} else
+	if ( comp && comp.value ) {
+		clipdata = comp.value;
+	}
+	
+	clipboard.setData('text', clipdata);
+	console.log('Ctrl + C : Copy  - '+ comp.name +': '+ clipdata);
+};
+
+this.nxCopyPaste_ActionPaste = function(comp) {
+	let clipboard = top.window._clipboard = top.window._clipboard||new DataTransfer(), clipdata = clipboard.getData('text');
+	
+	if ( comp instanceof nexacro.Grid ) {
+		let form = comp._getForm();
+		this.nxCopyPaste_ActionPaste4Grid(comp);  // this._getClipboard2('CF_TEXT', form._deClipboard, form, comp);
+	} else
+	if ( comp && comp.set_value ) {
+		comp.set_value(clipdata);
+	}
+	
+	console.log('Ctrl + V : Paste - '+ comp.name +': '+ clipdata);
+};
+
+this.nxCopyPaste_ActionPaste4Grid = function(comp) {
+	let form = comp._getForm(), grid = comp, ds = grid.getBindDataset();
+	let clipboard = top.window._clipboard = top.window._clipboard||new DataTransfer(), clipdata = clipboard.getData('text');
+	
+	if (clipdata) {
+		form._deClipboard(clipdata, grid);
+	}
+};
+
+
+
+
+
+
+
+
+	
+
 
 this._grid_onkeydown = function(obj, e)
 {
@@ -123,6 +146,8 @@ this._setClipboard2 = function (format, data, oGrid) {
 }
 
 this._getClipboard2 = function (format, callback, target, oGrid) {
+	
+
 	if(this.isUseClipboard) {
 		var data = system.getClipboard(format);
 		if (target) {
@@ -184,6 +209,7 @@ this._enClipboard = function(obj) {
 	}
 
 	this._setClipboard2("CF_TEXT", clip, obj);
+	return clip;
 }
 
 this._deClipboard = function(clip, oGrid) 

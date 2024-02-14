@@ -1,11 +1,8 @@
 /************************************************************************
- * Nexacro Transaction
+ * Nexacro Grid Head Filter - Combo
  ************************************************************************/
-var pForm = nexacro.Form, pGrid = nexacro.Grid;
+var pForm = nexacro.Form.prototype;
 
 
 
-
-
-pGrid = null; delete pGrid;
 pForm = null; delete pForm;
