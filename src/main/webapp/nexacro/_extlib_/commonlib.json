@@ -1,0 +1,12 @@
+{
+  "name": "commonlib",
+  "version": "1.0.0.0",
+  "description": "프로젝트에서 사용하는 공통 라이브러리 모음",
+  "scripts": [
+      "commonlib/base.js",
+	  "commonlib/string.js",
+	  "commonlib/number.js",
+	  "commonlib/date.js",
+	  "commonlib/array.js"
+  ]
+}

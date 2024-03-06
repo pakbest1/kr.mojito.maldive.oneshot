@@ -1,0 +1,24 @@
+{
+	"name": "wmsLib",
+	"version": "1.0.0.0",
+	"description": "Library for SVCWMS",
+	"license": "",
+	"scripts": [
+		"wmsLib/WMS.js",
+		"wmsLib/WMS_Clipboard.js",
+		"wmsLib/WMS_Form.js",
+		"wmsLib/WMS_Mobile.js",
+		"wmsLib/WMS_Code.js",
+		"wmsLib/WMS_Grid.js",
+		"wmsLib/WMS_Grid_Filter.js",
+		"wmsLib/WMS_Grid_FilterCombo.js",
+		"wmsLib/WMS_Grid_FilterSearch.js",
+		"wmsLib/WMS_Excel.js",
+		"wmsLib/WMS_Dataset.js",
+		"wmsLib/WMS_MultiCombo.js",
+		"wmsLib/WMS_Popup.js",
+		"wmsLib/WMS_Toast.js",
+		"wmsLib/WMS_Splitter.js",
+		"wmsLib/WMS_GoogleChart.js"
+	]
+}
