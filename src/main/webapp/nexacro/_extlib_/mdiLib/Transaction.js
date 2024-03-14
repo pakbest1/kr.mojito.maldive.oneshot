@@ -159,46 +159,45 @@ pForm.gfnTransaction = function(strSvcId, strSvcUrl, inData, outData, strArg, ca
 		for (let i in dss) {
 			let [lval, rval] = dss[i].split('='), ods = this._getDatasetObject(lval);
 			if (ods && ods instanceof nexacro.Dataset) {
-				let grid = this.lookupGrid('binddataset', ods.id);
-				if (grid) {
-					//ods.filter('');
-					this.Grid_Filter_Reset(grid);
+				let grids = this.lookupGrids('binddataset', ods.id);
+				if (grids && grids.length > 0) {
+					for (let grid of grids) {
+						this.Grid_Filter_Reset(grid);
+					}
 				}
 			}
 		}
+		// trace('response dataset filter reset');
 	}
 	// /[2024.03.06] WMS 프로젝트 Nexacro gfnTransaction 처리 시, outData에 기술되어 있는 데이터셋 필터 초기화처리
 };
 
-pForm.lookupComponent = function(clazz, propnm, propvl, form) {
-	let r = undefined, comps = (form||this).components, complength = comps.length;
+pForm.lookupComponents = function(clazz, propnm, propvl, form) {
+	let r = [], comps = (form||this).components, complength = comps.length;
 	for (let i=0; i<complength; i++) {
 		let comp = comps[i];
 		if (comp instanceof nexacro.Div && !comp.url) {
-			r = this.lookupComponent(clazz, propnm, propvl, comp.form);
-			if (r) { return r; }
+			r = r.concat(this.lookupComponents(clazz, propnm, propvl, comp.form));
 		} else
-		if (comp instanceof nexacro.Tab) {
-			let tablength = comp.tabpages.length;
-			for (var j=0; j<tablength; j++) {
+		if (comp instanceof nexacro.Tab && comp.tabpages.length > 0) {
+			for (var j=0; j<comp.tabpages.length; j++) {
 				if (!comp.tabpages[j].url) {
-					r = this.lookupComponent(clazz, propnm, propvl, comp.tabpages[j].form);
-					if (r) { return r; }
+					r = r.concat(this.lookupComponents(clazz, propnm, propvl, comp.tabpages[j].form));
 				}
 			}
 		} else
 		{
 			if (comp instanceof clazz && comp[propnm] && comp[propnm] == propvl) {
-				r = comp;
+				r = r.concat(comp);
 			}
 		}
 	}
 	
-	return r;
+	return r.length > 0 ? r : null;
 };
 
-pForm.lookupGrid = function(propnm, propvl) {
-	return this.lookupComponent(nexacro.Grid, propnm, propvl);
+pForm.lookupGrids = function(propnm, propvl) {
+	return this.lookupComponents(nexacro.Grid, propnm, propvl);
 };
 
 

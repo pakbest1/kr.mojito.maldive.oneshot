@@ -639,6 +639,11 @@ pForm.gfnFormOnload = function (objForm)
 {
 	nexacro.activeForm = objForm; // nexacro.WorkFrame.getActiveFrame().form.divWorkPage.form;  // WMS 디버깅용
 	
+	// [2024.03.12] sg.park - Mobile Form 초기처리 와 통합
+	if (nexacro._curscreentype && nexacro._curscreentype.indexOf('mobile') > -1) {
+		return this.gfnMobileFormOnload(objForm);
+	}
+	
 	var objApp = nexacro.getApplication();
 	
 	// 부모가 divWork일때(업무화면일때) keyDown 이벤트 추가 및 화면 loading 시간 측정
@@ -678,7 +683,7 @@ pForm.gfnFormOnload = function (objForm)
 	}
 
 	// Component 초기화 처리
-	this.gfnInitComp(objForm);	
+	this.gfnInitComp(objForm);
 	
 	// 조회영역 focus 처리, 엔터시 자동조회, 조회버튼 권한 제어
 	var oDiv = objForm.components["divSearch"];
@@ -745,8 +750,8 @@ pForm.gfnInitComp = function(objForm)
 				this.initSpliterComponent(nxComp, nxComp.uDirection, -1, -1);
 			}
 			
-			// WMS Combo > MultiCombo
-			if (nxComp instanceof nexacro.Combo && nxComp.uSelecttype=='M' && nxComp.initComponent) {
+			// WMS Combo > Combo
+			if (nxComp instanceof nexacro.Combo) {  // && nxComp.uSelecttype=='M' && nxComp.initComponent) {
 				nxComp.initComponent(this);
 			}   // if (nxComp instanceof nexacro.Combo ...
 			

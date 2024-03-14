@@ -35,6 +35,8 @@ pWms.initGridComponent = function(grid, form) {
 	grid.set_scrollbarincbuttonsize(0);
 	grid.set_scrollbarsize(10);
 	
+	//grid.set_mouseovertype('cell');
+	
 	// WMS 디자인 설정값을 Default로 지정 - Grid.createFormat() 실행시, 필요
 	grid._DEFAULT_PROPERTY = {
 		HEAD_ROW_HEIGHT: grid._curFormat && grid._curFormat._headrows && grid._curFormat._headrows[0] ? grid._curFormat._headrows[0].orgsize : 34,
@@ -392,6 +394,29 @@ pWms.gridCheckboxNoStatusAdd = function(objGrid, objDs, addProp) {
 		nBodyColIndex++;
 	}
 }
+
+/*
+ * @class  그리드 필터 Cell 여부확인
+ * @param {Object} grid - 대상그리드
+ * @param {Evnet}  e	- 헤드클릭이벤트
+ */
+pForm.gfnIsGridFilterCell = function(grid, e) {
+	let cellCssclass = grid.getCellProperty('head', e.cell, 'cssclass'); // 필터 Cell이면 정렬 처리안함.
+	return !cellCssclass ? false : cellCssclass.indexOf('filter') > -1;
+};
+
+/*
+ * @class  그리드 체크박스 Cell 여부확인
+ * @param {Object} grid - 대상그리드
+ * @param {Evnet}  e	- 헤드클릭이벤트
+ */
+pForm.gfnIsGridCheckCell = function(grid, e, chkColId='chk') {
+	let area = e.row < 0 ? 'head' : 'body';
+	let isChkDType = grid.getCellProperty(area, e.cell, 'displaytype') === 'checkboxcontrol';
+	let isChkEType = grid.getCellProperty(area, e.cell, 'edittype'   ) === 'checkbox'       ;
+	let isChkId    = grid.getCellProperty(area, e.cell, 'text'       ).replace(/bind:|expr:/g, '') === chkColId;  // e.col
+	return isChkDType && isChkEType && isChkId;
+};
 
 /*******************************************************************************************************************************
  * Grid Sort
@@ -761,7 +786,7 @@ pWms.Grid_Settings_RestoreDefault = function(grid) {
  * @example
  * this.Grid_Settings_SavePersnal(this.grdMain);
  */
- //todo
+//todo
 pWms.Grid_Settings_SavePersnal = function(grid) {
 	let form = grid._getForm(), user = nexacro.getApplication().gds_UserInfo.getSelectedRowObject();
 	if (user && user.userId) {
@@ -1115,3 +1140,77 @@ pGrid.Grid_EnterFocus_Move = function(obj, e) {
 pWms  = null; delete pWms ;
 pGrid = null; delete pGrid;
 pForm = null; delete pForm;
+
+
+/*******************************************************************************************************************************
+ * Nexacro Core Overriding
+ *******************************************************************************************************************************/
+{
+	var _pGrid = nexacro.Grid.prototype;
+	var _pGridCell = nexacro._GridCellControl.prototype;
+
+	_pGridCell.on_apply_status = function(_a, _b, _c, _d) {  // selected row cell mouseover : _a='focused', _b='selected', _c='mouseover', _d=false
+		if (!this._rowstatuschange) {
+			if (_c == "mouseover" || _c == "focused") {
+				this._grid._on_apply_cell_status(this, _c, _d, null, null, _b||_c);
+			}
+		}
+	}
+	;
+	
+    _pGridCell._on_apply_status = function(_a, _b, _c, _d, _e, _f, _g, _h, _i) {
+        nexacro.Component.prototype._on_apply_status.call(this, _a, _b, _c, _d, _e, _f, _g, _h, _i);
+        var _j = this._grid;
+        var _k = _j._getDataRow(this._rowidx);
+        if (_j._isFakeCell(_k)) {
+            this._changeStatus("mouseover", false);
+            this._changeStatus("focused", false);
+            return;
+        }
+    }
+    ;
+
+	_pGrid._on_apply_cell_status = function(_a, _b, _c, _d, _e, __f) {  // _f : 'selected'
+		if (this.enableredraw) {
+			// if (_a._statusmap[_b] == _c) { return; }
+			if (_d == undefined) {
+				_d = this._isSelectRowType();
+				if (_b == "mouseover") {
+					if (this.mouseovertype == "cell") {
+						_d = false;
+					} else if (this.mouseovertype == "row") {
+						_d = true;
+					}
+				}
+			}
+			
+			if (_d) {
+				// trace('[_b:'+ _b +'][__f:'+ __f +']');
+				var _e = _a._getRowControl();
+				var _f = _e._cells;
+				for (var _g = 0, _h = _f.length; _g < _h; _g++) {
+					_f[_g]._rowstatuschange = true;
+//					_f[_g]._changeStatus(_b, _c);
+					if (__f != 'selected') {
+						_f[_g]._changeStatus(_b, _c);  // _g ==_a._cellidx ? _b : 'focused'
+					} else
+					{
+						_f[_g]._changeStatus(_b, _g ==_a._cellidx ? _c : false);
+					}
+					_f[_g]._rowstatuschange = null;
+				}
+			} else {
+				_a._rowstatuschange = true;
+//				_a._changeStatus(_b, _c);
+				if (__f != 'selected') {
+					_a._changeStatus(_b, _c);
+				}
+				_a._rowstatuschange = null;
+			}
+		}
+	}
+	;
+	
+	_pGridCell = null; delete _pGridCell;
+	_pGrid = null; delete _pGrid;
+};

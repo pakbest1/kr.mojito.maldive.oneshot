@@ -264,12 +264,15 @@ pForm.Grid_FilterCombo_GetFilterValue = function(objPopDiv) {
 	fds.set_enableevent(true);
 	
 	// 필터 문자열 리턴
-	fpopform.opcomps.configcell.keyword = fKeyword;
-	fpopform.opcomps.configcell.value   = ['{all}', '{empty}'] .includes() ? '' : fValue;
+	let isAll = ['{all}'] .includes(fValue);
+	fpopform.opcomps.configcell.keyword = isAll ? null : fKeyword;
+	fpopform.opcomps.configcell.value   = isAll ? null : fValue;
 	
 	return {
-		keyword: fKeyword,
-		value  : fValue  ,
+		filtertype: 'chkeck',
+		apply     : fpopform.filterapply,
+		keyword   : fpopform.opcomps.configcell.keyword,
+		value     : fpopform.opcomps.configcell.value  ,
 	};
 };
 
@@ -291,6 +294,7 @@ pForm.Grid_FilterCombo_Apply = function(grid) {
 		// Cell 설정정보가 존재하고 bind 정보가 있을 경우
 		fcolId = cells[i].bind;
 		fcolVl = cells[i].value;
+		let fcolFilterType = cells[i].filtertype||'unknwon', fcolInf = ds.getColumnInfo(fcolId), fcolDataType = (fcolInf && fcolInf.type ? fcolInf.type : 'string').toLowerCase();
 		
 		//필터 문자열 정보가 있을 경우
 		if (fcolVl) {  // fcolVl &&
@@ -304,8 +308,17 @@ pForm.Grid_FilterCombo_Apply = function(grid) {
 			// [2024.02.01] sgpark - 당분간 Like 검색은 봉인 , [2024.03.05] sgpark - 봉인해제
 			if (filtertype=='like') {
 				for(j=0; j<acolVlCunt; j++) {
-					fstring += fcolId + ".toString().indexOf('"+acolVl[j]+"')>-1||";
-					//fstring += fcolId + ".toString() === " + (acolVl[j] ? "'"+ acolVl[j] + "'" : 'null') + "||";
+					
+					if (acolVl[j] && ['like'].includes(fcolFilterType)) {
+						fstring += fcolId + ".toString().indexOf('"+acolVl[j]+"')>-1";
+					} else
+					if ( acolVl[j] ) {
+						//fstring += fcolId + (isNaN(acolVl[j]) ? ".toString() === '" + acolVl[j] +"'" : "===" + acolVl[j]);
+						fstring += fcolId + (['int', 'float', 'bigdecimal'].includes(fcolDataType) ? "===" + acolVl[j] : ".toString() === '" + acolVl[j] +"'");
+					} else {
+						fstring += "!"+fcolId;
+					}
+					fstring += '||';
 				}
 			} else
 			{
@@ -354,16 +367,16 @@ pForm.Grid_FilterCombo_Popup_OnClose = function(obj, e) {  // obj:nexacro.PopupD
 	let fpop = obj, form = fpop.form, grid = fpop.targetGrid, config = grid.config, fcellIdx = fpop.cellidx;
 	
 	// 팝업을 호출한 Cell Index, Grid 컴포넌트, 설정 정보
-	let fAply = true, finf = form.Grid_FilterCombo_GetFilterValue(fpop);                    // 필터 문자열 만드는 함수 호출
-	if (['{empty}', '{all}'].includes(finf.value)) {
-		return;
+	let finf = form.Grid_FilterCombo_GetFilterValue(fpop);  // 필터 문자열 만드는 함수 호출
+	
+	if (!finf.apply) { return; }
+	if (['{all}'].includes(finf.value)) {
+		finf.value = '';
 	}
 	
-	//let cellFltr = grid.getCellProperty('head', fcellIdx, 'text');
-	//if ( !cellFltr ) {
 	grid.setCellProperty('head', fcellIdx,        'text', finf.value);
 	grid.setCellProperty('head', fcellIdx, 'tooltiptext', finf.value);
-	//}
+	Object.assign(config.cells[fcellIdx], finf);
 	
 	form.Grid_FilterCombo_Apply(grid);  //필터 실행 함수 호출
 };
@@ -415,7 +428,9 @@ pForm.Grid_FilterCombo_Edit_OnKeyDown = function(obj, e) {  // obj:nexacro.Edit,
 	
 	form.Grid_FilterCombo_ReMakeCells(grid);                   // Cells정보를 다시 만드는 함수 호출
 	grid.setCellProperty('head', fcellIdx, 'text', fcellVal);  // 현재 Edit Value를 Grid Cell Text에 저장
-	config.cells[fcellIdx].value = fcellVal;                   // 해당 Cell 설정정보에 필터 문자열 저장
+	config.cells[fcellIdx].value      = fcellVal;              // 해당 Cell 설정정보에 필터 문자열 저장
+	
+	config.cells[fcellIdx].filtertype = 'like'  ;              // 해당 Cell 설정정보에 필터 문자열 저장
 	
 	form.Grid_FilterCombo_Apply(grid);                         // 필터 실행 함수 호출
 };
@@ -453,6 +468,8 @@ pForm.Grid_FilterCombo_OnExpandUp = function(obj, e) {  // obj:nexacro.Grid, e:n
 	fpop.cellidx    = e.cell;
 	
 	form.Grid_FilterCombo_ReMakeCells(grid);                         // Cells정보를 다시 만드는 함수 호출
+	
+	fpop.form.filterapply = false;                                   // 필터 적용여부 false - 팝업에서 필요액션이 있으면 true로 변경됨
 	fpop.form.fnMakeFilterDataset(grid, e.cell, config);             // 필터 리스트 데이터셋 생성 함수 호출
 	fpop.trackPopupByComponent(grid, nLeft, nTop, nWidth, nHeight);  // 필터 팝업 오픈
 };
