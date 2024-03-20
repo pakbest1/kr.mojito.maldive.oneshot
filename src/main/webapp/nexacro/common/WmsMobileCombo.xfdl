@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="WmsMobileComboPopup" width="400" height="450" titletext="Mobile Combo Popup" stepalign="center middle" accessibilityrole="listbox" scrollbartype="default indicator" onactivate="WmsMobileComboPopup_onactivate">
+    <Layouts>
+      <Layout height="450" width="400">
+        <Static id="stabg" taborder="1" left="0%" top="0%" right="0%" bottom="0%" background="gray" opacity="0.6" text="" onclick="Static00_onclick"/>
+        <ListBox id="list" taborder="1" left="30" top="100" right="30" bottom="100" onitemchanged="list_onitemchanged" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" scrollbartype="default indicator" scrollindicatorsize="16" scrollbartrackbarsize="16" scrollbarbaroutsize="16" scrollbarsize="16" scrollbarbarminsize="16" onitemclick="list_onitemclick">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn">CD#0001</Col>
+                <Col id="datacolumn">Item #0001</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0002</Col>
+                <Col id="datacolumn">Item #0002</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0003</Col>
+                <Col id="datacolumn">Item #0003</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0004</Col>
+                <Col id="datacolumn">Item #0004</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0005</Col>
+                <Col id="datacolumn">Item #0005</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0006</Col>
+                <Col id="datacolumn">Item #0006</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0007</Col>
+                <Col id="datacolumn">Item #0007</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0008</Col>
+                <Col id="datacolumn">Item #0008</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0009</Col>
+                <Col id="datacolumn">Item #0009</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0010</Col>
+                <Col id="datacolumn">Item #0010</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0011</Col>
+                <Col id="datacolumn">Item #0011</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0012</Col>
+                <Col id="datacolumn">Item #0012</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0013</Col>
+                <Col id="datacolumn">Item #0013</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0014</Col>
+                <Col id="datacolumn">Item #0014</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0015</Col>
+                <Col id="datacolumn">Item #0015</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0016</Col>
+                <Col id="datacolumn">Item #0016</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0017</Col>
+                <Col id="datacolumn">Item #0017</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0018</Col>
+                <Col id="datacolumn">Item #0018</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0019</Col>
+                <Col id="datacolumn">Item #0019</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">CD#0020</Col>
+                <Col id="datacolumn">Item #0020</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </ListBox>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+ *  SVC-WMS WmsMobileComboPopup Form
+ *  @FileName 	WmsMobileComboPopup.xfdl
+ *  @Creator 	SVC-WMS
+ *  @CreateDate 	2024/03/08
+ *  @Desction   
+ ************** 소스 수정 이력 ***********************************************
+ * Date					Modifier					Description
+ *******************************************************************************
+ * 2024/03/08			SVC-WMS 					최초생성
+ *******************************************************************************
+ */
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+ *******************************************************************************************************************************/
+// /* ★★★★★ 필수코딩 ★★★★★ */
+this.setEventHandler('onload', function(obj, e) {
+// 	let params = this.getMobileComboParameter(obj);
+// 	wms.trace( params );
+}, this);  // 필수코딩
+// /* /★★★★★ 필수코딩 ★★★★★ */
+
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+ *******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+ *******************************************************************************************************************************/
+this.getMobileComboParameter = function(form) {
+	if (!form.parent._variables) {
+		let pframe = form.parent, variables = pframe._variables;
+		form.parameter = {};
+		for (let i in variables) {
+			let pk = variables[i], pv = pframe[pk];
+			form.parameter[pk] = form.parent[pk];
+		}
+	}
+};
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ *******************************************************************************************************************************/
+this.WmsMobileComboPopup_onactivate = function(obj:nexacro.Form,e:nexacro.ActivateEventInfo)
+{
+	
+};
+
+this.Static00_onclick = function(obj:nexacro.Static,e:nexacro.ClickEventInfo)
+{
+	let popupdiv = this.parent;
+	// alert('opener.index:'+ popupdiv.opener.index);
+	
+	popupdiv.closePopup();
+};
+
+this.list_onitemchanged = function(obj:nexacro.ListBox,e:nexacro.ItemChangeEventInfo)
+{
+	let popupdiv = this.parent;
+	if (popupdiv && popupdiv.opener && popupdiv.opener.on_fire_onitemchanged) {
+		popupdiv.opener.set_index(e.postindex);
+		popupdiv.opener.on_fire_onitemchanged(
+			popupdiv.opener,
+			e.preindex,
+			e.pretext,
+			e.prevalue,
+			e.postindex,
+			e.posttext,
+			e.postvalue
+		);
+	}
+	popupdiv.closePopup();
+};
+
+this.list_onitemclick = function(obj:nexacro.ListBox,e:nexacro.ItemClickEventInfo)
+{
+	let popupdiv = this.parent;
+	if (popupdiv && popupdiv.opener && popupdiv.opener.on_fire_onitemclick) {
+		popupdiv.opener.set_index(e.index);
+		popupdiv.opener.on_fire_onitemclick(
+			popupdiv.opener,
+			e.index,
+			e.itemtext,
+			e.itemvalue
+		);
+	}
+	popupdiv.closePopup();
+};
+
+]]></Script>
+  </Form>
+</FDL>
