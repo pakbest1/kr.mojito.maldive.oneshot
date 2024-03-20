@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="GridHeadFilterPopup" width="240" height="300" titletext="Grid Head Filter" background="transparent">
+    <Layouts>
+      <Layout height="300" width="240">
+        <Div id="divForm" taborder="1" text="Div00" left="0" top="0" cssclass="div_popFilter" right="0" bottom="0" formscrollbartype="none" formscrolltype="none">
+          <Layouts>
+            <Layout>
+              <Div id="divTitl" taborder="0" left="0" top="0" height="50" right="0" cssclass="div_popFilter_header">
+                <Layouts>
+                  <Layout type="default" flexmainaxisalign="center">
+                    <Static id="Static00" taborder="0" text="Filter" left="30" height="34" cssclass="sta_popFilter_head" bottom="0" right="30"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Grid id="grdFilter" taborder="1" left="10" top="60" right="10" bottom="10" autofittype="col" binddataset="dsFilter" oncellclick="Grid00_oncellclick" scrollbarsize="8" scrollbarincbuttonsize="0" scrollbardecbuttonsize="0" cssclass="grd_filter" cursor="pointer" onenterdown="Div00_grdFilter_onenterdown" onheadclick="Div00_grdFilter_onheadclick" onkeyup="divForm_grdFilter_onkeydownup">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="24" band="left"/>
+                      <Column size="195"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="30" band="head"/>
+                      <Row size="30"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell displaytype="checkboxcontrol" edittype="checkbox" checkboxfalsevalue="0" checkboxtruevalue="1"/>
+                      <Cell col="1" tooltiptext="Filter" text="Value"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:chk" displaytype="checkboxcontrol" edittype="checkbox"/>
+                      <Cell col="1" text="bind:code"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsFilter">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="code" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+ *  SVC-WMS GridHeadFilterPopup Form
+ *  @FileName 	GridHeadFilterPopup.xfdl
+ *  @Creator 	SVC-WMS
+ *  @CreateDate 	2023/11/24
+ *  @Desction   
+ ************** 소스 수정 이력 ***********************************************
+ * Date					Modifier					Description
+ *******************************************************************************
+ * 2023/11/24			SVC-WMS 					최초생성
+ *******************************************************************************
+ */
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+ *******************************************************************************************************************************/
+// /* ★★★★★ 필수코딩 ★★★★★ */
+// this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+// {
+// 	this.gfnFormOnload(obj); /* ★★★★★ 꼭 넣어주세요. ★★★★★ */
+// 	
+// };
+// this.setEventHandler('onload', this.form_onload, this);  // 필수코딩
+// /* /★★★★★ 필수코딩 ★★★★★ */
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+ *******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+ *******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+ *******************************************************************************************************************************/
+this.filterapply = false;  // 필터 적용여부
+this.opcomps     = null ;  // 필터 리스트 데이터셋 생성 함수 호출 - Filter Openenr Grid
+
+// @ 전체체크 여부 확인
+this.isAllChecked = function(grid, chkCellIdx=0, chkCellNm='chk') {
+	let ds=grid.getBindDataset();
+	wms.eventOff(ds, grid);
+	
+	let isAll = true;
+	for (let i = 0; i < ds.rowcount; i++) {
+		isAll = isAll && '1'==ds.getColumn(i, chkCellNm);
+		if (!isAll) { break; }
+	}
+	
+	grid.setCellProperty('head', chkCellIdx, 'text', isAll ? '1' : '0');
+	wms.eventOn(ds, grid);
+	
+	return isAll;
+};
+
+// @ 전체체크 처리
+this.setAllChecked = function(grid, chkCellIdx=0, chkCellNm='chk') {
+	
+};
+
+/**
+ * @description 	   : 필터 리스트 데이터셋 생성 함수
+ * @param oGrid        : 필터 적용된 그리드 컴포넌트
+ * @param nCell        : 팝업이 호출된 Head Cell Index
+ * @param oConfig      : 필터 설정 정보
+ * @return             : 없음
+ */
+this.fnMakeFilterDataset = function(oGrid, nCell, oConfig) {
+	this.opcomps = {
+		grid      : oGrid,
+		cell      : nCell,
+		config    : oConfig,
+		configcell: oConfig.cells[nCell],
+	};
+	
+	var i, nRow, nFRow;
+	var oDs       = oGrid.getBindDataset();
+	var oCell     = oConfig.cells[nCell];
+	var nRowCount = oDs.getRowCountNF();
+	
+	var sColumnId = oCell.bind   ;
+	var sColumnKw = oCell.keyword;
+	var sColumnVl = oCell.value  , aColumnVl = sColumnVl ? sColumnVl.split(this.Grid_Filter_Separator) : [];
+	
+	var oFltrGrid = this.divForm.form.grdFilter, oFltrDs = oFltrGrid.getBindDataset();
+	
+	wms.eventOff(oGrid, oFltrGrid);
+	let isAll = aColumnVl.length == 0 || aColumnVl[0] == '{all}' ? true : false;  // 전체체크
+	if (oFltrGrid.setCellProperty('head', 1, 'edittype') == 'text') { oFltrGrid.setCellProperty('head', 1, 'text', sColumnKw ? sColumnKw : ''); }  // Filter Grid Head Text
+	
+	oFltrDs.clearData();
+	for (i=0; i<nRowCount; i++) {
+		let sValue = oDs.getColumnNF(i, sColumnId);   // 원본데이터셋의 데이터 가져오기
+		sValue = isNaN(sValue) ? sValue : Number(sValue).toString();
+		
+		nFRow = oFltrDs.findRow('code', sValue);  // 필터 리스트 데이터셋에 존재 여부 확인
+		if (nFRow == -1) {                        // 필터 리스트에 해당 컬럼 값이 없을 경우 데이터 추가
+			nFRow = oFltrDs.addRow();
+			oFltrDs.setColumn(nFRow, 'code', sValue);
+			
+			// 추가한 컬럼값이 기존 필터 스트링이 있을 경우
+			if (aColumnVl && aColumnVl.includes(sValue ? sValue : '{empty}')) {
+				oFltrDs.setColumn(nFRow, 'chk', '1');  // 체크박스 선택 상태로 변경
+			}   // if (arrPreValue)
+			else
+			if (isAll) {  // isAll=true 처리
+				oFltrDs.setColumn(nFRow, 'chk', '1');  // 체크박스 선택 상태로 변경
+			}   // if (isAll)
+			// trace( 'fltr row('+ nFRow +') > '+ JSON.stringify( oFltrDs.getRowObject(nFRow) ) +'<');
+		}   // if (nFRow == -1)
+		
+	}   // for
+	
+	oFltrDs.set_rowposition(-1);  // -1: 미선택, n번째 Row가 선택되도록 설정
+	this.isAllChecked(oFltrGrid);
+	wms.eventOn(oGrid, oFltrGrid);
+	
+//	oFltrGrid.set_binddataset( oFltrDs.name );
+	oFltrGrid.setBindDataset ( oFltrDs      );
+};
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ *******************************************************************************************************************************/
+// @ HeadClick : Check All
+this.Div00_grdFilter_onheadclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo) {
+	if (e.cell != 0) return;  //체크박스 아니면 return;
+	
+	let grid=obj, ds=obj.getBindDataset();
+	let chkCvl=grid.getCellProperty('head', e.cell, 'text'), chkNvl = '1'==chkCvl ? '0' : '1';
+
+	wms.eventOff(grid);
+	for (var i = 0; i < ds.rowcount; i++) {
+		ds.setColumn(i, 'chk', chkNvl);
+	}
+	if (grid.setCellProperty('head', 1, 'edittype') == 'text') { grid.setCellProperty('head', e.cell, 'text', chkNvl); }
+	
+	this.isAllChecked(obj);
+	wms.eventOn(grid);
+	
+	this.filterapply = true;
+};
+
+// @ Filter Grid Body Cell Click
+this.Grid00_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo) {
+	let fltrGrid = obj, fltrDs = fltrGrid.getBindDataset();
+	if (e.col != 0) {
+		let rChkCur = fltrDs.getColumn(fltrDs.rowposition, 'chk'), rChkNxt = '1'==rChkCur ? '0' : '1';
+		fltrDs.setColumn(fltrDs.rowposition, 'chk', rChkNxt);
+	}
+	this.isAllChecked(fltrGrid);
+	
+	this.filterapply = true;
+};
+
+// @ Filter Grid Head Cell Key Enter
+this.Div00_grdFilter_onenterdown = function(obj:nexacro.Grid,e:nexacro.GridEditEventInfo) {
+	let fltrGrid=obj, fltrDs=fltrGrid.getBindDataset(), fltrKeyword=e.value;
+	
+	this.opcomps.configcell.keyword = fltrKeyword;
+	fltrDs.filter(fltrKeyword ? 'code.indexOf("'+ fltrKeyword +'")>-1' : '');
+	fltrGrid.setBindDataset(fltrDs);
+	
+	e.fromobject.setFocus();
+	
+	this.filterapply = true;
+};
+
+this.divForm_grdFilter_onkeydownup = function(obj:nexacro.Grid,e:nexacro.KeyEventInfo)
+{
+	let fltrGrid=obj, fltrKeyword=this.opcomps.configcell.keyword=e.fromreferenceobject.value;
+	if (fltrKeyword) {
+		fltrDs.filter(fltrKeyword ? 'code.indexOf("'+ fltrKeyword +'")>-1' : '');
+		
+		fltrGrid.setCellProperty('head', e.cell, 'text', fltrKeyword);
+		fltrGrid.setBindDataset(fltrDs);
+		
+		e.fromobject.setFocus();
+		//trace('[this.opcomps.configcell.keyword:'+ this.opcomps.configcell.keyword +']');
+		
+		this.filterapply = true;
+	}
+};
+
+]]></Script>
+  </Form>
+</FDL>
