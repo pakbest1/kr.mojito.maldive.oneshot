@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+<Form id="formGridColumnSelect" width="300" height="415" titletext="그리드컬럼 보이기/숨김" onload="form_onload">
+	<Layouts>
+	  <Layout height="415" mobileorientation="landscape" width="300">
+		<Grid id="grd_list" taborder="0" left="20" top="20" height="325" right="20" binddataset="ds_filter" autofittype="col" griduserproperty="!sort,!rowfix,!colfix,!filter,!initial" uFunction="!contextmenu,!sort,!resize" cellsizingtype="row" extendsizetype="row" autosizingtype="row">
+		  <Formats>
+			<Format id="default">
+			  <Columns>
+				<Column size="35" band="left"/>
+				<Column size="225"/>
+			  </Columns>
+			  <Rows>
+				<Row size="30" band="head"/>
+				<Row size="30"/>
+			  </Rows>
+			  <Band id="head">
+				<Cell displaytype="checkbox" edittype="checkbox"/>
+				<Cell col="1" text="Columns" expandchar="popup.columnselect"/>
+			  </Band>
+			  <Band id="body">
+				<Cell displaytype="checkboxcontrol" edittype="checkbox" text="bind:chk"/>
+				<Cell col="1" text="bind:columnText"/>
+			  </Band>
+			</Format>
+		  </Formats>
+		</Grid>
+		<Button id="btn_ok" taborder="1" text="Ok" left="67" top="365" width="80" tabstop="true" uWord="popup.ok" cssclass="btn_POP_Btn" onclick="btn_ok_onclick" height="30"/>
+		<Button id="btn_close" taborder="2" text="Close" left="153" top="365" width="80" height="30" uWord="popup.close" cssclass="btn_POP_Cancel" onclick="btn_close_onclick"/>
+		<Grid id="grd00" taborder="3" left="400" top="8" width="280" height="345" visible="false"/>
+		<Static id="Static00" taborder="4" left="0" top="0" cssclass="sta_WF_guideRed" visible="false" text="h20" height="20" right="0"/>
+		<Static id="Static08" taborder="5" left="0" top="0" width="20" cssclass="sta_WF_guideRed" visible="false" bottom="0" text="w&#13;&#10;20"/>
+		<Static id="Static01" taborder="6" top="0" width="20" cssclass="sta_WF_guideRed" visible="false" bottom="0" text="w&#13;&#10;20" right="0"/>
+		<Static id="Static02" taborder="7" left="0" cssclass="sta_WF_guideRed" visible="false" text="h20" right="0" bottom="0" height="20"/>
+		<Static id="Static16" taborder="8" left="11" cssclass="sta_WF_guideBlue" visible="false" text="h5" right="4" height="20" top="345"/>
+	  </Layout>
+	</Layouts>
+	<Objects>
+	  <Dataset id="ds_filter">
+		<ColumnInfo>
+		  <Column id="columnText" type="STRING" size="256"/>
+		  <Column id="chk" type="STRING" size="256"/>
+		  <Column id="columnIndex" type="STRING" size="256"/>
+		  <Column id="body" type="STRING" size="256"/>
+		  <Column id="colSize" type="STRING" size="256"/>
+		  <Column id="orglSize" type="STRING" size="256"/>
+		</ColumnInfo>
+	  </Dataset>
+	  <Dataset id="ds_copy"/>
+	</Objects>
+	<Script type="xscript5.1"><![CDATA[/**
+ *  @Desction    그리드 컬럼 숨기기/보이기 공통팝업
+ */
+/************************************************************************************************
+* FORM 변수 선언 영역
+************************************************************************************************/
+this.tGrid;    // OBJECT 대상그리드
+this.tDataset; // OBJECT 대상데이터셋
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj);
+		
+	//초기값 설정
+	this.tGrid    = this.getOwnerFrame().pGrid;
+	this.tDataset = this.tGrid.getBindDataset();
+	
+	this.fnGetGridHeadInfo();
+	this.fnSetGridDefault ();  // compare grid setting
+};
+
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+
+/************************************************************************************************
+* CALLBACK 콜백 처리부분
+************************************************************************************************/
+
+/************************************************************************************************
+* 사용자 FUNCTION 영역
+************************************************************************************************/
+/**
+ * @description 비교그리드 세팅
+*/
+this.fnSetGridDefault = function()
+{
+	this.grd00.set_enableredraw(false);
+	
+	this.grd00._defaultFormats = this.tGrid._defaultFormats  ;
+	this.grd00.set_formats( this.tGrid.getCurFormatString() );
+	
+	this.grd00.set_enableredraw(true);
+};
+
+/**
+ * @description 그리드의 헤드정보를 받아와 콤보 세팅
+*/
+this.fnGetGridHeadInfo = function ()
+{
+	wms.eventOff(this.grd_list);
+	for( var i=0, iLen=this.tGrid.getFormatColCount(); i<iLen; i++) {
+		var columnText = '';//i + "번째 컬럼 ";
+		
+		for (var j=0, jLen=this.tGrid.getCellCount('head'); j<jLen; j++) {
+			var maxHeadRow = 0, row = this.tGrid.getCellProperty('head', j, 'row');
+			if (maxHeadRow < row) { maxHeadRow = row; }
+			
+			var nRow     = parseInt(this.tGrid.getCellProperty('head', j, "row" ));
+			var nCol     = parseInt(this.tGrid.getCellProperty('head', j, "col" ));
+			var headText =          this.tGrid.getCellProperty('head', j, "text");
+			if( nRow == maxHeadRow && nCol == i ) columnText += headText ? headText.replace(/[▼|▲]/g, '') : '';  // "[" + headText + "]";
+		}
+		
+		var nchk = 1, columnIndex = i, colSize = this.tGrid.getRealColSize(columnIndex);
+		if ( colSize == 0 ) { nchk = 0; }
+		
+		//if ( columnText == "[순번]" || columnText == "[상태]" ) continue;
+		//if ( columnText == "[0]" && this.tGrid.getCellProperty("Body", i, "text") == "bind:gridcmmcheck" ) continue;
+		
+		var nRow = this.ds_filter.addRow();
+		this.ds_filter.setColumn(nRow, "columnText" ,  columnText);
+		this.ds_filter.setColumn(nRow, "chk"        ,  		 nchk);
+		this.ds_filter.setColumn(nRow, "columnIndex", columnIndex);
+	}
+	wms.eventOn(this.grd_list);
+};
+
+/************************************************************************************************
+* 각 COMPONENT 별 EVENT 영역
+************************************************************************************************/
+this.btn_ok_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var nTarget =0;
+// 	var arr = this.tGrid.arrprop;
+// 	for(var n=0; n< arr.length; n++){
+// 		var tmp = this.tGrid.arrprop[n];
+// 		if( tmp == "checkbox" || tmp == "status" || tmp == "no" ){
+// 			nTarget += 1;
+// 		}
+// 	}
+	
+	wms.eventOff(this.tGrid);
+	let iCunt = this.ds_filter.getRowCount();
+	for (let i = 0; i<iCunt; i++) {
+		var nChk    = this.ds_filter.getColumn(i, 'chk');
+		var colidx  = nexacro.toNumber(this.ds_filter.getColumn(i, 'columnIndex'));
+		var nSize= 0;
+		if (nChk == 1) {
+			var orgCol = colidx - nTarget;
+			nSize = this.grd00.getFormatColSize(orgCol);
+		}
+		this.tGrid.setFormatColProperty(colidx, 'size', nSize );
+	}
+	wms.eventOn(this.tGrid);
+	this.close();
+};
+
+this.btn_close_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close();
+};
+]]></Script>
+</Form>
+</FDL>
