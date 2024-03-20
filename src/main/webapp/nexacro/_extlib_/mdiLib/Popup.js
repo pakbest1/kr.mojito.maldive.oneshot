@@ -50,110 +50,123 @@ pForm.gfnOpenPopup = function (sPopupId, sUrl, oArg, sPopupCallback, oOption)
 	var bShowStatus = false;	
 	var sPopupType 	= "modal";
 	var bLayered 	= false;
-	var nOpacity 	= 100;
+	var nOpacity 	= 1;
 	var bAutoSize 	= true;
 	var bResizable 	= false;
 	var sDragmovetype = "all";
-	var sModalType = "";
+	
+	// [2024.03.20] sg.park - WMS Mobile 처리용
+	var sOpenalign, sModaltype, sOverlaycolor;
 	
 	//callback함수(명)을 전달하지 않아도 기본명이 선언되어 있다면 기본명을 사용하도록 기본셋팅
 	var sPopupCallback = (this.gfnIsNull(sPopupCallback) && this["fnPopupCallback"]) ? "fnPopupCallback" : sPopupCallback;
 				
 	var sTitleText = "";
-	for (var key in oOption) 
-	{
-       if (oOption.hasOwnProperty(key)) 
-	   {
-            switch (key) 
-			{
-				case "popuptype":
-					sPopupType = oOption[key];
-					break;
-				case "top":				
-					nTop = parseInt(oOption[key]);
-					break;
-				case "left":
-					nLeft = parseInt(oOption[key]);
-					break;
-				case "width":
-					nWidth = parseInt(oOption[key]);
-					break;
-				case "height":
-					nHeight = parseInt(oOption[key]);
-					break;
-				case "layered":
-					bLayered = oOption[key];
-					break;
-				case "opacity":
-					nOpacity =oOption[key];
-					break;
-				case "autosize":
-					bAutoSize = oOption[key];
-					break;
-				case "resize":
-					if (""+oOption[key] == "true")	bResizable = true;		
-					break;
-				case "titlebar":
-					if (""+oOption[key] == "true")	bShowTitle = true;
-					break;
-				case "title":					
-					sTitleText = oOption[key];	
-					break;			
-				case "dragmovetype":					
-					sDragmovetype = oOption[key];	
-					break;						
-			}	
-        }
+	for (var key in oOption) {
+		if (!oOption.hasOwnProperty(key)) { continue; }
+		let val = oOption[key];
+		switch (key) {
+			case "popuptype":
+				sPopupType = val;
+				break;
+			case "top":
+				nTop = parseInt(val);
+				break;
+			case "left":
+				nLeft = parseInt(val);
+				break;
+			case "width":
+				nWidth = parseInt(val);
+				break;
+			case "height":
+				nHeight = parseInt(val);
+				break;
+			case "layered":
+				bLayered = val;
+				break;
+			case "opacity":
+				nOpacity =val;
+				break;
+			case "autosize":
+				bAutoSize = val;
+				break;
+			case "resize":
+				if (""+val == "true")	bResizable = true;
+				break;
+			case "titlebar":
+				if (""+val == "true")	bShowTitle = true;
+				break;
+			case "title":
+				sTitleText = val;
+				break;
+			case "dragmovetype":
+				sDragmovetype = val;
+				break;
+			
+			// [2024.03.20] sg.park - WMS Mobile 처리용
+			case 'modaltype'   : sModaltype    = val; break;
+			case 'openalign'   : sOpenalign    = val; break;
+			case 'overlaycolor': sOverlaycolor = val; break;
+			
+		}
     }
 	
-	var sOpenalign = "";
-	if (nLeft == -1 && nTop == -1) 
-	{
-		sOpenalign = "center middle";
-		sModalType = "center";
+	if (nLeft == -1 && nTop == -1 && !nexacro.isMobile) {
+		sOpenalign = sOpenalign||'center middle';
+		sModaltype = sModaltype||'center';
 		
-		if (system.navigatorname == "nexacro") 
-		{
-			var curX = objApp.mainframe.left;
-			var curY = objApp.mainframe.top;
-		}
-		else 
-		{
-			var curX = window.screenLeft;
-			var curY = window.screenTop;
+		let baseX = 0, baseY = 0;
+		if (system.navigatorname == "nexacro")  {
+			baseX = objApp.mainframe.left;
+			baseY = objApp.mainframe.top;
+		} else {
+			baseX = window.screenLeft;
+			baseY = window.screenTop ;
 		}
 		
-        nLeft = curX + (objApp.mainframe.width / 2) - Math.round(nWidth / 2);
-	    nTop  = curY + (objApp.mainframe.height / 2) - Math.round(nHeight / 2);
+		nLeft = baseX + (objApp.mainframe.width  / 2) - Math.round(nWidth  / 2);  // Center X
+		nTop  = baseY + (objApp.mainframe.height / 2) - Math.round(nHeight / 2);  // Center Y
+		
+// 		if (nexacro.isMobile) {  // [2024.03.20] sg.park - WMS Mobile 처리용
+// 			let mWidthGap = 20, mHeightGap = 58, ownf = this.getOwnerFrame();
+// 			nLeft   = baseX;
+// 			nTop    = baseY    +  mHeightGap  ;
+// 			
+// 			nWidth  = ownf.width  ;
+// 			nHeight = ownf.height - mHeightGap;
+// 			
+// 			bAutoSize     = false ;
+// 			bResizable    = false ;
+// 			bLayered      = false ;
+// 			sDragmovetype = 'none';
+// 			sOverlaycolor = 'rgba(0,0,0,0)';
+// 			sOpenalign    = 'center bottom';
+// 			sModalType    = 'center';
+// 			nOpacity      = 1;
+// 		}
 	}
-	else 
-	{
-		if (nexacro.getEnvironmentVariable("evQuickView") == "Y") 
-		{
-			if (system.navigatorname == "nexacro") 
-			{
+	else if (nexacro.isMobile) {
+		// [2024.03.20] sg.park - WMS Mobile 처리용
+	}
+	else {
+		if (nexacro.getEnvironmentVariable("evQuickView") == "Y") {
+			if (system.navigatorname == "nexacro") {
 				nTop = nTop + 30;
 			}
-		}
-		else 
-		{
+		} else {
 			// Left는 LeftFrame 넓이 + WorkFrame의 divWork Left + form 내 위치 값
 			nLeft = objApp.gvFrmLeft.form.width + 10 + nLeft;
 			
 			// Top은 TopFrmae의 높이 + WorkFrame의 divWork Top + form 내 위치 값
-			if (system.navigatorname == "nexacro") 
-			{
+			if (system.navigatorname == "nexacro") {
 				nTop = objApp.gvFrmTop.form.height + 36 + nTop + 30;
-			}
-			else 
-			{
+			} else {
 				nTop = objApp.gvFrmTop.form.height + 36 + nTop;
-			}		
+			}
 		}
 	}
 
-	if (nWidth == -1 || nHeight == -1) 
-	{
+	if (nWidth == -1 || nHeight == -1 || !nexacro.isMobile) {
 	    bAutoSize = true;
 	}
 	
@@ -209,7 +222,7 @@ pForm.gfnOpenPopup = function (sPopupId, sUrl, oArg, sPopupCallback, oOption)
 		var newChild = new nexacro.ChildFrame;
 		newChild.init(sPopupId, nLeft, nTop, nWidth, nHeight, null, null, sUrl);
 		
-		newChild._modaltype = sModalType;
+		newChild._modaltype = sModaltype;
 		newChild.set_dragmovetype(sDragmovetype);
 		newChild.set_showcascadetitletext(false);
 		newChild.set_showtitlebar(bShowTitle);      //titlebar는 안보임
@@ -220,6 +233,9 @@ pForm.gfnOpenPopup = function (sPopupId, sUrl, oArg, sPopupCallback, oOption)
 		newChild.set_openalign(sOpenalign);
 		newChild.set_layered(bLayered);
 		newChild.set_titlebarheight(40);
+		
+		if (nOpacity>-1  ) { newChild.set_opacity     (nOpacity     ); }
+		if (sOverlaycolor) { newChild.set_overlaycolor(sOverlaycolor); }
 			
 		if (sPopupType == "modalsync") 
 		{			
