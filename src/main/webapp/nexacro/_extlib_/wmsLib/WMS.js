@@ -41,6 +41,12 @@ if (Number) {
 	Wms.prototype = _pWms;
 	_pWms._type_name = 'Wms';
 	
+	// WMS Mobile 여부확인 함수
+	nexacro._isMobile = function() {
+		nexacro.isMobile = nexacro && nexacro._curscreentype ? nexacro._curscreentype.indexOf('mobile') > -1 : false;
+		return nexacro.isMobile;
+	}
+	
 	return Wms;
 })(nexacro);
 
