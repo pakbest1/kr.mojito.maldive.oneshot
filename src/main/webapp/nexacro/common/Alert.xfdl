@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="cmmAlert" width="450" height="210" titletext="알림창" onload="form_onload" background="transparent">
+    <Layouts>
+      <Layout height="210" mobileorientation="landscape" width="450">
+        <Div id="Div00" taborder="1" text="Div00" left="0" top="0" cssclass="div_modalPop" right="0" bottom="0">
+          <Layouts>
+            <Layout/>
+          </Layouts>
+        </Div>
+        <Static id="staTitle" taborder="1" text="Alert" left="24" top="20" height="24" cssclass="sta_popTitle" right="71"/>
+        <Button id="btnPopClose" taborder="2" text="Button00" top="12" width="40" height="40" cssclass="btn_popClose" right="12" onclick="btnClose_onclick"/>
+        <TextArea id="txtMsgContent" taborder="3" left="24" top="52" right="26" readonly="true" bottom="61" cssclass="txt_POP_Text"/>
+        <Div id="divBtnArea" taborder="4" text="Div00" left="24" right="26" height="34" bottom="17">
+          <Layouts>
+            <Layout type="horizontal" horizontalgap="10" flexmainaxisalign="center">
+              <Button id="btnOk" taborder="1" text="OK" fittocontents="width" height="34" width="77" onclick="btnOk_onclick" left="200" top="172" minwidth="70" maxwidth="" cssclass="btn_primary"/>
+              <Button id="btnClose" taborder="1" text="Close" height="34" width="77" onclick="btnClose_onclick" left="200" top="172" minwidth="70" maxwidth="" visible="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  PcMdi 프로젝트
+*  @FileName 	Alert.xfdl
+*  @Creator 	TOBESOFT
+*  @CreateDate 	2023/10/30
+*  @Desction
+************** 소스 수정 이력 ***********************************************
+* Date					Modifier					Description
+*******************************************************************************
+* 2023/10/30			TOBESOFT					최초생성
+*******************************************************************************
+*/
+
+/********************************************************************************
+ * Form 변수선언 영역
+ ********************************************************************************/
+this.fvOptSize;
+
+this.iconImgs = {
+	ERR: 'theme://images/ic_status_error.png',
+	WAN: 'theme://images/ic_status_warning.png',
+	SCC: 'theme://images/ic_status_success.png',
+	INF: 'theme://images/ic_status_info.png',
+};
+/********************************************************************************
+ * Form Event 영역
+ ********************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj); //필수함수
+
+	var oOwnFrame  = this.getOwnerFrame();
+	var sMsgId     = oOwnFrame.paramId;
+	var paramType  = oOwnFrame.paramType;
+	var sContents  = oOwnFrame.paramContents;
+	var sTitle     = oOwnFrame.paramTitle||oOwnFrame.titletext;
+	
+	this.fvOptSize = oOwnFrame.pOptSize;
+	
+	if (this.staTitle && sTitle) {
+		this.staTitle.set_text( sTitle );
+	}
+	if (this.imgLink) {
+		var sIconImg = this.iconImgs[ paramType ];
+		sIconImg = sIconImg ? sIconImg : this.iconImgs['INF'];
+		this.imgLink.set_image(sIconImg);
+	}
+	if (this.txtMsgContent && sContents) {
+		this.fnMsgSetting(sContents);
+	}
+	
+	this.divBtnArea.form.btnOk.setFocus();
+};
+
+/********************************************************************************
+ * 사용자 Function 영역
+ ********************************************************************************/
+/**
+* @description 메세지설정
+*/
+this.fnMsgSetting = function (sMsgContent)
+{
+	this.txtMsgContent.set_value(sMsgContent);
+};
+
+
+/********************************************************************************
+ * Component Event 영역
+ ********************************************************************************/
+/**
+* @description OK버튼이벤트
+*/
+this.btnOk_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close(true);
+};
+
+this.btnClose_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close(true);
+};
+]]></Script>
+  </Form>
+</FDL>
