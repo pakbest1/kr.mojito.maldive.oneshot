@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="ComCalFromTo" width="257" height="34" titletext="기간달력" onload="form_onload">
+    <Layouts>
+      <Layout height="34" width="257">
+        <Calendar id="cal_from" taborder="1" left="0" top="0" width="120" height="34" ondropdown="cal_ondropdown" dateformat="yyyy-MM-dd" popuptype="none" maxwidth=""/>
+        <Static id="S00" taborder="2" text="~" left="cal_from:4" top="0" width="9" height="34"/>
+        <Calendar id="cal_to" taborder="0" left="S00:4" top="0" height="34" popuptype="none" ondropdown="cal_ondropdown" dateformat="yyyy-MM-dd" width="120" maxwidth=""/>
+        <PopupDiv id="pdv_cal" text="PopupCalandar" visible="false" left="-110" top="36" width="499" height="309" cssclass="div_calPeriod">
+          <Layouts>
+            <Layout>
+              <Div id="Div00" taborder="0" text="Div00" left="0" top="0" width="499" height="309" cssclass="div_calPeriod">
+                <Layouts>
+                  <Layout>
+                    <Calendar id="pdv_calFrom" taborder="0" left="0" top="0" width="248" height="260" type="monthonly" headheight="40" popupsize="248 284" weekformat="Su Mo Tu We Th Fr Sa" showmonthspin="false" usetrailingday="false" cssclass="cal_calPeriod" autoselect="false" onlbuttonup="cal_onlbuttonup"/>
+                    <Calendar id="pdv_calTo" taborder="1" left="pdv_calFrom:1" top="0" width="248" height="260" type="monthonly" headheight="40" popupsize="248 284" weekformat="Su Mo Tu We Th Fr Sa" showmonthspin="false" usetrailingday="false" cssclass="cal_calPeriod" autoselect="false" onlbuttonup="cal_onlbuttonup"/>
+                    <Static id="Static00_00" taborder="2" left="pdv_calFrom:0" top="0" cssclass="sta_line_d8" width="1" height="260"/>
+                    <Button id="btnPsetToday" taborder="3" text="Today" left="20" top="270" width="80" height="25" cssclass="btn_scndry" uDateOffset="0" onclick="btnPset_onclick"/>
+                    <Button id="btnPsetYesterday" taborder="4" text="Yesterday" left="btnPsetToday:5" top="270" width="104" height="25" cssclass="btn_scndry" uDateOffset="-1" onclick="btnPset_onclick"/>
+                    <Button id="btnPsetLast7Days" taborder="5" text="Last 7 Days" left="btnPsetYesterday:5" top="270" width="115" height="25" cssclass="btn_scndry" uDateOffset="-7" onclick="btnPset_onclick"/>
+                    <Button id="btn_pdvConfirm" taborder="6" text="OK" top="270" width="61" height="25" cssclass="btn_primary" right="20" onclick="pdv_cal_btn_pdvConfirm_onclick"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  @MenuPath    Comm > Comm_CalFromTo (공통 기간달력)
+*  @FileName 	Comm_CalFromTo.xfdl 
+*  @Creator 	Education
+*  @CreateDate 	2019.01.10
+*  @Desction    기간달력
+************** 소스 수정 이력 *************************************************** 
+*  date          		Modifier                Description
+*******************************************************************************
+*  2019.01.10     	Education 	               최초 생성 
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnload(obj);  // 초기화[필수]
+	
+// 	if (this.parent && this.parent.binddataset) {
+// 		this.parent.redraw = function() {
+// 			this.fnCalendarFormOnload();
+// 		};
+// 	}
+// 	
+	this.fnCalendarFormOnload(); // 달력초기화
+};
+this.setEventHandler('onload', this.form_onload, this);  /* ★★★ 필수함수 ★★★ */
+
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분
+ ************************************************************************************************/
+
+ /************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+this._c = null;
+this.initComponents = function() {
+	this._c = {
+		_bk      : 'bind:',
+		
+		//ownFrame : this.getOwnerFrame(),
+		//owfForm   : this.getOwnerFrame().form.divWorkPage.form,
+		owfDs     : null,  // this._c.owfDs
+		
+		owfFKey   : null,  // this._c.owfFKey
+		owfTKey   : null,  // this._c.owfTKey
+		owfFrom   : null,
+		owfTo     : null,
+		
+		fparent    : this.parent,
+// 		bind       : {
+// 			bindform   : this.parent.parent,
+// 			binddataset: this.parent.parent[ this.parent.binddataset ],
+// 			bindfrom   : 
+// 		},
+		
+		tfBindDs : null,
+		tfFromCol: null,
+		tfToCol  : null,
+		tpFrom   : null,
+		tpTo     : null,
+		
+		ds       : this.ds_date,
+		
+		fcalFrom : this.cal_from,
+		fcalTo   : this.cal_to,
+		
+		calPopdiv: this.pdv_cal,
+		pcalFrom : this.pdv_cal.form.Div00.form.pdv_calFrom,
+		pcalTo   : this.pdv_cal.form.Div00.form.pdv_calTo,
+		
+		pbtn_pdvConfirm: this.pdv_cal.form.Div00.form.btn_pdvConfirm,
+		
+		// preset
+		bpsToday : this.pdv_cal.form.Div00.form.btnPsetToday,
+		bpsYsday : this.pdv_cal.form.Div00.form.btnPsetYesterday,
+		bpsL7day : this.pdv_cal.form.Div00.form.btnPsetLast7Days,
+	};
+	
+	let ownframe = this.getOwnerFrame();
+	if (ownframe && ownframe.opener) {  // Popup
+		this._c.owfForm = ownframe.form;
+	} else
+	if (   ownframe
+		&& ownframe.form
+		&& ownframe.form.divWorkPage
+		&& ownframe.form.divWorkPage.form
+	) {
+		this._c.owfForm = ownframe.form.divWorkPage.form;
+	} else {
+		this._c.owfForm = null;
+	}
+	
+	return this._c;
+};
+
+/**
+* @description 달력초기화
+*/
+this.fnCalendarFormOnload = function() {
+	let c = this_c = this.initComponents();
+	if (!c.fparent) { return; }
+	
+	let regx = new RegExp(c._bk, 'g');
+	let bind = c.bind = {  // 바인딩 확인
+		//rowpos     : -1,
+		cssclass   : c.fparent.cssclass   ,
+		bindform   : c.owfForm            ,
+		binddataset: c.fparent.binddataset,
+		bindfrom   : c.fparent.bindfrom   ,
+		bindto     : c.fparent.bindto     ,
+	};
+	Object.assign(bind, {
+		binddatasetobj: bind.bindform[bind.binddataset],
+		bindfromcol   : bind.bindfrom.replace(regx, ''),
+		bindtocol     : bind.bindto  .replace(regx, ''),
+	});
+	
+	if (bind && bind.binddatasetobj && !this[bind.binddataset]) {
+		this[bind.binddataset] = bind.binddatasetobj;
+		let bicomps = [];
+		// Dataset From
+		if (bind.bindfrom) {
+			c.fcalFrom = this.cal_from;
+			c.pcalFrom = this.pdv_cal.form.Div00.form.pdv_calFrom;
+			bicomps.push( { id: 'biClForm', dataset: bind.binddatasetobj, column: bind.bindfromcol, ui: c.fcalFrom, path: 'cal_from' } );
+			bicomps.push( { id: 'biPcForm', dataset: bind.binddatasetobj, column: bind.bindfromcol, ui: c.pcalFrom, path: 'pdv_cal.form.Div00.form.pdv_calFrom' } );
+		}
+		
+		// Dataset To
+		if (bind.bindto) {
+			c.fcalTo = this.cal_to;
+			c.pcalTo = this.pdv_cal.form.Div00.form.pdv_calTo;
+			bicomps.push( { id: 'biClTo', dataset: bind.binddatasetobj, column: bind.bindtocol, ui: c.fcalTo, path: 'cal_to' } );
+			bicomps.push( { id: 'biPcTo', dataset: bind.binddatasetobj, column: bind.bindtocol, ui: c.pcalTo, path: 'pdv_cal.form.Div00.form.pdv_calTo' } );
+		}
+		
+		if (bicomps && bicomps.length>0) {
+			for (let i in bicomps) {
+				let comp = bicomps[i];
+				
+				if (comp.ui) {
+					comp.ui.setInnerDataset(comp.dataset);
+					comp.ui.set_datecolumn(comp.column);
+				}   // if (comp.ui)
+				
+				if (!this[comp.id]) {
+					let bi = new BindItem(comp.id, comp.path, 'value', comp.dataset.name, comp.column);
+					this.addChild(bi.name, bi);
+					bi.bind();
+				}   // if (!this[comp.id])
+			}   // for (let i in bicomps)
+		}   // if (bicomps && bicomps.length>0)
+		
+	}
+	
+	// 스타일 상속
+	if (bind.cssclass) {
+		c.fcalFrom.set_cssclass( bind.cssclass );
+		c.fcalTo  .set_cssclass( bind.cssclass );
+	}
+
+};
+
+this.getTodayYmd = function() {
+	let dDate = new Date(), sDate =
+		(dDate.getFullYear()  ).toString()                 +
+		(dDate.getMonth   ()+1).toString().padLeft(2, '0') +
+		(dDate.getDate    ()  ).toString().padLeft(2, '0')
+	;
+	return sDate;
+}
+
+this.getDateOffset = function(sDate, nOffset) {
+	if (!sDate) { sDate = this.getTodayYmd(); }
+	
+    var nYear  = parseInt(sDate.substr(0, 4));
+    var nMonth = parseInt(sDate.substr(4, 2));
+    var nDate  = parseInt(sDate.substr(6, 2)) + nOffset;
+
+    return this.MakeDate(nYear, nMonth, nDate);
+}
+
+this.MakeDate = function(nYear, nMonth, nDate) {
+    var objDate = new Date(nYear, nMonth-1, nDate);
+
+    var sYear   = (objDate.getFullYear()  ).toString();
+    var sMonth  = (objDate.getMonth   ()+1).toString().padLeft(2, '0');
+    var sDate   = (objDate.getDate    ()  ).toString().padLeft(2, '0');
+
+    return sYear + sMonth + sDate;
+}
+
+this.btnPset_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo) {
+	if (!obj.uDateOffset) { return; }
+	let iOffset = parseInt(obj.uDateOffset, 10), sTo=this.getTodayYmd(), sFrom=this.getDateOffset(sTo, iOffset);
+	
+// 	this._c.owfDs.setColumn(0, this._c.owfFKey, sFrom);
+// 	this._c.owfDs.setColumn(0, this._c.owfTKey, sTo  );
+// 	this.fnCalendarFormOnload();
+	
+	//
+	let bind = this._c.bind;
+	if (bind) {
+		let dataset = bind.binddatasetobj, ridx = dataset.rowposition;
+		dataset.setColumn(ridx, bind.bindfromcol, sFrom);
+		dataset.setColumn(ridx, bind.bindtocol  , sTo  );
+	}
+};
+
+
+/**
+* @description from 일자 갖고오기
+*/
+this.fn_getFromDate = function ()
+{	
+	var sDate = this._c.fcalFrom.value;
+	return sDate;
+};
+
+/**
+* @description from일자 세팅하기
+*/
+this.fn_setFromDate = function (sDate)
+{
+	this._c.fcalFrom.set_value(sDate);
+};
+
+/**
+* @description to 일자 갖고오기
+*/
+this.fn_getToDate = function ()
+{
+	var sDate = this._c.fcalTo.value;
+	return sDate;
+};
+
+/**
+* @description to일자 세팅하기
+*/
+this.fn_setToDate = function (sDate)
+{
+	this._c.fcalTo.set_value(sDate);
+};
+
+/**
+* @description enable true/false세팅
+*/
+this.fn_setEnable = function (bValue)
+{
+	this._c.fcalFrom.set_enable(bValue);
+	this._c.fcalTo  .set_enable(bValue);
+};
+
+/**
+* @description readonly true/false세팅
+*/
+this.fn_setReadonly = function (bValue)
+{
+	this._c.fcalFrom.set_readonly(bValue);
+	this._c.fcalTo  .set_readonly(bValue);
+};
+
+/**
+* @description Essential true/false세팅
+*/
+this.fn_setEssential  = function (bValue)
+{
+	// CSS Essential 클래스설정
+	let sCssclass = bValue ? 'essential' : '';
+	this._c.fcalFrom.set_cssclass(sCssclass);
+	this._c.fcalTo  .set_cssclass(sCssclass);
+};
+
+ /************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ ************************************************************************************************/
+/**
+* @description Calendar_ondropdown 이벤트 시 popDiv컴포넌트 띄우기
+*/
+this.cal_ondropdown = function(obj:nexacro.Calendar,e:nexacro.EventInfo)
+{
+	this.fnCalendarFormOnload();
+	
+	var ds = obj.getInnerDataset();
+	if (ds) {
+		ds.setColumn(0, this._c.fcalFrom.datecolumn, this._c.fcalFrom.value);
+		ds.setColumn(0, this._c.fcalTo  .datecolumn, this._c.fcalTo  .value);
+	}
+	
+	this._c.calPopdiv.trackPopupByComponent(this._c.fcalFrom, -100, obj.height);  // -100
+};
+
+/**
+ *  Calendar From onlbuttonup 이벤트
+ */
+this.calFrom_onlbuttonup = function(obj:nexacro.Calendar,e:nexacro.MouseEventInfo)
+{
+	
+};
+
+/**
+ *  Calendar From onlbuttonup 이벤트
+ */
+this.cal_onlbuttonup = function(obj:nexacro.Calendar,e:nexacro.MouseEventInfo)
+{
+	trace('cal_onlbuttonup');
+	let c = this._c, bind = c.bind, pform = c.bind.bindform, pdataset = pform[bind.binddataset], evtcomps = ['pdv_calFrom', 'pdv_calTo'];
+	
+	if (e.fromreferenceobject instanceof nexacro._DatePickerDayItemControl) {  // day
+		let efrom = e.fromobject, efref = e.fromreferenceobject, edate = efref._year + ((efref._month.length==1?'0':'')+efref._month) + ((efref.text.length==1?'0':'')+efref.text);
+		
+		let vals = { from: c.pcalFrom.value, to: c.pcalTo.value };
+		if (efrom.id == evtcomps[0]) { vals.from = edate; }
+		if (efrom.id == evtcomps[1]) { vals.to   = edate; }
+		vals.min = Math.min(vals.from, vals.to)+'';
+		vals.max = Math.max(vals.from, vals.to)+'';
+		
+		if (vals.from != vals.min || vals.to != vals.max) {
+			c.fcalFrom.set_value(vals.min);
+			c.pcalFrom.set_value(vals.min);
+			c.pcalFrom.updateToDataset();
+			
+			c.fcalTo.set_value(vals.max);
+			c.pcalTo.set_value(vals.max);
+			c.pcalTo.updateToDataset();
+			
+			e.preventDefault();
+		}
+		pdataset.set_enableevent(false);
+		pdataset.setColumn(pdataset.rowposition, bind.bindfromcol, vals.min);  // if (vals.from != vals.min) { }
+		pdataset.setColumn(pdataset.rowposition, bind.bindtocol  , vals.max);  // if (vals.to   != vals.max) { }
+		pdataset.set_enableevent(true);
+		
+		//wms.trace(JSON.stringify( vals ));
+	}
+	//wms.trace( pdataset );
+};
+
+this.cal_ondayclick = function(obj:nexacro.Calendar,e:nexacro.CalendarDayClickEventInfo)
+{
+	trace('cal_ondayclick');
+	let c = this._c, bind = c.bind, pform = c.bind.bindform, pdataset = pform[bind.binddataset], evtcomps = ['pdv_calFrom', 'pdv_calTo'];
+	//if (pdataset && evtcomps.includes(obj.name)) {
+		let vals = { from: c.pcalFrom.value, to: c.pcalTo.value };
+		if (e.fromobject.name == evtcomps[0]) { vals.from = e.date; }
+		if (e.fromobject.name == evtcomps[1]) { vals.to   = e.date; }
+		vals.min = Math.min(vals.from, vals.to)+'';
+		vals.max = Math.max(vals.from, vals.to)+'';
+		
+		pdataset.set_enableevent(false);
+		pdataset.setColumn(pdataset.rowposition, bind.bindfromcol, vals.min);  // if (vals.from != vals.min) { }
+		pdataset.setColumn(pdataset.rowposition, bind.bindtocol  , vals.max);  // if (vals.to   != vals.max) { }
+		pdataset.set_enableevent(true);
+		
+		if (e.fromobject.name == evtcomps[0]) { e.date = vals.min ; }
+		if (e.fromobject.name == evtcomps[1]) { e.date = vals.max ; }
+		
+	//}
+	
+	wms.trace(JSON.stringify( vals ));
+	wms.trace( pdataset );
+	
+};
+// 			c.pcalFrom.set_value(vals.min);
+// 			c.pcalTo  .set_value(vals.max);
+// 			c.fcalFrom.set_value(vals.min);
+// 			c.fcalTo  .set_value(vals.max);
+			//e.preventDefault();
+
+/**
+* @description 기간 popDiv컴포넌트 확인(적용) 버튼 클릭
+*/
+this.pdv_cal_btn_pdvConfirm_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sFromVal = this._c.pcalFrom.value, sToVal = this._c.pcalTo  .value;
+	
+//  	this._c.fcalFrom.set_value(sFromVal);
+//  	this._c.fcalTo  .set_value(sToVal  );
+	this.fnCalendarFormOnload();
+	this.fn_callback(sFromVal, sToVal);
+	this._c.calPopdiv.closePopup();
+};
+
+this.fn_callback = function(sFromValue, sToValue)
+{
+	var sCallback = this.parent.callbackfunc;
+	if (!this.gfnIsNull(sCallback)) {	
+		try {
+			var svcId = this.parent.name;
+			this.lookupFunc(sCallback).call(svcId, sFromValue, sToValue);
+		} catch(e) {
+			//trace("함수 실행시 오류가 발생했습니다.");
+		}
+	}
+};
+/**
+* @description 기간 popDiv컴포넌트 닫기
+*/ 
+this.pdv_cal_btn_pdvCancle_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this._c.calPopdiv.closePopup();
+};
+
+]]></Script>
+    <Objects>
+      <Dataset id="dsDate">
+        <ColumnInfo>
+          <Column id="dtFrom" type="STRING" size="256"/>
+          <Column id="dtTo" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="pdv_cal.form.Div00.form.pdv_calFrom" propid="value" datasetid="dsDate" columnid="dtFrom"/>
+      <BindItem id="item1" compid="cal_from" propid="value" datasetid="dsDate" columnid="dtFrom"/>
+    </Bind>
+  </Form>
+</FDL>
