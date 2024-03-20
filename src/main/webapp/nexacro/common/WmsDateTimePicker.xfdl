@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="WmsDateTimePicker" width="258" height="345" titletext="WMS DateTime Picker" onactivate="WmsDateTimePicker_onactivate" onsetfocus="WmsDateTimePicker_onsetfocus">
+    <Layouts>
+      <Layout height="345" width="258">
+        <Div id="divBg" taborder="0" text="Div00" left="0" top="0" cssclass="div_modalPop" right="0" bottom="0">
+          <Layouts>
+            <Layout>
+              <Calendar id="calDt" taborder="0" left="5" top="0" width="248" height="260" type="monthonly" headheight="40" popupsize="248 284" weekformat="Su Mo Tu We Th Fr Sa" showmonthspin="false" usetrailingday="false" cssclass="cal_calPeriod" autoselect="false" onlbuttonup="calDt_onlbuttonup" dateformat="yyyy-MM-dd"/>
+              <Spin id="spnTmHH" taborder="1" left="12" top="299" width="70" height="34" value="23" max="23" min="0" onspin="divBg_spnTmHH_onspin" type="normal" circulation="true"/>
+              <Spin id="spnTmMI" taborder="2" left="spnTmHH:10" top="299" width="70" height="34" value="23" min="0" max="59" circulation="true" onspin="divBg_spnTmMI_onspin"/>
+              <Spin id="spnTmSS" taborder="3" top="299" height="34" value="23" width="70" max="59" min="0" left="spnTmMI:10" circulation="true" onspin="divBg_spnTmSS_onspin"/>
+              <Static id="Static00" taborder="4" text="Hour" left="16" top="276" width="70" height="13"/>
+              <Static id="Static00_00" taborder="5" text="Second" left="181" top="276" width="70" height="13"/>
+              <Static id="Static00_00_00" taborder="6" text="Minute" left="99" top="276" width="70" height="13"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Bind>
+      <BindItem id="item0" compid="divBg.form.calDt" propid="value" datasetid="dsDate" columnid="dtFrom"/>
+    </Bind>
+    <Script type="xscript5.1"><![CDATA[/**
+ *  SVC-WMS WmsDateTimePicker Form
+ *  @FileName 	WmsDateTimePicker.xfdl
+ *  @Creator 	SVC-WMS
+ *  @CreateDate 	2024/03/18
+ *  @Desction   
+ ************** 소스 수정 이력 ***********************************************
+ * Date					Modifier					Description
+ *******************************************************************************
+ * 2024/03/18			SVC-WMS 					최초생성
+ *******************************************************************************
+ */
+/*******************************************************************************************************************************
+ * FORM 변수 선언 영역
+*******************************************************************************************************************************/
+this.comps = {
+	dt: this.divBg.form.calDt  ,
+	hh: this.divBg.form.spnTmHH,
+	mi: this.divBg.form.spnTmMI,
+	ss: this.divBg.form.spnTmSS,
+};
+
+/*******************************************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose..)
+ *******************************************************************************************************************************/
+/* ★★★★★ 필수코딩 ★★★★★ */
+this.setEventHandler('onload', this.form_onload = function(obj, e)  // obj:nexacro.Form,e:nexacro.LoadEventInfo
+{
+	//this.gfnFormOnload(obj); /* ★★★★★ 꼭 넣어주세요. ★★★★★ */
+	
+	let _default_mask = '99';
+	this.divBg.form.spnTmHH._default_mask = _default_mask;
+	this.divBg.form.spnTmMI._default_mask = _default_mask;
+	this.divBg.form.spnTmSS._default_mask = _default_mask;
+	
+	this.WmsDateTimePicker_onsetfocus(obj);
+}, this);  // 필수코딩
+/* /★★★★★ 필수코딩 ★★★★★ */
+
+/*******************************************************************************************************************************
+ * Transaction 서비스호출 처리 영역
+ *******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * Callback 영역 (Transaction, popup, message..)
+ *******************************************************************************************************************************/
+
+/*******************************************************************************************************************************
+ * 사용자 Function 영역
+ *******************************************************************************************************************************/
+this.dtSep = '-';
+this.getDateTimeInfo = function() {
+	let cs = this.comps;
+	let dttm = {
+		dt: cs.dt.text  || this.gfnGetTodayDate('yyyy'+ this.dtSep +'MM'+ this.dtSep +'dd'),
+		hh: cs.hh.value || '00',
+		mi: cs.mi.value || '00',
+		ss: cs.ss.value || '00',
+	};
+	trace('getDateTimeInfo : '+ JSON.stringify( dttm ));
+	
+	return [	new String(dttm.dt).padLeft(4, '0'), [
+				new String(dttm.hh).padLeft(2, '0'),
+				new String(dttm.mi).padLeft(2, '0'),
+				new String(dttm.ss).padLeft(2, '0'),
+	].join(':')].join(' ')
+};
+
+/*******************************************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ *******************************************************************************************************************************/
+this.WmsDateTimePicker_onsetfocus = function(obj:nexacro.Form,e:nexacro.SetFocusEventInfo)
+{
+	trace('WmsDateTimePicker_onsetfocus');
+	let s = this.parent.datetime, d = this.gfnGetTodayDateTime('yyyy'+ this.dtSep +'MM'+ this.dtSep +'dd HH')+':00:00';
+	if (!s) { s = d; }
+	let dttm = {
+		dt: s.substring( 0, 10),
+		hh: s.substring(11, 13),
+		mi: s.substring(14, 16),
+		ss: s.substring(17, 19),
+	};
+	
+	let c = this.comps;
+	c.dt.set_value(dttm.dt.replace(new RegExp(this.dtSep, 'g'), ''));
+	c.hh.set_value(dttm.hh);
+	c.mi.set_value(dttm.mi);
+	c.ss.set_value(dttm.ss);
+	
+	this.getDateTimeInfo();
+};
+
+this.calDt_onlbuttonup = function(obj:nexacro.Calendar,e:nexacro.MouseEventInfo)
+{
+	trace('calDt_onlbuttonup');
+	this.getDateTimeInfo();
+};
+
+this.divBg_spnTmHH_onspin = function(obj:nexacro.Spin,e:nexacro.SpinEventInfo)
+{
+	trace('Div00_spnTmHH_onspin');
+	this.getDateTimeInfo();
+};
+
+this.divBg_spnTmMI_onspin = function(obj:nexacro.Spin,e:nexacro.SpinEventInfo)
+{
+	trace('divBg_spnTmMI_onspin');
+	this.getDateTimeInfo();
+};
+
+this.divBg_spnTmSS_onspin = function(obj:nexacro.Spin,e:nexacro.SpinEventInfo)
+{
+	trace('divBg_spnTmSS_onspin');
+	this.getDateTimeInfo();
+};
+
+]]></Script>
+    <Objects>
+      <Dataset id="ds_dttm">
+        <ColumnInfo>
+          <Column id="dt" type="STRING" size="256"/>
+          <Column id="yyyy" type="STRING" size="256"/>
+          <Column id="mm" type="STRING" size="256"/>
+          <Column id="dd" type="STRING" size="256"/>
+          <Column id="tm" type="STRING" size="256"/>
+          <Column id="hh24" type="STRING" size="256"/>
+          <Column id="mi" type="STRING" size="256"/>
+          <Column id="ss" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>
