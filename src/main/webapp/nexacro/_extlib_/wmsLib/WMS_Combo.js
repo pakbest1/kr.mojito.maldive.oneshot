@@ -18,7 +18,7 @@ var pForm = nexacro.Form.prototype, pCombo = nexacro.Combo.prototype;
 // 초기화
 pCombo.initComponent = function(form) {
 	this.parentform = form;
-	if (nexacro._curscreentype && nexacro._curscreentype.indexOf('mobile') > -1) { this.initMobileComponent(form); }
+	if (nexacro.isMobile) { this.initMobileComponent(form); }
 	else
 	if (this.uSelecttype && this.uSelecttype === 'M') { this.initMultiComboComponent(form); }
 };
@@ -29,7 +29,7 @@ pCombo.initComponent = function(form) {
  ************************************************************************/
 // Mobile Combo Component Initialize
 pCombo.initMobileComponent = function(_form) {
-	if (!nexacro._curscreentype || !(nexacro._curscreentype.indexOf('mobile') > -1)) { return; }
+	if (!nexacro.isMobile) { return; }
 	let form = this.parentform||this._getForm(), combo = this;
 	
 	// 2. PopupDiv 생성
@@ -106,7 +106,7 @@ pCombo.MobileCombo_InitPopupDiv = function() {
 };
 
 pCombo.MobileCombo_OnDropdown = function(obj, e) {  // obj:nexacro.Combo, e:nexacro.EventInfo)
-	if (!nexacro._curscreentype || !(nexacro._curscreentype.indexOf('mobile') > -1)) { return; }
+	if (!nexacro.isMobile) { return; }
 	
 	let form = obj.parentform, combo = obj, dset = combo.getInnerDataset();  // , popupdiv = combo.popupdiv;  // , oGrid = obj.popupdiv.grid;
 	if (!combo || !dset || dset.getRowCount()<1 || !combo.visible || !combo.enable || combo.readonly) { return; }
