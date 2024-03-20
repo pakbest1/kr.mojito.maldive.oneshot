@@ -25,6 +25,7 @@ pForm._popupWms = {
 	userConfig : { id: 'WMS_userConfig' , name: 'WMS_userConfig' , url: 'common::COM006.xfdl'  	   },
 	printer : { id: 'WMS_Printer' , name: 'WMS_Printer' , url: 'common::COM008.xfdl'  	   },
 	noticeList : { id: 'WMS_noticeList' , name: 'WMS_noticeList' , url: 'PC_SYS::SYS054.xfdl'  	   },
+	noticeUserList : { id: 'WMS_noticeUserList' , name: 'WMS_noticeUserList' , url: 'PC_SYS::SYS056.xfdl'  	   },
 	mLoc : { id: 'WMS_mLoc' , name: 'WMS_mLoc' , url: 'common::MOM702.xfdl'  	   },
 	mMat : { id: 'WMS_mMat' , name: 'WMS_mMat' , url: 'common::MOM703.xfdl'  	   },
 	mPrt : { id: 'WMS_mPrt' , name: 'WMS_mPrt' , url: 'common::COM008.xfdl'  	   },
@@ -39,7 +40,7 @@ pForm.popupWmsOpen = function(oRole, oArgs, fClbk, sTitle, oOpts) {
 		_clbk = 'function' == typeof fClbk ? fClbk : ('string'  == typeof fClbk && this[fClbk] ? this[fClbk] : _clbk);
 	}
 	
-	var oPopOpts = Object.assign({}, {
+	var oOpts = Object.assign({}, {
 		//  top:100
 		//, left:100			//top,left 지정하지않음 center,middle 적용
 		//, width:700
@@ -53,11 +54,31 @@ pForm.popupWmsOpen = function(oRole, oArgs, fClbk, sTitle, oOpts) {
 	}, oOpts);
 	
 	if (oArgs) {
-		oArgs['pTitletext'] = oPopOpts['title'];
-		
+		oArgs['pTitletext'] = oOpts['title'];
 		oArgs._parametersArray = Object.keys(oArgs);
 	}
-	this.gfnOpenPopup(oRole.id, oRole.url, oArgs, _clbk, oPopOpts);
+	
+	if (nexacro.isMobile) {  // [2024.03.20] sg.park - WMS Mobile 처리용
+		let mWidthGap = 20, mHeightGap = 58, ownf = this.getOwnerFrame();
+		let baseX = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.left : window.screenLeft;
+		let baseY = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.top  : window.screenTop ;
+		
+		Object.assign(oOpts, {
+			left        : baseX,
+			top         : baseY + mHeightGap,
+			width       : ownf.width,
+			height      : ownf.height - mHeightGap,
+			autosize    : false,
+			resizable   : false,
+			layered     : false,
+			dragmovetype: 'none',
+			overlaycolor: 'rgba(0,0,0,0)',
+			openalign   : 'center bottom',
+			modalType   : 'center',
+			opacity     : 1,
+		});
+	}
+	this.gfnOpenPopup(oRole.id, oRole.url, oArgs, _clbk, oOpts);
 }
 
 pForm.popupWmsModalessOpen = function(oRole, oArgs, fClbk, sTitle, oOpts) {
@@ -97,6 +118,9 @@ pForm.popupWmsPrinter  = function(oArgs, fClbk, sTitle) {
 };
 pForm.popupWmsNoticeList  = function(oArgs, fClbk, sTitle) {
 	this.popupWmsOpen(this._popupWms.noticeList, oArgs, oArgs.callback||fClbk, sTitle);
+};
+pForm.popupWmsNoticeUserList  = function(oArgs, fClbk, sTitle) {
+	this.popupWmsOpen(this._popupWms.noticeUserList, oArgs, oArgs.callback||fClbk, sTitle);
 };
 pForm.popupWmsPrt  = function(oArgs, fClbk, sTitle) {
 	this.popupWmsOpen(this._popupWms.mPrt, oArgs, oArgs.callback||fClbk, sTitle);
@@ -159,9 +183,33 @@ pForm.alert = pForm._alert = function(ctnt, aArg, tile, typ) {
 	var sActs = 'Alert', sClbk = sActs+'Clbk';
 	var oArgs = { paramContents: strMsg, paramType: this.gfnIsNull(typ) ? 'INF' : typ, paramButton: [], paramRtn: []};
 	//var oArgs = { paramContents: this.gfnIsNull(sMsg) ? ctnt : sMsg, paramType: this.gfnIsNull(typ) ? 'INF' : typ, paramButton: [], paramRtn: []};
-	var oOpts = { titlebar: false, title: this.gfnIsNull(tile) ? 'Alert' : tile };
+	var oOpts = { titlebar: false, title: this.gfnIsNull(tile) ? 'Alert' : tile, url: 'common::Alert.xfdl', };
 	this[sClbk] = function(sPopId, rtn) {};
-	this.gfnOpenPopup('Alert', 'common::Alert.xfdl', oArgs, sClbk, oOpts);
+	
+// 	let url = 'common::Alert.xfdl';
+// 	//let url = nexacro.isMobile ? 'common::M_Alert.xfdl' : 'common::Alert.xfdl'; // Desktop / Mobile 기능화면 분리
+	if (nexacro.isMobile) {  // [2024.03.20] sg.park - WMS Mobile 처리용
+		let mWidthGap = 20, mHeightGap = 58, ownf = this.getOwnerFrame();
+		let baseX = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.left : window.screenLeft;
+		let baseY = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.top  : window.screenTop ;
+		
+		Object.assign(oOpts, {
+			url         : 'common::M_Alert.xfdl',
+			left        : baseX,
+			top         : baseY + mHeightGap,
+			width       : ownf.width  - (mWidthGap*2),
+			height      : 210, //ownf.height - mHeightGap,
+			autosize    : false,
+			resizable   : false,
+			layered     : false,
+			dragmovetype: 'none',
+			overlaycolor: 'rgba(0,0,0,0.5)',
+			openalign   : 'center middle',
+			modalType   : 'center',
+			opacity     : 1,
+		});
+	}
+	this.gfnOpenPopup('Alert', oOpts.url, oArgs, sClbk, oOpts);
 };
 pForm.alertError                   = function(ctnt, aArg, tile) { this.alert(ctnt, aArg, tile||'Error'  , 'ERR'); };
 pForm.alertWarning                 = function(ctnt, aArg, tile) { this.alert(ctnt, aArg, tile||'Warning', 'WAN'); };
@@ -175,7 +223,7 @@ pForm.alertSuccess = pForm.alertOk = function(ctnt, aArg, tile) { this.alert(ctn
  * @return N/A
  * @example [1] this.confirm('이거 출력되면 퇴근가능?', null, '물어보살', function(sPopId, sReturn){ if('Y'==sReturn) { alert('Ye~~~~'); } else if('N'==sReturn) { alert('Nooo~~~~'); } else { alert('그래도 대답은 합시다'); } });
  */
-pForm._confirm = function(ctnt, aArg, tile, typ, clbk, aBtnNms, aBtnCds) {
+pForm.confirm = pForm._confirm = function(ctnt, aArg, tile, typ, clbk, aBtnNms, aBtnCds) {
 	aBtnNms = aBtnNms||['Yes', 'No'];
 	aBtnCds = aBtnCds||['Y', 'N'];
 	
@@ -185,7 +233,7 @@ pForm._confirm = function(ctnt, aArg, tile, typ, clbk, aBtnNms, aBtnCds) {
 	
 	var sActs = 'Confirm', sClbk = sActs+'Clbk';
 	var oArgs = { paramContents: strMsg, paramType: this.gfnIsNull(typ) ? 'INF' : typ, paramButton: aBtnNms, paramRtn: aBtnCds};
-	var oOpts = { titlebar: false, title: this.gfnIsNull(tile) ? 'Confirm' : tile };
+	var oOpts = { url: 'common::Confirm.xfdl', titlebar: false, title: this.gfnIsNull(tile) ? 'Confirm' : tile, };
 	
 	if (clbk && 'string' == typeof clbk && 'function' == typeof this[clbk]) {
 		sClbk = clbk;
@@ -195,9 +243,31 @@ pForm._confirm = function(ctnt, aArg, tile, typ, clbk, aBtnNms, aBtnCds) {
 	} else {
 		sClbk = null;
 	}
-	this.gfnOpenPopup('Confirm', 'common::Confirm.xfdl', oArgs, sClbk, oOpts);
+	
+	if (nexacro.isMobile) {  // [2024.03.20] sg.park - WMS Mobile 처리용
+		let mWidthGap = 20, mHeightGap = 58, ownf = this.getOwnerFrame();
+		let baseX = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.left : window.screenLeft;
+		let baseY = system.navigatorname == 'nexacro' ? nexacro.getApplication().mainframe.top  : window.screenTop ;
+		
+		Object.assign(oOpts, {
+			url         : 'common::Confirm.xfdl',
+			left        : baseX,
+			top         : baseY + mHeightGap,
+			width       : ownf.width  - (mWidthGap*2),
+			height      : 210, //ownf.height - mHeightGap,
+			autosize    : false,
+			resizable   : false,
+			layered     : false,
+			dragmovetype: 'none',
+			overlaycolor: 'rgba(0,0,0,0.5)',
+			openalign   : 'center middle',
+			modalType   : 'center',
+			opacity     : 1,
+		});
+	}
+	this.gfnOpenPopup('Confirm', oOpts.url, oArgs, sClbk, oOpts);
 };
-pForm.confirm        = function(ctnt, aArg, tile, clbk) { this._confirm(ctnt, aArg, tile, 'INF', clbk); };
+pForm.confirmInfo    = function(ctnt, aArg, tile, clbk) { this._confirm(ctnt, aArg, tile, 'INF', clbk); };
 pForm.confirmCaution = function(ctnt, aArg, tile, clbk) { this._confirm(ctnt, aArg, tile, 'WAN', clbk); };
 //pForm.confirmWarning = function(ctnt, aArg, clbk) { this._confirm(ctnt, 'Warning', 'WAN', clbk); };
 //pForm.confirmSuccess = pForm.confirmOk = function(ctnt, aArg, tile, clbk) { this._confirm(ctnt, aArg, tile, 'SCC', clbk); };
@@ -264,7 +334,7 @@ pForm.gfn_ImsiAddDomain = function(strMsgCd, nFRow)
 {
 	var objApp = nexacro.getApplication();
 	if(this.gfnIsNull(strMsgCd)) return;
-	var objData = this.all["_tds_Domain"];
+	var objData = this.all ? this.all["_tds_Domain"] : null;
 	if(objData == null) return;
 	if(strMsgCd.substr(0,2) != "ch") return;
 	//if(objData.findRow("MESSAGE_CD", strMsgCd) >= 0) return;
