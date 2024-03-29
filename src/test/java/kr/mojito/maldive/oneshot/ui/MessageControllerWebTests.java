@@ -38,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import kr.mojito.maldive.oneshot.MojitoMaldiveWebApplication;
+import kr.mojito.maldive.oneshot.bootstrap.MojitoMaldiveWebApplication;
 
 /**
  * A Basic Spring MVC Test for the Sample Controller"
