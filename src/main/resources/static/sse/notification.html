@@ -12,6 +12,9 @@
 	<button> Send </button>
 </form>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link href="/js/plugin/toast/jquery.toast.min.css" crossorigin="anonymous" media="all" rel="stylesheet" />
+<script src="/js/plugin/toast/jquery.toast.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 let userid = window._userid = '1000';
 
@@ -44,10 +47,10 @@ log('EventSource { '+ esrc.url +', withCredentials:'+ esrc.withCredentials +', r
 
 esrc.log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
 esrc.addEventListener('notify', (e)=>{
+	$.toast({ text: e.data });
 	this.log('notify: '+ e.data);
 });
 </script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 $('form[name=notification]').on('submit', (e)=>{
 	let f = e.target;
@@ -64,6 +67,7 @@ $('form[name=notification]').on('submit', (e)=>{
 // 		},
 	});
 	f.message.value = '';
+	f.message.focus();
 	return false;
 });
 </script>

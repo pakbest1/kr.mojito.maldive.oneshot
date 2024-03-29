@@ -14,7 +14,7 @@ public class EmitterRepository {
 
 	private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-	public Map<Long, SseEmitter> list() {
+	public Map<Long, SseEmitter> all() {
 		return emitters;
 	}
 
