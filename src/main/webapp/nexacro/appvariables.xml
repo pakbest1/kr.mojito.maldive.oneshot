@@ -683,14 +683,14 @@
           <Col id="MODULE_CD">SP</Col>
           <Col id="SEARCH_SCOPE_CD">10</Col>
           <Col id="DISPLAY_PATH">개발표준 &gt; 공통 기능 &gt; Grid Copy &amp; Paste</Col>
-          <Col id="PRGM_PATH">grid::gridCopyPaste.xfdl</Col>
+          <Col id="PRGM_PATH">grid::gridClipboard.xfdl</Col>
           <Col id="PRGM_NM">Grid Clipboard</Col>
           <Col id="PARM"/>
           <Col id="CMMNBTNADD">0</Col>
           <Col id="CMMNBTNSAVE">0</Col>
           <Col id="CMMNBTNDEL">0</Col>
           <Col id="CMMNBTNSEARCH">1</Col>
-          <Col id="PRGM_FILE_NM">gridCopyPaste.xfdl</Col>
+          <Col id="PRGM_FILE_NM">gridClipboard.xfdl</Col>
           <Col id="MENU_ORDR">4</Col>
           <Col id="CMMNBTNINIT">0</Col>
           <Col id="CMMNBTNPRINT">0</Col>
