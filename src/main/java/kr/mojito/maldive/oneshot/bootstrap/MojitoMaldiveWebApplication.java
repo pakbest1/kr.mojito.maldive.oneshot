@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package kr.mojito.maldive.oneshot;
+package kr.mojito.maldive.oneshot.bootstrap;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
 import kr.mojito.maldive.oneshot.message.InMemoryMessageRespository;
 import kr.mojito.maldive.oneshot.message.MessageRepository;
 import kr.mojito.maldive.oneshot.message.model.Message;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+//@Configuration
+//@ComponentScan
+//@EnableAutoConfiguration
+@SpringBootApplication(scanBasePackages="kr.mojito.maldive.oneshot")
 public class MojitoMaldiveWebApplication {
 
 	@Bean
@@ -48,6 +47,7 @@ public class MojitoMaldiveWebApplication {
 			}
 		};
 	}
+
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(MojitoMaldiveWebApplication.class, args);
