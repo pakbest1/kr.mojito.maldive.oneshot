@@ -69,7 +69,7 @@ public class NotificationService {
 		emitterRepository.save(userId, emitter);
 
 		emitter.onCompletion(() -> emitterRepository.deleteById(userId));
-		emitter.onTimeout(() -> emitterRepository.deleteById(userId));
+		emitter.onTimeout   (() -> emitterRepository.deleteById(userId));
 
 		return emitter;
 	}
