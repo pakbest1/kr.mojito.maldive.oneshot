@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> EventSource - notification </title>
+</head>
+<body>
+<div id="log"></div>
+<form name="notification" action="/notification/notify" onsubmit="return false;">
+	<input type="hidden" name="userid"  />
+	<input type="text"   name="message" />
+	<button> Send </button>
+</form>
+
+<script type="text/javascript">
+let userid = window._userid = '1004';
+
+getRequestParameter = ()=>{
+	let o = {}; for(const [key, value] of new URLSearchParams(location.search).entries()) { o[key] = value; }
+	return o;
+};
+let ro = getRequestParameter(), frm = document.querySelector('form[name=notification]');
+if (frm && ro) {
+	if (ro && ro.userid ) { frm.userid .value = userid = ro.userid ; }
+	if (ro && ro.message) { frm.message.value =          ro.message; }
+}
+
+</script>
+<script type="text/javascript">
+log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
+
+const esrc = new EventSource('/notification/subscribe/'+ userid, null);  // { withCredentials: true, }
+Object.assign(esrc, {
+	onopen: async ()=>{
+		log("EventSource onopen.");
+	},
+	onmessage: (e)=>{
+		log("EventSource onmessage.");
+	},
+	onerror: async ()=>{
+		log("EventSource onerror failed.");
+	},
+});
+log('EventSource { '+ esrc.url +', withCredentials:'+ esrc.withCredentials +', readyState:'+ esrc.readyState +' }');
+
+esrc.log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
+esrc.addEventListener('notify', (e)=>{
+	this.log('notify: '+ e.data);
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+$('form[name=notification]').on('submit', (e)=>{
+	let f = e.target;
+	f.userid.value = userid;
+
+	$.ajax({
+		type: 'POST',
+		url : f.action,
+		data: $(f).serialize(),  // dataType: 'text/json',
+// 		success: (d, r, s)=>{
+// 			let args = arguments;
+// 			console.log(JSON.stringify( args ));
+// 			f.message.value = '';
+// 		},
+	});
+	f.message.value = '';
+	return false;
+});
+</script>
+</body>
+</html>

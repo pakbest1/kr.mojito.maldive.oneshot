@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>sse</title>
+</head>
+<body>
+<div id="log"></div>
+<script>
+let sse = new EventSource('/events', { withCredentials: true, });
+EventSource.prototype.log = (s)=>{let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s);};
+Object.assign(sse, {
+	onopen: () => {
+		this.log("EventSource onopen.");
+	},
+	onmessage: (e) => {
+		this.log("EventSource onmessage.");
+	},
+	onerror: () => {
+		this.log("EventSource onerror failed.");
+	},
+});
+console.log('EventSource { url:'+ sse.url +', withCredentials:'+ sse.withCredentials +', readyState:'+ sse.readyState +' }');
+
+sse.log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
+sse.addEventListener('ping', (e)=>{
+	this.log(e.data);
+});
+</script>
+</body>
+</html>

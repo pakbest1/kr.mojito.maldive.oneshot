@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resizable Table</title>
+<style>
+	/* 테이블 스타일 설정 */
+	table {
+		border-collapse: collapse;
+		table-layout: fixed; /* 테이블의 너비를 고정으로 설정하여 사용자가 조절할 수 있도록 함 */
+	}
+	th, td {
+		border: 1px solid black; /* 테두리 설정 */
+		padding: 8px; /* 셀 안의 내용과 테두리 사이의 간격 설정 */
+		text-align: left; /* 텍스트 정렬 설정 */
+	}
+	th {
+		background-color: #f2f2f2; /* 테이블 헤더의 배경색 설정 */
+	}
+</style>
+</head>
+<body>
+
+<table id="resizableTable">
+	<thead>
+		<tr>
+			<th>Header 1</th>
+			<th>Header 2</th>
+			<th>Header 3</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Data 1</td>
+			<td>Data 2</td>
+			<td>Data 3</td>
+		</tr>
+		<tr>
+			<td>Data 4</td>
+			<td>Data 5</td>
+			<td>Data 6</td>
+		</tr>
+		<!-- 추가적인 행 추가 -->
+	</tbody>
+</table>
+
+<script>
+	const resizableTable = document.getElementById('resizableTable');
+	let isResizing = false;
+	let startY, startHeight, rowIndex;
+
+	// 테이블 행의 크기를 조절하는 이벤트 처리
+	function initResize(event) {
+		isResizing = true;
+		startY = event.clientY;
+		startHeight = parseInt(document.defaultView.getComputedStyle(event.target).height);
+		rowIndex = event.target.parentNode.rowIndex;
+	}
+
+	function resize(event) {
+		if (isResizing) {
+			const height = startHeight + (event.clientY - startY);
+			resizableTable.rows[rowIndex].style.height = height + 'px';
+		}
+	}
+
+	function stopResize() {
+		isResizing = false;
+	}
+
+	// 테이블의 각 행에 이벤트 리스너 추가
+	for (let i = 0; i < resizableTable.rows.length; i++) {
+		resizableTable.rows[i].addEventListener('mousedown', initResize);
+	}
+
+	window.addEventListener('mousemove', resize);
+	window.addEventListener('mouseup', stopResize);
+</script>
+
+</body>
+</html>
