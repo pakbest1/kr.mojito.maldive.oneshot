@@ -14,6 +14,10 @@ public class EmitterRepository {
 
 	private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
+	public Map<Long, SseEmitter> list() {
+		return emitters;
+	}
+
 	public void save(Long id, SseEmitter emitter) {
 		emitters.put(id, emitter);
 	}

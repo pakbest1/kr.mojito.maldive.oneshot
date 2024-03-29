@@ -1,6 +1,7 @@
 package kr.mojito.maldive.oneshot.notification;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,20 @@ public class NotificationService {
 	}
 
 	public <T> void notify(Long userId, T data, String comment, String type) {
-		sendToClient(userId, data, comment, type);
+		//sendToClient(userId, data, comment, type);
+		notifyAll("notify", data, comment);
 	}
 	public void notify(Long userId, Object data, String comment) {
-		sendToClient(userId, data, comment);
+		// sendToClient(userId, data, comment);
+		notifyAll("notify", data, comment);
+	}
+
+	private <T> void notifyAll(String type, T data, String comment) {
+		Map<Long, SseEmitter> emitters = emitterRepository.list();
+		for (Map.Entry<Long, SseEmitter> entry : emitters.entrySet()) {
+			SseEmitter emitter = entry.getValue();
+			sendToClient(emitter, data, comment, type);
+		}
 	}
 
 	private void sendToClient(Long userId, Object data, String comment) {
@@ -50,15 +61,18 @@ public class NotificationService {
 
 	private <T> void sendToClient(Long userId, T data, String comment, String type) {
 		SseEmitter emitter = emitterRepository.get(userId);
+		sendToClient(emitter, data, comment, type);
+	}
+	private <T> void sendToClient(SseEmitter emitter, T data, String comment, String type) {
 		if (emitter != null) {
 			try {
 				emitter.send(SseEmitter.event()
-						.id(String.valueOf(userId))
+						//.id(String.valueOf(userId))
 						.name(type)
 						.data(data)
 						.comment(comment));
 			} catch (IOException e) {
-				emitterRepository.deleteById(userId);
+				//emitterRepository.deleteById(userId);
 				emitter.completeWithError(e);
 			}
 		}

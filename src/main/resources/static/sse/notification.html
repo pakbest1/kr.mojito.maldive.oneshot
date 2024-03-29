@@ -15,16 +15,15 @@
 <script type="text/javascript">
 let userid = window._userid = '1004';
 
-getRequestParameter = ()=>{
+getParameterObject = ()=>{
 	let o = {}; for(const [key, value] of new URLSearchParams(location.search).entries()) { o[key] = value; }
 	return o;
 };
-let ro = getRequestParameter(), frm = document.querySelector('form[name=notification]');
+let frm = document.querySelector('form[name=notification]'), ro = getParameterObject();
 if (frm && ro) {
 	if (ro && ro.userid ) { frm.userid .value = userid = ro.userid ; }
 	if (ro && ro.message) { frm.message.value =          ro.message; }
 }
-
 </script>
 <script type="text/javascript">
 log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
