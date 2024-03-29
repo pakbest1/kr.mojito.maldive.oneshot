@@ -13,7 +13,7 @@
 </form>
 
 <script type="text/javascript">
-let userid = window._userid = '1004';
+let userid = window._userid = '1000';
 
 getParameterObject = ()=>{
 	let o = {}; for(const [key, value] of new URLSearchParams(location.search).entries()) { o[key] = value; }
@@ -67,5 +67,12 @@ $('form[name=notification]').on('submit', (e)=>{
 	return false;
 });
 </script>
+<ul>
+	<li><a href="./notification.html?userid=1001" target="_blank">userid: 1001</a></li>
+	<li><a href="./notification.html?userid=1002" target="_blank">userid: 1002</a></li>
+	<li><a href="./notification.html?userid=1003" target="_blank">userid: 1003</a></li>
+	<li><a href="./notification.html?userid=1004" target="_blank">userid: 1004</a></li>
+	<li><a href="./notification.html?userid=1005" target="_blank">userid: 1005</a></li>
+</ul>
 </body>
 </html>
