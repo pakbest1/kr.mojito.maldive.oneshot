@@ -7,15 +7,25 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-initWSock = ()=> {
-	let ws = new WebSocket('/ws');
-	ws.addEventListener('open'   , (e)=>{
-		console.log('[open:]');
+let w = window, _wsock_ = null;
+initWSock = (()=> {
+	let url = location.origin.replace(/http:/g, 'ws:')+ '/ws';
+	_wsock_ = w._wsock_ = new WebSocket(url);
+	Object.assign(ws, {
+		onopen   : (e)=>{
+			console.log('[onopen:]');
+		},
+		onclose  : (e)=>{
+			console.log('[onclose:]');
+		},
+		onerror  : (e)=>{
+			console.log('[onerror:]');
+		},
+		onmessage: (e)=>{
+			console.log('[onmessage:'+ e.data +']');
+		},
 	});
-	ws.addEventListener('message', (e)=>{
-		console.log('[message:'+ e.data +']');
-	});
-};
+})();
 </script>
 </body>
 </html>
