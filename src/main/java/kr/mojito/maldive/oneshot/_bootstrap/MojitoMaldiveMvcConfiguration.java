@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.bootstrap;
+package kr.mojito.maldive.oneshot._bootstrap;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

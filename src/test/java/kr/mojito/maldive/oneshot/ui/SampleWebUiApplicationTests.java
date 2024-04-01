@@ -34,7 +34,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.mojito.maldive.oneshot.bootstrap.MojitoMaldiveWebApplication;
+import kr.mojito.maldive.oneshot._bootstrap.MojitoMaldiveWebApplication;
 
 /**
  * Basic integration tests for demo application.

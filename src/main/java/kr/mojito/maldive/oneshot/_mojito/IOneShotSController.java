@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot._abstract;
+package kr.mojito.maldive.oneshot._mojito;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
