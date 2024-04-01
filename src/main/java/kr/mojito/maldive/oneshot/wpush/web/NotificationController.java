@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.notification;
+package kr.mojito.maldive.oneshot.wpush.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import kr.mojito.maldive.oneshot.utils.MojitoUtil;
+import kr.mojito.maldive.oneshot.wpush.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

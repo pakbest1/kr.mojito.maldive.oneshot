@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.notification;
+package kr.mojito.maldive.oneshot.wpush.service;
 
 import java.io.IOException;
 import java.util.Map;
@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import kr.mojito.maldive.oneshot.wpush.repository.EmitterRepository;
+import kr.mojito.maldive.oneshot.wpush.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -80,6 +82,7 @@ public class NotificationService {
 		return emitter;
 	}
 
+	@SuppressWarnings("unused")
 	private User validUser(Long userId) {
 		return userRepository.findById(userId);  // .orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
 	}

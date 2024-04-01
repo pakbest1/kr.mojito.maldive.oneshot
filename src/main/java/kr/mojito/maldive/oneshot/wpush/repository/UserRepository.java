@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.notification;
+package kr.mojito.maldive.oneshot.wpush.repository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
