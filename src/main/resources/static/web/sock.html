@@ -5,13 +5,30 @@
 <title> Messaging - WebSocket </title>
 </head>
 <body>
+
+<ul>
+	<li><a href="./sock.html?userid=1001" target="_blank">userid: 1001</a></li>
+	<li><a href="./sock.html?userid=1002" target="_blank">userid: 1002</a></li>
+	<li><a href="./sock.html?userid=1003" target="_blank">userid: 1003</a></li>
+	<li><a href="./sock.html?userid=1004" target="_blank">userid: 1004</a></li>
+	<li><a href="./sock.html?userid=1005" target="_blank">userid: 1005</a></li>
+</ul>
+
+<div id="log"></div>
+<form name="notification" action="/notification/notify" onsubmit="return false;">
+	<input type="hidden" name="userid"  />
+	<input type="text"   name="message" />
+	<button> Send </button>
+</form>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 let w = window, _wsock_ = null;
 initWSock = (()=> {
 	let url = location.origin.replace(/http:/g, 'ws:')+ '/ws';
 	_wsock_ = w._wsock_ = new WebSocket(url);
-	Object.assign(ws, {
+	Object.assign(_wsock_, {
 		onopen   : (e)=>{
 			console.log('[onopen:]');
 		},
@@ -27,5 +44,6 @@ initWSock = (()=> {
 	});
 })();
 </script>
+
 </body>
 </html>

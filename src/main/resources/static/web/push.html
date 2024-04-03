@@ -5,6 +5,15 @@
 <title> Messaging - Server Sent Event </title>
 </head>
 <body>
+
+<ul>
+	<li><a href="./notification.html?userid=1001" target="_blank">userid: 1001</a></li>
+	<li><a href="./notification.html?userid=1002" target="_blank">userid: 1002</a></li>
+	<li><a href="./notification.html?userid=1003" target="_blank">userid: 1003</a></li>
+	<li><a href="./notification.html?userid=1004" target="_blank">userid: 1004</a></li>
+	<li><a href="./notification.html?userid=1005" target="_blank">userid: 1005</a></li>
+</ul>
+
 <div id="log"></div>
 <form name="notification" action="/notification/notify" onsubmit="return false;">
 	<input type="hidden" name="userid"  />
@@ -71,12 +80,6 @@ $('form[name=notification]').on('submit', (e)=>{
 	return false;
 });
 </script>
-<ul>
-	<li><a href="./notification.html?userid=1001" target="_blank">userid: 1001</a></li>
-	<li><a href="./notification.html?userid=1002" target="_blank">userid: 1002</a></li>
-	<li><a href="./notification.html?userid=1003" target="_blank">userid: 1003</a></li>
-	<li><a href="./notification.html?userid=1004" target="_blank">userid: 1004</a></li>
-	<li><a href="./notification.html?userid=1005" target="_blank">userid: 1005</a></li>
-</ul>
+
 </body>
 </html>
