@@ -26,7 +26,8 @@ public class MojitoMaldiveWebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(final InterceptorRegistry registry) {
 		registry
-			.addInterceptor(new NoCacheInterceptor());
+			.addInterceptor(new NoCacheInterceptor())
+		;
 
 	}
 
