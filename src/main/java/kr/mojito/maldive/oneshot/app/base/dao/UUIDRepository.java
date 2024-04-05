@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.dao;
+package kr.mojito.maldive.oneshot.app.base.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -21,9 +21,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 
-import kr.mojito.maldive.oneshot.message.InMemoryMessageRespository;
-import kr.mojito.maldive.oneshot.message.MessageRepository;
-import kr.mojito.maldive.oneshot.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.repository.MessageRepository;
+import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageRespository;
 
 //@Configuration
 //@ComponentScan

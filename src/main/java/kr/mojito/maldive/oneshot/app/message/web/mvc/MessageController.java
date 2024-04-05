@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package kr.mojito.maldive.oneshot.ui.mvc;
+package kr.mojito.maldive.oneshot.app.message.web.mvc;
 
 import javax.validation.Valid;
 
@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.mojito.maldive.oneshot.message.MessageRepository;
-import kr.mojito.maldive.oneshot.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.repository.MessageRepository;
 
 /**
  * @author Rob Winch

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package kr.mojito.maldive.oneshot.message;
+package kr.mojito.maldive.oneshot.app.message.repository.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import kr.mojito.maldive.oneshot.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.model.Message;
+import kr.mojito.maldive.oneshot.app.message.repository.MessageRepository;
 
 /**
  * @author Dave Syer

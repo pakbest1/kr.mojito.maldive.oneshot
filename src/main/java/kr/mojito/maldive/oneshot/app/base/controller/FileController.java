@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.controller;
+package kr.mojito.maldive.oneshot.app.base.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,28 +22,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-//import com.nexacro.uiadapter.spring.core.data.NexacroResult;
-
-import kr.mojito.maldive.oneshot.base.service.FileService;
-import kr.mojito.maldive.oneshot.base.vo.FileVO;
+import kr.mojito.maldive.oneshot.app.base.service.FileService;
+import kr.mojito.maldive.oneshot.app.base.vo.FileVO;
 
 @Controller
 @RequestMapping("/file")
 public class FileController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	
+
+
 	@PostMapping("/upload")
 	public Object upload(MultipartFile file) throws Exception {
 		logger.debug("execute upload");
-		
-		
+
+
 		return null;
 	}
-	
+
 	@Autowired
 	private FileService fileService;
-	
+
 	@GetMapping("/{fid}")
 	public ResponseEntity<?> file(@PathVariable String fid, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		FileVO fileVO = new FileVO(fid);
@@ -51,12 +49,12 @@ public class FileController {
 		if (fileVO == null) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		File file = fileVO.getFile();
 		if (file == null || !file.exists()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		MediaType mediaType = null;  mediaType = mediaType!=null ? mediaType : MediaType.APPLICATION_OCTET_STREAM;
 		InputStreamResource isr = new InputStreamResource(new FileInputStream(fileVO.getFile()));
 		return ResponseEntity
@@ -67,5 +65,5 @@ public class FileController {
 			.body(isr)
 		;
 	}
-	
+
 }

@@ -11,19 +11,36 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package kr.mojito.maldive.oneshot.message;
+package kr.mojito.maldive.oneshot.app.message.model;
 
-import kr.mojito.maldive.oneshot.message.model.Message;
+import java.util.Calendar;
+
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 /**
  * @author Rob Winch
  */
-public interface MessageRepository {
+@NoArgsConstructor
+@Getter
+@Setter
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Message {
 
-	Iterable<Message> findAll();
+	private Long id;
 
-	Message save(Message message);
+	@NonNull @NotEmpty(message = "Message is required.")
+	private String text;
 
-	Message findMessage(Long id);
+	@NonNull @NotEmpty(message = "Summary is required.")
+	private String summary;
+
+	private Calendar created = Calendar.getInstance();
 
 }

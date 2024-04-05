@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.dao;
+package kr.mojito.maldive.oneshot.app.base.dao;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ public class BaseDao { // extends SqlSessionTemplate {
 //			PersistenceExceptionTranslator exceptionTranslator) {
 //		super(sqlSessionFactory, executorType, exceptionTranslator);
 //	}
-	
+
 	public <E> List<E> selectList(String sql, Object parameter) {
-		
+
 		return null;
 	}
 }

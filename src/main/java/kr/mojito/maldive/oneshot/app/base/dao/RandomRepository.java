@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.dao;
+package kr.mojito.maldive.oneshot.app.base.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -56,7 +56,7 @@ public class RandomRepository {
 	}
 
 	private final String randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
-	
+
 	public String getPartitionBy(int iDigit, String sPartitionBy) {
 		String s = null;
 
@@ -69,7 +69,7 @@ public class RandomRepository {
 				sb.append(randomChars.charAt(iCharAt));
 			}
 			s = sb.toString();
-			
+
 		} while(sRepo.contains(s));
 		save(s);  // file에 기록
 

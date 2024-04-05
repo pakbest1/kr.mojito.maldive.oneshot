@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.vo;
+package kr.mojito.maldive.oneshot.app.base.vo;
 
 import java.io.File;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class FileVO {
-	
+
 	public FileVO(String fid) {
 		this(null, null, fid, null, null);
 	}
@@ -28,24 +28,24 @@ public class FileVO {
 		this.fpid  = fpid;
 		this.fpseq = fpseq;
 		this.fid   = fid;
-		
+
 		this.name  = name;
 		this.setPath(path);  // this.path  = path;
 	}
 
 	private String fpid ;
 	private String fpseq;
-	
+
 	private String fid;
-	
+
 	private String name;
 	//private String original;
-	
+
 
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	private String path;
-	
+
 	public String getPath() {
 		if (null==path && null!=file && file.exists()) {
 			try { path = file.getCanonicalPath(); } catch (Exception e) { path = null; }
@@ -59,7 +59,7 @@ public class FileVO {
 		}
 		this.path = path;
 	}
-	
+
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	private File   file;

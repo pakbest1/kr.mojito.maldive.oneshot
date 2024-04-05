@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.base.service.impl;
+package kr.mojito.maldive.oneshot.app.base.service.impl;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import kr.mojito.maldive.oneshot.base.dao.BaseDao;
-import kr.mojito.maldive.oneshot.base.service.FileService;
-import kr.mojito.maldive.oneshot.base.vo.FileVO;
+import kr.mojito.maldive.oneshot.app.base.dao.BaseDao;
+import kr.mojito.maldive.oneshot.app.base.service.FileService;
+import kr.mojito.maldive.oneshot.app.base.vo.FileVO;
 
 @Service
 public class FileServiceImpl implements FileService {
