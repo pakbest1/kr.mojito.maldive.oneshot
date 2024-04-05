@@ -16,6 +16,13 @@
 
 package kr.mojito.maldive.oneshot._bootstrap;
 
+import java.io.File;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +37,7 @@ import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageResp
 //@EnableAutoConfiguration
 @SpringBootApplication(scanBasePackages="kr.mojito.maldive.oneshot")
 public class MojitoMaldiveWebApplication {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Bean
 	public MessageRepository messageRepository() {
@@ -48,8 +56,29 @@ public class MojitoMaldiveWebApplication {
 		};
 	}
 
+	@Value("${spring.datasource.url}")
+	private String spring_datasource_url;
+
+	@PostConstruct
+	public void postConstruct() {
+		{
+			logger.info(" >> Current Boot Path : "    + new File("./").getAbsolutePath() +" <<");
+		}
+
+		// Database file check
+		if (spring_datasource_url != null) {
+			int lidx = spring_datasource_url.lastIndexOf(":");
+			if (lidx>-1) { spring_datasource_url = spring_datasource_url.substring(lidx+1); }
+
+			logger.info(" >> spring.datasource.url : "       + spring_datasource_url                    +" <<");
+			logger.info(" >> spring.datasource.url exists : "+ new File(spring_datasource_url).exists() +" <<");
+		}
+
+	}
 
 	public static void main(String[] args) throws Exception {
+
+
 		SpringApplication.run(MojitoMaldiveWebApplication.class, args);
 	}
 
