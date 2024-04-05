@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.convert.converter.Converter;
 
 import kr.mojito.maldive.oneshot.app.message.model.Message;
@@ -35,7 +36,10 @@ import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageResp
 //@Configuration
 //@ComponentScan
 //@EnableAutoConfiguration
-@SpringBootApplication(scanBasePackages="kr.mojito.maldive.oneshot")
+@SpringBootApplication
+@ComponentScan(basePackages={
+	"kr.mojito.maldive.oneshot"
+})
 public class MojitoMaldiveWebApplication {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
