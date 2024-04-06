@@ -4,13 +4,20 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MojitoUtil {
 
 
 	public static void showRequestParameter(HttpServletRequest req) {
+		StringBuffer sb = new StringBuffer();
+		
 		Map<String, String[]> maps = req.getParameterMap();
 		for (String key : maps.keySet()) {
-			System.out.println("["+ key +":"+ req.getParameter(key) +"]");
+			sb.append("["+ key +":"+ req.getParameter(key) +"]");
 		}
+		
+		System.out.println(sb.toString());
 	}
 }

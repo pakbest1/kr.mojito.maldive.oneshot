@@ -81,8 +81,6 @@ public class MojitoMaldiveWebApplication {
 	}
 
 	public static void main(String[] args) throws Exception {
-
-
 		SpringApplication.run(MojitoMaldiveWebApplication.class, args);
 	}
 

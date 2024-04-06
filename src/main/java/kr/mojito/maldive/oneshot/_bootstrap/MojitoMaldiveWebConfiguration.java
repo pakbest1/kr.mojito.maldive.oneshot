@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,17 +37,18 @@ public class MojitoMaldiveWebConfiguration implements WebMvcConfigurer {
 
 		@Override
 		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+			String no_cache = CacheControl.noCache().getHeaderValue();
 
 			// http/1.0
-			response.setHeader("Pragma","no-cache");
+			response.setHeader    (HttpHeaders.PRAGMA       , no_cache);
 
 			// http/1.1
-			response.setHeader    ("Cache-Control","private, no-cache, no-store, must-revalidate");
-			response.setIntHeader ("Expires", 0);
-			response.setDateHeader("Expires", 0);
+			response.setHeader    (HttpHeaders.CACHE_CONTROL, no_cache);  // "private, no-cache, no-store, must-revalidate");
+			response.setIntHeader (HttpHeaders.EXPIRES      , 0);
+			response.setDateHeader(HttpHeaders.EXPIRES      , 0);
 
 			if ("HTTP/1.1".equals(request.getProtocol())) {
-				response.setHeader("Cache-Control", "no-cache");
+				response.setHeader(HttpHeaders.CACHE_CONTROL, no_cache);
 			}
 
 			return true;
