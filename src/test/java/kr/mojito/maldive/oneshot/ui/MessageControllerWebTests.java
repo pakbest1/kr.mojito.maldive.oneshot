@@ -38,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import kr.mojito.maldive.oneshot._bootstrap.MojitoMaldiveWebApplication;
+import kr.mojito.maldive.oneshot._bootstrap.MojitoWebApplication;
 
 /**
  * A Basic Spring MVC Test for the Sample Controller"
@@ -49,7 +49,7 @@ import kr.mojito.maldive.oneshot._bootstrap.MojitoMaldiveWebApplication;
 //@RunWith(SpringJUnit4ClassRunner.class)  // junit4
 @ExtendWith(SpringExtension.class)       // junit5 - jupiter
 @WebAppConfiguration
-@ContextConfiguration(classes=MojitoMaldiveWebApplication.class)
+@ContextConfiguration(classes=MojitoWebApplication.class)
 //@SpringBootTest(classes=SampleWebUiApplication.class)
 public class MessageControllerWebTests {
 

@@ -34,7 +34,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.mojito.maldive.oneshot._bootstrap.MojitoMaldiveWebApplication;
+import kr.mojito.maldive.oneshot._bootstrap.MojitoWebApplication;
 
 /**
  * Basic integration tests for demo application.
@@ -50,7 +50,7 @@ import kr.mojito.maldive.oneshot._bootstrap.MojitoMaldiveWebApplication;
  */
 // junit5
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = MojitoMaldiveWebApplication.class)
+@SpringBootTest(classes = MojitoWebApplication.class)
 @WebAppConfiguration
 @Tag("IntegrationTest")
 @DirtiesContext
