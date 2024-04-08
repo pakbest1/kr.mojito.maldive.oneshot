@@ -6,15 +6,21 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 @Component
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MediaTypeUtiles {
-	private  MediaTypeUtiles() {}
+	private static Logger  logger;
 
 	@Autowired
 	private ServletContext _servletContext;
@@ -22,6 +28,8 @@ public class MediaTypeUtiles {
 
 	@PostConstruct
 	void postConstruct() {
+		logger = LoggerFactory.getLogger(this.getClass());
+
 		servletContext = this._servletContext;
 	}
 
