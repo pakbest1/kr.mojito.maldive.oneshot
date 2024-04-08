@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.utils;
+package kr.mojito.maldive.oneshot.app.utils;
 
 import java.util.List;
 import java.util.stream.Collectors;

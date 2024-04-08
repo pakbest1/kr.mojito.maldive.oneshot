@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import kr.mojito.maldive.oneshot.utils.MojitoUtil;
+import kr.mojito.maldive.oneshot.app.utils.MojitoUtil;
 import kr.mojito.maldive.oneshot.wpush.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 

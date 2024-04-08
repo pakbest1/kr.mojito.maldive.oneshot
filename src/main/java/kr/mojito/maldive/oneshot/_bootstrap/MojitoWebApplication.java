@@ -41,7 +41,8 @@ import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageResp
 	"kr.mojito.maldive.oneshot"
 })
 public class MojitoWebApplication {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final  Logger  logger = LoggerFactory.getLogger(this.getClass());
+	private static Logger _logger_;
 
 	@Bean
 	public MessageRepository messageRepository() {
@@ -65,6 +66,8 @@ public class MojitoWebApplication {
 
 	@PostConstruct
 	public void postConstruct() {
+		_logger_ = logger;
+
 		{
 			logger.info(" >> Current Boot Path : "    + new File("./").getAbsolutePath() +" <<");
 		}
@@ -78,6 +81,12 @@ public class MojitoWebApplication {
 			logger.info(" >> spring.datasource.url exists : "+ new File(spring_datasource_url).exists() +" <<");
 		}
 
+	}
+
+	public static synchronized void close(boolean restart) {
+		_logger_.info("Shutting down initiated..");
+		_logger_.info("Shutting down.. Restart: {}", restart);
+		System.exit(restart ? 0 : 33);
 	}
 
 	public static void main(String[] args) throws Exception {

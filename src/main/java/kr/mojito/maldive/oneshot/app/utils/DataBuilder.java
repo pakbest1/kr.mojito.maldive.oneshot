@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.utils;
+package kr.mojito.maldive.oneshot.app.utils;
 
 public class DataBuilder {
 
