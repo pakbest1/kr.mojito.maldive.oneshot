@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MojitoUtil {
 
-
 	public static void showRequestParameter(HttpServletRequest req) {
 		StringBuffer sb = new StringBuffer();
 
