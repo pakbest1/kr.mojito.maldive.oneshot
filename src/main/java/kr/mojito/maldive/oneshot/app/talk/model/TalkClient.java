@@ -1,19 +1,21 @@
 package kr.mojito.maldive.oneshot.app.talk.model;
 
-import lombok.AllArgsConstructor;
+import java.net.Socket;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter @Setter
-public class Client {
+public class TalkClient {
 
+	private String id;
+	private String user;
 	private String nick;
-	private String username;
-	private String hostName;
-	private String realName;
+
+	private String host;
+	private Socket socket;
 
 	/**
 	 *  Compile the nick, username and hostname into an IRC hostmask.
@@ -21,6 +23,7 @@ public class Client {
 	 * @return String
 	 */
 	public String getHostmask() {
-		return this.nick + "!" + this.username + "@" + this.hostName;
+		return this.nick + "!" + this.user + "@" + this.host;
 	}
+
 }

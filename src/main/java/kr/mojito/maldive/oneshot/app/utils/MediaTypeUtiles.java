@@ -18,19 +18,19 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Component
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
 public class MediaTypeUtiles {
 	private static Logger  logger;
 
 	@Autowired
-	private ServletContext _servletContext;
+	private ServletContext _servletContext_;
 	static  ServletContext  servletContext;
 
 	@PostConstruct
 	void postConstruct() {
 		logger = LoggerFactory.getLogger(this.getClass());
 
-		servletContext = this._servletContext;
+		servletContext = _servletContext_;
 	}
 
 

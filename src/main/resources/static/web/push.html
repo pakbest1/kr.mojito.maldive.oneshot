@@ -38,10 +38,12 @@ if (frm && ro) {
 }
 </script>
 <script type="text/javascript">
-log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
+log = (s)=>{ let l = document.querySelector('#log'); l.innerTEXT += '<br/>'+ s.replace(/</g, '&lt;').replace(/>/g, '&gt;'); console.log(s); };
 
-const esrc = new EventSource('/notification/subscribe/'+ userid, null);  // { withCredentials: true, }
-Object.assign(esrc, {
+const eventsource = new EventSource('/notification/subscribe/'+ userid, null);  // { withCredentials: true, }
+Object.assign(eventsource, {
+	converttag: (s)=>{ return s.replace(/</g, '&lt;').replace(/>/g, '&gt;'); },
+
 	onopen: async ()=>{
 		log("EventSource onopen.");
 	},
@@ -52,11 +54,11 @@ Object.assign(esrc, {
 		log("EventSource onerror failed.");
 	},
 });
-log('EventSource { '+ esrc.url +', withCredentials:'+ esrc.withCredentials +', readyState:'+ esrc.readyState +' }');
+log('EventSource { '+ eventsource.url +', withCredentials:'+ eventsource.withCredentials +', readyState:'+ eventsource.readyState +' }');
 
-esrc.log = (s)=>{ let l = document.querySelector('#log'); l.innerHTML += '<br/>'+s; console.log(s); };
-esrc.addEventListener('notify', (e)=>{
-	$.toast({ text: e.data });
+eventsource.log = (s)=>{ let l = document.querySelector('#log'); l.innerTEXT += '<br/>'+s.replace(/</g, '&lt;').replace(/>/g, '&gt;');; console.log(s); };
+eventsource.addEventListener('notify', (e)=>{
+	$.toast({ text: eventsource.converttag( e.data ) });
 	this.log('notify: '+ e.data);
 });
 </script>

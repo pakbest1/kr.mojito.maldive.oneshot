@@ -15,14 +15,34 @@
 </ul>
 
 <div id="log"></div>
-<form name="notification" action="/notification/notify" onsubmit="return false;">
+<form name="talkf" action="/talk/mesg" onsubmit="return false;">
 	<input type="hidden" name="userid"  />
+	<input type="hidden" name="channel" />
 	<input type="text"   name="message" />
+
 	<button> Send </button>
 </form>
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+getSearchParameter = ()=>{
+	let o = {}; for(const [key, value] of new URLSearchParams(location.search).entries()) { o[key] = value; }
+	return o;
+};
+let conf = {
+	form     : document.querySelector('form[name=talkf]'),
+	parameter: window._parameter = getSearchParameter(),
+	userid   : window._userid = '1000',
+};
+
+
+let frm = conf.form, po = conf.parameter;
+if (frm && po) {
+	if (po && po.userid ) { frm.userid .value = userid = po.userid ; }
+	if (po && po.message) { frm.message.value =          po.message; }
+}
+</script>
 <script type="text/javascript">
 let w = window, _wsock_ = null;
 initWSock = (()=> {
@@ -44,6 +64,27 @@ initWSock = (()=> {
 	});
 })();
 </script>
+<script type="text/javascript">
+$('form[name=talkf]').on('submit', (e)=>{
+	let f = e.target;
+	f.userid.value = userid;
 
+	$.ajax({
+		type: 'POST',
+		url : f.action,
+		data: $(f).serialize(),  // dataType: 'text/json',
+// 		success: (d, r, s)=>{
+// 			let args = arguments;
+// 			console.log(JSON.stringify( args ));
+// 			f.message.value = '';
+// 		},
+	});
+
+	f.message.value = '';
+	f.message.focus();
+
+	return false;
+});
+</script>
 </body>
 </html>
