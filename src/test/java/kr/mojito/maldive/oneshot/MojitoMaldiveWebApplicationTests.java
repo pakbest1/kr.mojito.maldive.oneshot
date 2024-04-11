@@ -6,11 +6,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import kr.mojito.maldive.oneshot._bootstrap.MojitoWebApplication;
+import kr.mojito.maldive.oneshot._bootstrap.MojitoApplication;
 
 @ExtendWith(SpringExtension.class)       // junit5 - jupiter
 @WebAppConfiguration
-@ContextConfiguration(classes=MojitoWebApplication.class)
+@ContextConfiguration(classes=MojitoApplication.class)
 class MojitoMaldiveWebApplicationTests {
 
 	@Test

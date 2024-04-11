@@ -1,35 +1,25 @@
-package kr.mojito.maldive.oneshot.wsock;
+package kr.mojito.maldive.oneshot.app.talk.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class WSockConfiguration implements WebSocketConfigurer {
+public class TalkWebSocketConfiguration implements WebSocketConfigurer {
 
 	@Autowired
-	private final TextWebSocketHandler webSocketHandler;
+	private final TalkWebSocketHandler talkWebSocketHandler;
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(webSocketHandler, "/ws").setAllowedOrigins("*");
-
+		registry.addHandler(talkWebSocketHandler, "/talk/socket").setAllowedOrigins("*");
 	}
-
-//	private final WebSocketHandler webSocketHandler;
-//
-//	@Override
-//	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//		// TODO Auto-generated method stub
-//		registry.addHandler(webSocketHandler, "/ws").setAllowedOrigins("*");
-//	}
 
 
 

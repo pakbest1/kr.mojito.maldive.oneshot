@@ -1,6 +1,6 @@
 package kr.mojito.maldive.oneshot.app.talk.model;
 
-public interface ClientDelegate {
+public interface TalkDelegate {
 	public void receive(TalkClient c, String command);
-	public void closeConnection(TalkClient c);
+	public void close  (TalkClient c);
 }

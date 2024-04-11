@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import kr.mojito.maldive.oneshot._bootstrap.interceptor.NoCacheInterceptor;
 
 @Configuration
-public class MojitoWebConfiguration implements WebMvcConfigurer {
+public class MojitoConfiguration implements WebMvcConfigurer {
 
 //	@Override
 //	public void addResourceHandlers(final ResourceHandlerRegistry registry) {

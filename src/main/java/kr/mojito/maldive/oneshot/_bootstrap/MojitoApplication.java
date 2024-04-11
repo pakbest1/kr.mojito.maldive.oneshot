@@ -40,7 +40,7 @@ import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageResp
 @ComponentScan(basePackages={
 	"kr.mojito.maldive.oneshot"
 })
-public class MojitoWebApplication {
+public class MojitoApplication {
 	private final  Logger  logger = LoggerFactory.getLogger(this.getClass());
 	private static Logger _logger_;
 
@@ -90,7 +90,7 @@ public class MojitoWebApplication {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(MojitoWebApplication.class, args);
+		SpringApplication.run(MojitoApplication.class, args);
 	}
 
 }

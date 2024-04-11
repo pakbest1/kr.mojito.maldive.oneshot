@@ -9,7 +9,6 @@ import lombok.Setter;
 @Component
 @Builder
 @Getter @Setter
-@SuppressWarnings("unused")
 public class TalkEvent {
 
 	private Object source;
@@ -27,6 +26,5 @@ public class TalkEvent {
 		this.source = source;
 		this.data = data;
 	}
-
 
 }

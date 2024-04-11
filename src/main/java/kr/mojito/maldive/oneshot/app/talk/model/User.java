@@ -1,12 +1,26 @@
 package kr.mojito.maldive.oneshot.app.talk.model;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Builder
+@ToString
+@Getter @Setter
+public class User {
+	private String id;
+	private String name;
+	private String nick;
+	private String avatar;
+	private String hostname;
+}
+//@Entity
 //@Entity
 //@Table(name = "users")
-@Data
-public class User {
-
+//@Data
+//public class User {
+//
 //	public enum Level {
 //		NEWBIE, REGISTERED, MASTER;
 //
@@ -43,5 +57,6 @@ public class User {
 //	@Enumerated(EnumType.STRING)
 //	@Column
 //	private Level level = Level.NEWBIE;
-
-}
+//
+//
+//}

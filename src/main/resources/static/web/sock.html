@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title> Messaging - WebSocket </title>
+<style>
+body, input, button { background-color: #666; }
+</style>
 </head>
 <body>
 
@@ -25,18 +28,13 @@
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="/assets/js/html.js"></script>
 <script type="text/javascript">
-getSearchParameter = ()=>{
-	let o = {}; for(const [key, value] of new URLSearchParams(location.search).entries()) { o[key] = value; }
-	return o;
-};
 let conf = {
 	form     : document.querySelector('form[name=talkf]'),
 	parameter: window._parameter = getSearchParameter(),
 	userid   : window._userid = '1000',
 };
-
-
 let frm = conf.form, po = conf.parameter;
 if (frm && po) {
 	if (po && po.userid ) { frm.userid .value = userid = po.userid ; }

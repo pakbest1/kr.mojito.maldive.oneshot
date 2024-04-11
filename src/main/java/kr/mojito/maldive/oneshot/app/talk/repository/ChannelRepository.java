@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import kr.mojito.maldive.oneshot.app.talk.model.TalkChannel;
 
 
-@Repository(value="talkChannelRepository")
+@Repository(value="talkChannelRepositoryX")
 @SuppressWarnings("unused")
 public class ChannelRepository {
 
