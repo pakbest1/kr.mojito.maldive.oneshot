@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Messaging - WebSocket </title>
+<style>
+body, input, button { background-color: #666; }
+</style>
+</head>
+<body>
+
+<ul>
+	<li><a href="./index.html?userid=1001" target="_blank">talk userid: 1001</a></li>
+	<li><a href="./index.html?userid=1002" target="_blank">talk userid: 1002</a></li>
+	<li><a href="./index.html?userid=1003" target="_blank">talk userid: 1003</a></li>
+	<li><a href="./index.html?userid=1004" target="_blank">talk userid: 1004</a></li>
+	<li><a href="./index.html?userid=1005" target="_blank">talk userid: 1005</a></li>
+</ul>
+
+<div id="talktalk"></div>
+<form name="talkform" onsubmit="return false;">
+	<input type="hidden" name="channel" />
+	<input type="hidden" name="userid"  />
+	<input type="text"   name="message" />
+
+	<button> Send </button>
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="/assets/js/jquery.mojito.js"></script>
+<script src="./jquery.plugin.talk.js"></script>
+<script type="text/javascript">
+$.talk({
+	url      : '/talk/socket',
+	parameter: $.getParameterFromSearch(),
+	form     : document.querySelector('form[name=talkform]'),
+
+	init     : (e)=>{
+		console.log('[init:'+ e.target.name +']');
+		let f = e.target, $f = $(f), po = e.parameter;
+		if (f.channel && f && po && po.channel) { f.channel.value = po.channel || 'lounge'; }
+		if (f.userid  && f && po && po.userid ) { f.userid .value = po.userid  || '1000'  ; }
+		if (f.message && f && po && po.message) { f.message.value = po.message            ; }
+
+	},
+	recive   : (e)=>{
+		console.log('[recive:'+ e.data +']');
+		if (!e.data) { return; }
+	},
+
+	send     : (e)=>{
+		console.log('[send:'  + e.data +']');
+		let f = e.target, $f = $(f)
+
+		//let s = new TalkMessage( $f.serialize() );
+		$.talk.send( $f.serialize() );
+
+		e.preventDefault();
+		return false;
+	},
+});
+let conf = {
+	wsocketurl: '/talk/socket',
+
+	form      : document.querySelector('form[name=talkf]'),
+	parameter : $.getParameterFromSearch(),
+	userid    : window._userid = '1000',
+};
+let frm = conf.form, po = conf.parameter;
+if (frm && po) {
+	if (po && po.userid ) { frm.userid .value = userid = po.userid ; }
+	if (po && po.message) { frm.message.value =          po.message; }
+}
+</script>
+<script type="text/javascript">
+//let w = window, _wsock_ = null;
+//initWSock = (()=> {
+//	let url = location.origin.replace(/http:/g, 'ws:')+ conf.wsocketurl;
+//	_wsock_ = w._wsock_ = new WebSocket(url);
+//	Object.assign(_wsock_, {
+//		onopen   : (e)=>{
+//			console.log('[onopen:'+ url +']');
+//		},
+//		onclose  : (e)=>{
+//			console.log('[onclose:]');
+//		},
+//		onerror  : (e)=>{
+//			console.log('[onerror:]');
+//		},
+//		onmessage: (e)=>{
+//			console.log('[onmessage:'+ e.data +']');
+//		},
+//	});
+//})();
+
+// $(conf.form).on('submit', (e)=>{
+// 	let f = e.target;
+// 	// f.userid.value = userid;
+//
+// //	$.ajax({
+// //		type: 'POST',
+// //		url : f.action,
+// //		data: $(f).serialize(),  // dataType: 'text/json',
+// //// 		success: (d, r, s)=>{
+// //// 			let args = arguments;
+// //// 			console.log(JSON.stringify( args ));
+// //// 			f.message.value = '';
+// //// 		},
+// //	});
+// //
+// //	f.message.value = '';
+// //	f.message.focus();
+//
+// 	let s = f.message.value;
+// 	if (!s) { return; }
+//
+// 	_wsock_.send(s);
+//
+// 	f.message.value = '';
+// 	f.message.focus();
+//
+//
+//
+// 	return false;
+// });
+</script>
+</body>
+</html>
