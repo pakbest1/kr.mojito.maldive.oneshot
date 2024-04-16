@@ -23,11 +23,11 @@
 					console.log('[onerror:]');
 				},
 				onmessage: (e)=>{
-					//console.log('[onmessage:'+ e.data +']');
-					let sock= $plug.wsock, cmd = $plug.cmd, data = e ? e.data : null;
+					const {PING} = $plug.cmd, {PONG} = $plug.cmd;
+					let sock= $plug.wsock, data = e ? e.data : null;  //console.log('[onmessage:'+ e.data +']');
 					if (!data) { return; }
-					if (data.startsWith(cmd.PING)) {
-						let r = data.replace(new RegExp(cmd.PING, 'g'), cmd.PONG);  console.log('[>'+ r +'<]');
+					if (data.startsWith(PING)) {
+						let r = data.replace(new RegExp(PING, 'g'), PONG);  console.log('[>'+ r +'<]');
 						sock.send(r);
 						e.preventDefault();
 						return;
@@ -55,9 +55,11 @@
 			return $plug;
 		}();
 		$plug.cmd = {
-			PING: 'ping',
-			PONG: 'pong',
+			EMPTY: ''    ,
+			PING : 'ping',
+			PONG : 'pong',
 		};
+		Object.freeze($plug.cmd);
 	};
 
 })(jQuery);

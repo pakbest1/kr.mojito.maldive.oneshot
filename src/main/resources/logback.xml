@@ -18,14 +18,14 @@
 
 	<include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+	<logger level="OFF" name="jdbc.sqltiming"/>
 
 	<logger level="OFF" name="org.springframework.beans.factory.support.DefaultListableBeanFactory" />
 	<logger level="OFF" name="org.springframework.boot.autoconfigure" />
 
 	<logger level="DEBUG" name="org.springframework" />
-
-	<logger level="OFF" name="jdbc.sqltiming"/>
-
+	<logger level="DEBUG" name="kr.mojito.maldive.oneshot" />
 
 <!-- 	<typeAliases></typeAliases> -->
+<!-- <typeAliases></typeAliases> -->
 </configuration>

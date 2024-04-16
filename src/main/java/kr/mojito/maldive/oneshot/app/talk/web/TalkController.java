@@ -1,5 +1,7 @@
 package kr.mojito.maldive.oneshot.app.talk.web;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -7,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +20,7 @@ import kr.mojito.maldive.oneshot.app.talk.model.TalkMessage;
 import kr.mojito.maldive.oneshot.app.utils.MojitoUtil;
 
 @RestController
-//@RequestMapping(value="/talk")
+@RequestMapping(value="/talk")
 public class TalkController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -65,4 +69,12 @@ public class TalkController {
 //		return chatMessage;
 //	}
 
+	@GetMapping("/users")
+	public List<String> users() throws Exception {
+		List<String> users = new ArrayList<String>();
+
+
+
+		return users;
+	}
 }

@@ -1,5 +1,7 @@
 package kr.mojito.maldive.oneshot.app.talk.handler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -20,18 +22,22 @@ import kr.mojito.maldive.oneshot.app.talk.model.TalkConsts;
 public class TalkWebSocketHandler implements WebSocketHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	private List<WebSocketSession> sessions = new ArrayList<>();
+
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		logger.debug("afterConnectionEstablished");
 		session.sendMessage(new TextMessage(TalkConsts.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
 		//TextMessage textMessage = new TextMessage("welcome");
+
+		sessions.add(session);
 	}
 
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-		logger.debug("handleMessage : "+ message.getPayload());
-
 		String mesg = (String) message.getPayload();
+		logger.debug("handleMessage : ["+ mesg +"]");
+
 		if (mesg != null && mesg.startsWith(TalkConsts.PONG)) { return; }
 
 		session.sendMessage(message);
@@ -46,7 +52,7 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
 		logger.debug("afterConnectionClosed");
-
+		sessions.remove(session);
 	}
 
 	@Override

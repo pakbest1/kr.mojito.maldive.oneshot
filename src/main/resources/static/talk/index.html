@@ -2,9 +2,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> Messaging - WebSocket </title>
+<title> Messaging - Talk </title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style>
+/*
 body, input, button { background-color: #666; }
+*/
+
+form [name=bqmessage] {
+	background: #ddd;
+	border-radius: 5px;
+	margin: 8px;
+	width: calc(100% - ( 8px * 2 ) );
+	min-height: 60px;
+	padding: 8px 0 8px 8px;
+}
 </style>
 </head>
 <body>
@@ -21,9 +35,10 @@ body, input, button { background-color: #666; }
 <form name="talkform" onsubmit="return false;">
 	<input type="hidden" name="channel" />
 	<input type="hidden" name="userid"  />
-	<input type="text"   name="message" />
+	<input type="hidden" name="message" />
+	<blockquote name="bqmessage" contenteditable="true"></blockquote>
 
-	<button> Send </button>
+	<button> <i class="bi bi-send"></i> Send </button>
 </form>
 
 
@@ -51,15 +66,16 @@ $.talk({
 	},
 
 	send     : (e)=>{
-		console.log('[send:'  + e.data +']');
-		let f = e.target, $f = $(f)
-
+		const {EMPTY} = $.talk.cmd;
+		let f = e.target, $f = $(f), $ipmsg = $f.children('input[name=message]'), $bqmsg = $f.children('[name=bqmessage]');
 		//let s = new TalkMessage( $f.serialize() );
-		$.talk.send( $f.serialize() );
+		if ($bqmsg.length>0) {
+			$ipmsg.val( e.data = $bqmsg.html() );
+		}
 
-		//f.message.value = '';
-		//f.message.focus();
-		$(f.message).val('').focus();
+		$.talk.send( $f.serialize() );  console.log('[send:'  + e.data +']');
+		$ipmsg.val (EMPTY);
+		$bqmsg.html(EMPTY).focus();
 
 		e.preventDefault();
 		return false;
