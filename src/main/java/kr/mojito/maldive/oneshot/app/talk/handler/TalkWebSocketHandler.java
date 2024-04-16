@@ -1,5 +1,7 @@
 package kr.mojito.maldive.oneshot.app.talk.handler;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -8,6 +10,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import kr.mojito.maldive.oneshot.app.talk.model.TalkConst;
 
 //@Configuration
 //@EnableWebSocket
@@ -19,13 +23,17 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		logger.debug("afterConnectionEstablished");
-		session.sendMessage(new TextMessage("ping uuid"));  // TalkMessage.builder().contents("ping uuid").build());
+		session.sendMessage(new TextMessage(TalkConst.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
 		//TextMessage textMessage = new TextMessage("welcome");
 	}
 
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 		logger.debug("handleMessage : "+ message.getPayload());
+
+		String mesg = (String) message.getPayload();
+		if (mesg != null && mesg.startsWith(TalkConst.PONG)) { return; }
+
 		session.sendMessage(message);
 	}
 

@@ -1,5 +1,4 @@
 (function($) {
-
 	let plugname = 'talk', $plug = $[plugname] = function(config) {
 		$plug.config = config;
 
@@ -25,6 +24,15 @@
 				},
 				onmessage: (e)=>{
 					//console.log('[onmessage:'+ e.data +']');
+					let sock= $plug.wsock, cmd = $plug.cmd, data = e ? e.data : null;
+					if (!data) { return; }
+					if (data.startsWith(cmd.PING)) {
+						let r = data.replace(new RegExp(cmd.PING, 'g'), cmd.PONG);  console.log('[>'+ r +'<]');
+						sock.send(r);
+						e.preventDefault();
+						return;
+					}
+
 					if (config.recive) { config.recive(e); }
 				},
 			});
@@ -46,7 +54,10 @@
 
 			return $plug;
 		}();
-
+		$plug.cmd = {
+			PING: 'ping',
+			PONG: 'pong',
+		};
 	};
 
 })(jQuery);

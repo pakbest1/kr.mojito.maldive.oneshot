@@ -37,12 +37,13 @@ $.talk({
 	form     : document.querySelector('form[name=talkform]'),
 
 	init     : (e)=>{
-		console.log('[init:'+ e.target.name +']');
+		console.log('$talk.init() [form: '+ e.target.name +']');
 		let f = e.target, $f = $(f), po = e.parameter;
-		if (f.channel && f && po && po.channel) { f.channel.value = po.channel || 'lounge'; }
-		if (f.userid  && f && po && po.userid ) { f.userid .value = po.userid  || '1000'  ; }
-		if (f.message && f && po && po.message) { f.message.value = po.message            ; }
+		if (f && f.channel /*&& po && po.channel*/) { f.channel.value = po.channel || 'lounge'; }
+		if (f && f.userid  /*&& po && po.userid */) { f.userid .value = po.userid  || '1000'  ; }
+		if (f && f.message /*&& po && po.message*/) { f.message.value = po.message || ''      ; }
 
+		$(f.message).focus();
 	},
 	recive   : (e)=>{
 		console.log('[recive:'+ e.data +']');
@@ -56,74 +57,14 @@ $.talk({
 		//let s = new TalkMessage( $f.serialize() );
 		$.talk.send( $f.serialize() );
 
+		//f.message.value = '';
+		//f.message.focus();
+		$(f.message).val('').focus();
+
 		e.preventDefault();
 		return false;
 	},
 });
-let conf = {
-	wsocketurl: '/talk/socket',
-
-	form      : document.querySelector('form[name=talkf]'),
-	parameter : $.getParameterFromSearch(),
-	userid    : window._userid = '1000',
-};
-let frm = conf.form, po = conf.parameter;
-if (frm && po) {
-	if (po && po.userid ) { frm.userid .value = userid = po.userid ; }
-	if (po && po.message) { frm.message.value =          po.message; }
-}
-</script>
-<script type="text/javascript">
-//let w = window, _wsock_ = null;
-//initWSock = (()=> {
-//	let url = location.origin.replace(/http:/g, 'ws:')+ conf.wsocketurl;
-//	_wsock_ = w._wsock_ = new WebSocket(url);
-//	Object.assign(_wsock_, {
-//		onopen   : (e)=>{
-//			console.log('[onopen:'+ url +']');
-//		},
-//		onclose  : (e)=>{
-//			console.log('[onclose:]');
-//		},
-//		onerror  : (e)=>{
-//			console.log('[onerror:]');
-//		},
-//		onmessage: (e)=>{
-//			console.log('[onmessage:'+ e.data +']');
-//		},
-//	});
-//})();
-
-// $(conf.form).on('submit', (e)=>{
-// 	let f = e.target;
-// 	// f.userid.value = userid;
-//
-// //	$.ajax({
-// //		type: 'POST',
-// //		url : f.action,
-// //		data: $(f).serialize(),  // dataType: 'text/json',
-// //// 		success: (d, r, s)=>{
-// //// 			let args = arguments;
-// //// 			console.log(JSON.stringify( args ));
-// //// 			f.message.value = '';
-// //// 		},
-// //	});
-// //
-// //	f.message.value = '';
-// //	f.message.focus();
-//
-// 	let s = f.message.value;
-// 	if (!s) { return; }
-//
-// 	_wsock_.send(s);
-//
-// 	f.message.value = '';
-// 	f.message.focus();
-//
-//
-//
-// 	return false;
-// });
 </script>
 </body>
 </html>
