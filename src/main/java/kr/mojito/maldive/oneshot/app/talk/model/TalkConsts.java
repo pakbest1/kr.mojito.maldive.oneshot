@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
-public class TalkConst {
+public class TalkConsts {
 	public static final String PING = "ping";
 	public static final String PONG = "pong";
 }

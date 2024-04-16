@@ -11,7 +11,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import kr.mojito.maldive.oneshot.app.talk.model.TalkConst;
+import kr.mojito.maldive.oneshot.app.talk.model.TalkConsts;
 
 //@Configuration
 //@EnableWebSocket
@@ -23,7 +23,7 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		logger.debug("afterConnectionEstablished");
-		session.sendMessage(new TextMessage(TalkConst.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
+		session.sendMessage(new TextMessage(TalkConsts.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
 		//TextMessage textMessage = new TextMessage("welcome");
 	}
 
@@ -32,7 +32,7 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 		logger.debug("handleMessage : "+ message.getPayload());
 
 		String mesg = (String) message.getPayload();
-		if (mesg != null && mesg.startsWith(TalkConst.PONG)) { return; }
+		if (mesg != null && mesg.startsWith(TalkConsts.PONG)) { return; }
 
 		session.sendMessage(message);
 	}

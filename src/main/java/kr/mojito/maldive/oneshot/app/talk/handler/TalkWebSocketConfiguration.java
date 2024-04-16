@@ -18,7 +18,11 @@ public class TalkWebSocketConfiguration implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(talkWebSocketHandler, "/talk/socket").setAllowedOrigins("*");
+		registry
+			.addHandler(talkWebSocketHandler, "/talk/socket")
+			//.addHandler(talkWebSocketHandler, "/talk2/socket")
+			.setAllowedOrigins("*")
+		;
 	}
 
 

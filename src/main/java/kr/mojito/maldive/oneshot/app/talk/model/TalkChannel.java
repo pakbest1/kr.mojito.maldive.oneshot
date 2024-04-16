@@ -12,6 +12,7 @@ import lombok.Setter;
 @Builder
 @Getter @Setter
 public class TalkChannel {
+
 	private String  id;
 	private String  topic;
 	private TalkChannel pchannel;
