@@ -50,9 +50,10 @@ $.talk({
 	url      : '/talk/socket',
 	parameter: $.getParameterFromSearch(),
 	form     : document.querySelector('form[name=talkform]'),
+	input    : document.querySelector('blockquote[name=bqmessage]'),
 
 	init     : (e)=>{
-		console.log('$talk.init() [form: '+ e.target.name +']');
+		console.log('$.talk.init() [form: '+ e.target.name +']');
 		let f = e.target, $f = $(f), po = e.parameter;
 		if (f && f.channel /*&& po && po.channel*/) { f.channel.value = po.channel || 'lounge'; }
 		if (f && f.userid  /*&& po && po.userid */) { f.userid .value = po.userid  || '1000'  ; }
@@ -64,7 +65,6 @@ $.talk({
 		console.log('[recive:'+ e.data +']');
 		if (!e.data) { return; }
 	},
-
 	send     : (e)=>{
 		const {EMPTY} = $.talk.cmd;
 		let f = e.target, $f = $(f), $ipmsg = $f.children('input[name=message]'), $bqmsg = $f.children('[name=bqmessage]');

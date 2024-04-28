@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -26,7 +27,9 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		logger.debug("afterConnectionEstablished");
+		HttpHeaders httpHeaders = session.getHandshakeHeaders();
+		logger.debug("afterConnectionEstablished [httpHeaders:"+ httpHeaders +"]");
+
 		session.sendMessage(new TextMessage(TalkConsts.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
 		//TextMessage textMessage = new TextMessage("welcome");
 
