@@ -67,10 +67,7 @@ public class MojitoApplication {
 	@PostConstruct
 	public void postConstruct() {
 		_logger_ = logger;
-
-		{
-			logger.info(" >> Current Boot Path : "    + new File("./").getAbsolutePath() +" <<");
-		}
+		logger.info(" >> Current Boot Path : "    + new File("./").getAbsolutePath() +" <<");
 
 		// Database file check
 		if (spring_datasource_url != null) {

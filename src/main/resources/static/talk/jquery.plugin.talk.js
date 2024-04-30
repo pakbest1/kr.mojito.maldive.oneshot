@@ -10,9 +10,7 @@
 		// console.log('$p.init()');
 		//let config = $p.config;
 		let wsurl  = location.origin.replace(/http:|https:/g, 'ws:')+ config.url;
-
-		$p.wsock = new WebSocket(wsurl);
-		Object.assign($p.wsock, {
+		$p.wsock = Object.assign(new WebSocket(wsurl), {
 			onopen   : (e)=>{
 				console.log('[onopen:'+ wsurl +']');
 			},
@@ -59,7 +57,7 @@
 			PONG : 'pong',
 		};
 		Object.freeze($p.cmd);
-		
+
 		return $p;
 	};
 
