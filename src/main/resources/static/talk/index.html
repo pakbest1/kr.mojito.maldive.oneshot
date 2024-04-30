@@ -53,7 +53,7 @@ form [name=bqmessage] {
 <script src="./jquery.plugin.talk.js"></script>
 <script type="text/javascript">
 $.talk({
-	url      : '/talk/socket',
+	url      : '/talk/socket'+ location.search,
 	parameter: $.getParameterFromSearch(),
 	form     : document.querySelector('form[name=talkform]'),
 	input    : document.querySelector('blockquote[name=bqmessage]'),
@@ -64,13 +64,13 @@ $.talk({
 		if (f && f.channel /*&& po && po.channel*/) { f.channel.value = po.channel || 'lounge'; }
 		if (f && f.userid  /*&& po && po.userid */) { f.userid .value = po.userid  || '1000'  ; }
 		if (f && f.message /*&& po && po.message*/) { f.message.value = po.message || ''      ; }
-		
+
 		$('[name=bqmessage]').on('keyup', (e)=>{
 			if (e.ctrlKey && e.keyCode == 13) {
 				$(e.target).parents('form:first').children('[name=btnsend]').trigger('click');
 			}
 		});
-		
+
 		$(f.message).focus();
 	},
 	recive   : (e)=>{
