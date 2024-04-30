@@ -6,26 +6,36 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class TalkWebSocketConfiguration implements WebSocketConfigurer {
+public class TalkBoorstrap implements WebSocketConfigurer {
 
 	@Autowired
-	private final TalkWebSocketHandler talkWebSocketHandler;
+	private final TalkHandler talkHandler;
 
-	public WebSocketHandler getWebSocketHandler() {
-		return talkWebSocketHandler;
+	public WebSocketHandler getTalkHandler() {
+		return talkHandler;
+	}
+
+	@Autowired
+	private TalkHandshakeInterceptor talkHandshakeInterceptor;
+
+	public HandshakeInterceptor getTalkHandshakeInterceptor() {
+		talkHandshakeInterceptor = talkHandshakeInterceptor != null ? talkHandshakeInterceptor : new TalkHandshakeInterceptor();
+		return talkHandshakeInterceptor;
 	}
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry
-			.addHandler(getWebSocketHandler(), "/talk/socket")
+			.addHandler(getTalkHandler(), "/talk/socket")
 			//.addHandler(talkWebSocketHandler, "/talk2/socket")
+			.addInterceptors(new TalkHandshakeInterceptor())
 			.setAllowedOrigins("*")
 		;
 	}

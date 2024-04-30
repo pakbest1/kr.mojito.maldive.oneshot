@@ -20,7 +20,7 @@ import kr.mojito.maldive.oneshot.app.talk.model.TalkConsts;
 //@EnableWebSocket
 //@RequiredArgsConstructor
 @Component
-public class TalkWebSocketHandler implements WebSocketHandler {
+public class TalkHandler implements WebSocketHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private List<WebSocketSession> sessions = new ArrayList<>();
@@ -28,9 +28,9 @@ public class TalkWebSocketHandler implements WebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		HttpHeaders httpHeaders = session.getHandshakeHeaders();
-		logger.debug("afterConnectionEstablished [httpHeaders:"+ httpHeaders +"]");
+		logger.debug("afterConnectionEstablished [httpHeaders:"+ httpHeaders +"][id:"+ session.getId() +"]");
 
-		session.sendMessage(new TextMessage(TalkConsts.PING +" "+ UUID.randomUUID().toString()));  // TalkMessage.builder().contents("ping uuid").build());
+		session.sendMessage(new TextMessage(TalkConsts.PING +" "+ session.getId()));  // TalkMessage.builder().contents("ping uuid").build());
 		//TextMessage textMessage = new TextMessage("welcome");
 
 		sessions.add(session);
