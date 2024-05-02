@@ -11,8 +11,8 @@ public class TalkEventPublisher {
 	private TalkEventPublisher() {}
 
 	@Autowired
-	private ApplicationEventPublisher _eventPublisher;
-	private static ApplicationEventPublisher eventPublisher;
+	private        ApplicationEventPublisher _eventPublisher;
+	private static ApplicationEventPublisher  eventPublisher;
 
 	@PostConstruct
 	private void postConstruct() {
