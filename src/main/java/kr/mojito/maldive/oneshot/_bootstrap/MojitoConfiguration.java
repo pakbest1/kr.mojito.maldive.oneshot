@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,40 +38,18 @@ public class MojitoConfiguration implements WebMvcConfigurer {
 
 	}
 
-//	private class NoCacheInterceptor implements HandlerInterceptor {
-//
-//		@Override
-//		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//			String no_cache = CacheControl.noCache().getHeaderValue();
-//
-//			// http/1.0
-//			response.setHeader    (HttpHeaders.PRAGMA       , no_cache);
-//
-//			// http/1.1
-//			response.setHeader    (HttpHeaders.CACHE_CONTROL, no_cache);  // "private, no-cache, no-store, must-revalidate");
-//			response.setIntHeader (HttpHeaders.EXPIRES      , 0);
-//			response.setDateHeader(HttpHeaders.EXPIRES      , 0);
-//
-//			if ("HTTP/1.1".equals(request.getProtocol())) {
-//				response.setHeader(HttpHeaders.CACHE_CONTROL, no_cache);
-//			}
-//
-//			return true;
-//		}
-//
-//		@Override
-//		public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-//
-//			//return true;
-//		}
-//
-//		public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-//		}
-//	}
+
 
 	// Config > Mybatis
 	@Autowired
 	ApplicationContext applicationContext;
+
+	@Value("${mybatis.config-location:classpath:/mybatis/mybatis-config.xml}")
+	private String mybatis_config_location;
+
+	@Value("${mybatis.mapper-locations:/mybatis/mapper/**/*.xml}")
+	private String mybatis_mapper_locations;
+
 
 	@Bean
 	public  SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
@@ -78,9 +57,11 @@ public class MojitoConfiguration implements WebMvcConfigurer {
 		sessionFactory.setDataSource(dataSource);
 
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		sessionFactory.setMapperLocations(resolver.getResources("classpath:mapper/*/*.xml"));
-		sessionFactory.setConfigLocation(applicationContext.getResource("classpath:mapper/mybatis-config.xml"));
-		sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+		sessionFactory.setConfigLocation (applicationContext.getResource (mybatis_config_location ));  // resolver.getResources(mybatis_config_location )[0]);  // applicationContext.getResource(config_location)  // "classpath:mybatis/mybatis-config.xml"
+		sessionFactory.setMapperLocations(applicationContext.getResources(mybatis_mapper_locations));  // resolver.getResources(mybatis_mapper_locations)   );  // "classpath:mybatis/mapper/**/*.xml"
+
+		// sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+
 		return sessionFactory.getObject();
 	}
 
