@@ -60,7 +60,7 @@ public class MojitoConfiguration implements WebMvcConfigurer {
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 		sessionFactory.setConfigLocation (applicationContext.getResource (mybatis_config_location ));  // resolver.getResources(mybatis_config_location )[0]);  // applicationContext.getResource(config_location)  // "classpath:mybatis/mybatis-config.xml"
 		sessionFactory.setMapperLocations(applicationContext.getResources(mybatis_mapper_locations));  // resolver.getResources(mybatis_mapper_locations)   );  // "classpath:mybatis/mapper/**/*.xml"
-
+		
 		// sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
 
 		return sessionFactory.getObject();

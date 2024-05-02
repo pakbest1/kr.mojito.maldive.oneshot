@@ -81,6 +81,8 @@ public class MojitoApplication {
 	}
 
 	public static synchronized void close(boolean restart) {
+		
+		
 		_logger_.info("Shutting down initiated..");
 		_logger_.info("Shutting down.. Restart: {}", restart);
 		System.exit(restart ? 0 : 33);
