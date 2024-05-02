@@ -42,7 +42,7 @@ public class MojitoConfiguration implements WebMvcConfigurer {
 
 	// Config > Mybatis
 	@Autowired
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
 	@Value("${mybatis.config-location:classpath:/mybatis/mybatis-config.xml}")
 	private String mybatis_config_location;
