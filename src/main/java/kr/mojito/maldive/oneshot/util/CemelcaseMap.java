@@ -16,6 +16,7 @@ public class CemelcaseMap<K,V> extends HashMap<K,V> implements Map<K,V> {
 		return super.get(toCamelCase((String) k));
 	}
 
+
 	@SuppressWarnings("unchecked")
 	K toCamelCase(String s) {
 		if (s== null || "".equals(s.trim())) { return (K) s; };
@@ -23,10 +24,8 @@ public class CemelcaseMap<K,V> extends HashMap<K,V> implements Map<K,V> {
 		String[] parts = s.split("_");
 		StringBuffer sb = new StringBuffer();
 
-		int istep = 0;
 		for (String part : parts) {
-			sb.append( istep == 0 ? part.toLowerCase() : toProperCase(part) );
-			istep++;
+			sb.append( sb.toString().equals("") ? part.toLowerCase() : toProperCase(part) );
 		}
 
 		return (K) sb.toString();
