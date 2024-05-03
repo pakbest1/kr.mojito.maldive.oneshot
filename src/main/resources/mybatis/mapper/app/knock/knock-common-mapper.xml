@@ -17,6 +17,7 @@ SELECT 'code'             CODE
 </select>
 
 
+
 <select id="selectMenu" resultType="HashMap">
 SELECT * FROM t_vue_menu_m
 </select>
