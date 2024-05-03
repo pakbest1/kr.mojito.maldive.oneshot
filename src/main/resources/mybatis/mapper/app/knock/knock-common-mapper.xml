@@ -13,9 +13,8 @@ SELECT T.*
 SELECT 'code'             CODE
      , 'Mybatis'          NAME
      , 'Hello, Mybatis.'  VALUE
-     , 'userDual'         USER_TYPE
+     , 'dual'             USER_TYPE
 </select>
-
 
 
 <select id="selectMenu" resultType="HashMap">

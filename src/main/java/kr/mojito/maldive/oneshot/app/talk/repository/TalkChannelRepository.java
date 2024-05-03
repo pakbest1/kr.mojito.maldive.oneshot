@@ -9,7 +9,10 @@ import kr.mojito.maldive.oneshot.app.talk.model.TalkChannel;
 
 @Repository
 public class TalkChannelRepository implements IRepository<TalkChannel> {
+
 	private final Map<String, TalkChannel> repo = new ConcurrentHashMap<String, TalkChannel>();
+
+	@SuppressWarnings("unused")
 	private final static String[] channelPrefixes = {"&" , "!", "+", "#"};
 
 	@Override

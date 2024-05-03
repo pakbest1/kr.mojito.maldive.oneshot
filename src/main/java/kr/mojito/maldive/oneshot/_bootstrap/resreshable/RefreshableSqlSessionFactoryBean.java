@@ -22,7 +22,7 @@ import org.springframework.core.io.Resource;
 
 public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean implements DisposableBean {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RefreshableSqlSessionFactoryBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(RefreshableSqlSessionFactoryBean.class);
 
 	private SqlSessionFactory proxy;
 	private int interval = 1000;
@@ -50,7 +50,7 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 		} finally {
 			w.unlock();
 		}
-		LOG.info("sqlMapClient refreshed.");
+		logger.info("sqlMapClient refreshed.");
 	}
 
 	public void afterPropertiesSet() throws Exception {
@@ -74,7 +74,7 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 					try {
 						refresh();
 					} catch (Exception e) {
-						LOG.error("caught exception", e);
+						logger.error("caught exception", e);
 					}
 				}
 			}
@@ -106,10 +106,10 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 						map.put(resource, new Long(modified));
 					}
 				} catch (IOException e) {
-					LOG.error("caught exception", e);
+					logger.error("caught exception", e);
 				}
 				if (retVal) {
-					LOG.info("modified files : " + modifiedResources);
+					logger.info("modified files : " + modifiedResources);
 				}
 				return retVal;
 			}
@@ -161,7 +161,9 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 	}
 
 	public void destroy() throws Exception {
+		logger.info(this.getClass().getSimpleName()+" destroy() ");
 		timer.cancel();
+
 	}
 
 }

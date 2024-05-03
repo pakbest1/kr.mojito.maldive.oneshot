@@ -17,8 +17,8 @@ public class TalkHandshakeInterceptor implements HandshakeInterceptor {
 
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-		// Auto-generated method stub
-		String qs = request.getURI().getQuery();
+//		// Auto-generated method stub
+//		String qs = request.getURI().getQuery();
 		//attributes.putAll();
 		procQuerystring2Attributes(request, attributes);
 		//procQuery(qs, attributes);

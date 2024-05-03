@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public class MediaTypeUtiles {
+
+	@SuppressWarnings("unused")
 	private static Logger  logger;
 
 	@Autowired
