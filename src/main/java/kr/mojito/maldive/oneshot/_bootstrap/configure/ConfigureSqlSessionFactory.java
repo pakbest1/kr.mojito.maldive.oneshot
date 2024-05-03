@@ -1,5 +1,8 @@
 package kr.mojito.maldive.oneshot._bootstrap.configure;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,7 +19,7 @@ import kr.mojito.maldive.oneshot._bootstrap.resreshable.RefreshableSqlSessionFac
 
 //@Configuration
 @EnableTransactionManagement
-public class ConfigureSqlSessionFactory {
+public class ConfigureSqlSessionFactory implements Closeable {
 
 	// Config > Mybatis
 	@Autowired
@@ -28,10 +31,11 @@ public class ConfigureSqlSessionFactory {
 	@Value("${mybatis.mapper-locations:/mybatis/mapper/**/*.xml}")
 	private String mybatis_mapper_locations;
 
+	private HikariDataSource hikariDataSource;
 
 	@Bean
 	public  SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-		HikariDataSource hikariDataSource = new HikariDataSource();
+		hikariDataSource = new HikariDataSource();
 		hikariDataSource.setDataSource(dataSource);
 
 		//final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
@@ -50,6 +54,11 @@ public class ConfigureSqlSessionFactory {
 
 
 		return sessionFactory.getObject();
+	}
+
+	@Override
+	public void close() throws IOException {
+
 	}
 
 }

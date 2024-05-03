@@ -13,6 +13,8 @@ import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
@@ -33,6 +35,15 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 	private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 	private final Lock r = rwl.readLock();
 	private final Lock w = rwl.writeLock();
+
+
+	@SuppressWarnings("unused")
+	private DataSource dataSource;
+
+	public void setDataSource(DataSource dataSource) {
+		super.setDataSource(dataSource);
+		this.dataSource = dataSource;
+	}
 
 	public void setMapperLocations(Resource... mapperLocations) {
 		super.setMapperLocations(mapperLocations);
@@ -164,6 +175,7 @@ public class RefreshableSqlSessionFactoryBean extends SqlSessionFactoryBean impl
 		logger.info(this.getClass().getSimpleName()+" destroy() ");
 		timer.cancel();
 
+		//if (dataSource instanceof HikariDataSource) { ((HikariDataSource) dataSource).close(); }
 	}
 
 }
