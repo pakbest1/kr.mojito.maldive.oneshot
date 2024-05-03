@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.app.hello.web;
+package kr.mojito.maldive.oneshot.app.knock.web;
 
 import java.util.List;
 
@@ -7,17 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.mojito.maldive.oneshot.app.hello.service.HelloService;
+import kr.mojito.maldive.oneshot.app.knock.service.KnockService;
 
 @Controller
-@RequestMapping(value="/hello")
-public class HelloController {
+@RequestMapping(value="/knock")
+public class KnockController {
 
 	@Autowired
-	private HelloService svc;
+	private KnockService svc;
 
-	@RequestMapping(value="/select")
-	public @ResponseBody List<?> select() {
+	@RequestMapping(value="/hello")
+	public @ResponseBody List<?> hello() {
 
 		return svc.selectHello();
 

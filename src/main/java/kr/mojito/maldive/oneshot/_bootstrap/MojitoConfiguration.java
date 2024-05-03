@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.mojito.maldive.oneshot._bootstrap.interceptor.NoCacheInterceptor;
+import kr.mojito.maldive.oneshot._bootstrap.resreshable.RefreshableSqlSessionFactoryBean;
 
 @Configuration
 @EnableTransactionManagement
@@ -54,14 +55,20 @@ public class MojitoConfiguration implements WebMvcConfigurer {
 	@Bean
 	@SuppressWarnings("unused")
 	public  SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-		final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		//final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		final SqlSessionFactoryBean sessionFactory = new RefreshableSqlSessionFactoryBean();
+		((RefreshableSqlSessionFactoryBean) sessionFactory).setInterval(1000);
+		// sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+
 		sessionFactory.setDataSource(dataSource);
 
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//		sessionFactory.setConfigLocation (resolver.getResources(mybatis_config_location )[0]);
+//		sessionFactory.setMapperLocations(resolver.getResources(mybatis_mapper_locations)   );
+
 		sessionFactory.setConfigLocation (applicationContext.getResource (mybatis_config_location ));  // resolver.getResources(mybatis_config_location )[0]);  // applicationContext.getResource(config_location)  // "classpath:mybatis/mybatis-config.xml"
 		sessionFactory.setMapperLocations(applicationContext.getResources(mybatis_mapper_locations));  // resolver.getResources(mybatis_mapper_locations)   );  // "classpath:mybatis/mapper/**/*.xml"
-		
-		// sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+
 
 		return sessionFactory.getObject();
 	}
