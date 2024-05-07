@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import kr.mojito.maldive.oneshot._bootstrap.resreshable.RefreshableSqlSessionFactoryBean;
+import kr.mojito.maldive.oneshot._bootstrap.mybatis.resreshable.RefreshableSqlSessionFactoryBean;
 
 //@Configuration
 @EnableTransactionManagement

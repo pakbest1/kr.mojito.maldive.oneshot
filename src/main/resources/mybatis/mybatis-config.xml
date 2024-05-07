@@ -9,13 +9,23 @@
 		<setting name="callSettersOnNulls" value="true"/>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
-
-
+	
+	<!--
+	<databaseIdProvider type="">
+	</databaseIdProvider>
+	<typeHandlers>
+		<package name="kr.mojito.maldive.oneshot._bootstrap.mybatis.typehandler" />
+	</typeHandlers>
+	-->
+	
 	<!-- 별칭 -->
 	<typeAliases>
 		<!-- <typeAlias type="com.example.vue.menu.vo.MenuVO" alias="menuVO"/> -->
-		<typeAlias alias="CemelcaseMap" type="kr.mojito.maldive.oneshot.util.CemelcaseMap" />
-		
+		<typeAlias alias="CemelcaseMap" type="kr.mojito.maldive.oneshot._bootstrap.mybatis.util.CemelcaseMap" />
 	</typeAliases>
+	
+	<typeHandlers>
+		<package name="kr.mojito.maldive.oneshot._bootstrap.mybatis.typehandler" />
+	</typeHandlers>
 
 </configuration>

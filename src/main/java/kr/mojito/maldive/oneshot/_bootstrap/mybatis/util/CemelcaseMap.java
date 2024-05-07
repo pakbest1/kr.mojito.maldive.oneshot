@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.util;
+package kr.mojito.maldive.oneshot._bootstrap.mybatis.util;
 
 import java.util.HashMap;
 import java.util.Map;

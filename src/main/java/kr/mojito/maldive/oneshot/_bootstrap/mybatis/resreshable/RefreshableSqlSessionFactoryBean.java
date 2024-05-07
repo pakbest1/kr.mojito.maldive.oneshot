@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot._bootstrap.resreshable;
+package kr.mojito.maldive.oneshot._bootstrap.mybatis.resreshable;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
