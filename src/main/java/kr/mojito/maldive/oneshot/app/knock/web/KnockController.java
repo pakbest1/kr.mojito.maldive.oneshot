@@ -16,10 +16,10 @@ public class KnockController {
 	@Autowired
 	private KnockService svc;
 
-	@RequestMapping(value="/hello")
-	public @ResponseBody List<?> hello() {
+	@RequestMapping(value={ "/hello", "/helloworld" })
+	public @ResponseBody List<?> helloworld() {
 
-		return svc.selectHello();
+		return svc.selectAll();
 
 	}
 

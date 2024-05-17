@@ -5,16 +5,23 @@
 
 <mapper namespace="kr.mojito.maldive.oneshot.app.knock">
 
-<select id="selectHello" resultType="CemelcaseMap">
+<select id="selectHello" resultType="CemelcaseMap">--
+/* kr.mojito.maldive.oneshot.app.knock.selectHello */
+
 SELECT T.*
-     , 'appTable'         USER_TYPE
-  FROM tb_sys_property  AS  T
+     , 'table'            USER_TYPE
+  FROM tb_sys_property    AS  T
+  
  UNION ALL
+ 
 SELECT 'code'             CODE
      , 'Mybatis'          NAME
      , 'Hello, Mybatis.'  VALUE
      , 'dual'             USER_TYPE
+
+/* /kr.mojito.maldive.oneshot.app.knock.selectHello */
 </select>
+
 
 
 <select id="selectMenu" resultType="HashMap">
