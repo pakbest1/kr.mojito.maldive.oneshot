@@ -13,8 +13,6 @@ public class KnockServiceImpl implements KnockService {
 	@Autowired
 	private KnockRepository repository;
 
-	private final String ns = "kr.mojito.maldive.oneshot.app.knock.";
-
 	@Override
 	public List<?> selectAll() {
 		return repository.selectAll();
