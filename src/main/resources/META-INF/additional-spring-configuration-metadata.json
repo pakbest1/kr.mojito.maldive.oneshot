@@ -1,0 +1,22 @@
+{"properties": [
+{
+	"name": "path.mojito.random.uuid",
+	"type": "java.lang.String",
+	"description": "A description for 'path.mojito.random.uuid'"
+},
+{
+	"name": "path.mojito.file",
+	"type": "java.lang.String",
+	"description": "A description for 'path.mojito.file'"
+},
+{
+	"name": "path.mojito.random.string",
+	"type": "java.lang.String",
+	"description": "A description for 'path.mojito.random.string'"
+},
+{
+	"name": "path.mojito",
+	"type": "java.lang.String",
+	"description": "A description for 'path.mojito'"
+}
+]}

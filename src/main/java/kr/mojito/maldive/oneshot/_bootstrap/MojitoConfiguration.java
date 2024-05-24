@@ -8,13 +8,14 @@ import kr.mojito.maldive.oneshot._bootstrap.configure.ConfigureSqlSessionFactory
 import kr.mojito.maldive.oneshot._bootstrap.configure.ConfigureWebNoCache;
 
 @Configuration
-//@EnableCaching
+@EnableCaching
 @Import({
 	ConfigureWebNoCache.class,
 	ConfigureSqlSessionFactory.class,
 })
 public class MojitoConfiguration {
 
-
+//	@Autowired
+//	private EhcacheEventListener ehcacheEventListener;
 
 }

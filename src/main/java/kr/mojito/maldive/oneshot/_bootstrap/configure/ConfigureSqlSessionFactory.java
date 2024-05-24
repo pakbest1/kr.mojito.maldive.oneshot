@@ -28,7 +28,7 @@ public class ConfigureSqlSessionFactory implements Closeable {
 	@Value("${mybatis.config-location:classpath:/mybatis/mybatis-config.xml}")
 	private String mybatis_config_location;
 
-	@Value("${mybatis.mapper-locations:/mybatis/mapper/**/*.xml}")
+	@Value("${mybatis.mapper-locations:classpath:/mybatis/mapper/**/*.xml}")
 	private String mybatis_mapper_locations;
 
 	private HikariDataSource hikariDataSource;
