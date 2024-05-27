@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Oracle Data Definition Analysis Joint Unit</title>
-</head>
+
 <link rel="stylesheet" href="./oddaju.css" />
+
+</head>
 <body>
 <header>
 	<h3>Oracle Data Definition Analysis Joint Unit</h3>
 
 	<div class="header-search">
+		<select name="dbon">
+			<option value=""> -------- </option>
+			<option value="odda">odda</option>
+		</select>
 		<input type="text" name="kw" />
 	</div>
 </header>
@@ -19,18 +25,32 @@
 	<nav>
 		<ul>
 	<!-- 		<li>schemes</li> -->
-			<li>tables</li>
-			<li>views</li>
+			<li>Tables</li>
+			<li>Views</li>
 			<li>Materialize views</li>
-			<li>packages</li>
-			<li>procedures</li>
-			<li>functions</li>
+			<li>Packages</li>
+			<li>Procedures</li>
+			<li>Functions</li>
 		</ul>
 	</nav>
 	<article>
 		<div class="vdash"></div>
 	</article>
 </div></section>
-</body>
 
+<script type="text/javascript" src="./oddaju.js?q=_"></script>
+<script type="text/javascript">
+window.onhashchange = (e) => {
+	console.log('window.onhashchange');
+	let p=getObject(location.hash||location.search), t = {
+		dbon: document.querySelector('[name=dbon]'),
+		kw  : document.querySelector('[name=kw]'  ),
+	};
+	if (p && p.dbon) { t.dbon.value = p.dbon; }
+	if (p && p.kw  ) { t.kw  .value = p.kw  ; }
+};
+//window.dispatchEvent(new HashChangeEvent('hashchange', { isTrusted: true, newURL: location.toString() }));
+window.onhashchange();
+</script>
+</body>
 </html>
