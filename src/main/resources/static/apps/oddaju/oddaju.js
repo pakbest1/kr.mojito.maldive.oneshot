@@ -20,7 +20,7 @@ getObjectFromHash = () => {
 };
 getDDLInfo = (sql) => {
 	if (!sql) { return null; }
-	let mch = /\s+(table|view|package|procedure|function|trigger)\s+(\w+)*/i.exec(sql), r = {};
+	let mch = /(create|alter|drop)\s+(table|view|package|procedure|function|trigger)\s+(\w+)*/i.exec(sql), r = {};
 
 	if (mch && mch[1]) { r.type = mch[1]; }
 	if (mch && mch[2]) { r.name = mch[2]; }
