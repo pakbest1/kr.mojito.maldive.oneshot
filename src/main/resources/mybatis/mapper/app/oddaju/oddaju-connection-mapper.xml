@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.mojito.maldive.oneshot.app.oddaju.connection">
+
+<select id="selectList" parameterType="Map" resultType="Map">--
+/** kr.mojito.maldive.oneshot.app.oddaju.connection.selectList **/
+
+SELECT name
+  FROM tb_cms_database_connection
+ WHERE 1=1
+
+/** /kr.mojito.maldive.oneshot.app.oddaju.connection.selectList **/
+</select>
+
+<select id="selectAll" parameterType="Map" resultType="Map">--
+/** kr.mojito.maldive.oneshot.app.oddaju.connection.selectAll **/
+
+SELECT *
+  FROM tb_cms_database_connection
+ WHERE 1=1
+
+/** /kr.mojito.maldive.oneshot.app.oddaju.connection.selectAll **/
+</select>
+
+<insert id="save"  parameterType="Map">--
+/** kr.mojito.maldive.oneshot.app.oddaju.connection.save **/
+
+
+
+/** /kr.mojito.maldive.oneshot.app.oddaju.connection.save **/
+</insert>
+
+</mapper>

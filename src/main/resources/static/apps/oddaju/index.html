@@ -22,24 +22,31 @@
 	</div>
 </header>
 <section><div>
-	<nav>
+	<nav class="tnavi">
 		<ul>
 	<!-- 		<li>schemes</li> -->
-			<li>Tables</li>
-			<li>Views</li>
-			<li>Materialize views</li>
-			<li>Packages</li>
-			<li>Procedures</li>
-			<li>Functions</li>
+			<li data-type="tables"    >Tables</li>
+			<li data-type="views"     >Views</li>
+			<li data-type="mviews"    >Materialize Views</li>
+			<li data-type="packages"  >Packages</li>
+			<li data-type="procedures">Procedures</li>
+			<li data-type="functions" >Functions</li>
 		</ul>
 	</nav>
 	<article>
-		<div class="vdash"></div>
+		<div class="tctnt"></div>
 	</article>
 </div></section>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src='https://requirejs.org/docs/release/2.3.6/minified/require.js'></script>
 <script type="text/javascript" src="./oddaju.js?q=_"></script>
 <script type="text/javascript">
+$('.tnavi > ul > li').on('click', (e) => {
+	if (!e.target.dataset || !e.target.dataset.type) { e.preventDefault(); return; }
+	console.log('clicked .tnavi > ul > li : '+ e.target.dataset.type);
+});
+
 window.onhashchange = (e) => {
 	console.log('window.onhashchange');
 	let p=getObject(location.hash||location.search), t = {
