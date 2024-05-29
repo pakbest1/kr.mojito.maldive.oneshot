@@ -1,32 +1,21 @@
-package kr.mojito.maldive.oneshot.app.knock.service;
+package kr.mojito.maldive.oneshot.app.sys.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
-import kr.mojito.maldive.oneshot.app.knock.repository.KnockRepository;
-
 @Service
-public class KnockServiceImpl implements KnockService {
+public class EcacheServiceImpl implements EcacheService {
 	
 	@Autowired
 	private CacheManager cacheManager;
-
-	@Autowired
-	private KnockRepository repository;
 	
-	@Override
-	public List<?> selectAll() throws Exception {
-		return repository.selectAll();
-	}
-
 	@SuppressWarnings("serial")
 	@Override
-	public Map<String, Object>  evictAll() throws Exception {
+	public Map<String, Object>  evict(String id) throws Exception {
 		cacheManager.getCacheNames().stream()
 			.forEach(cacheName -> cacheManager.getCache(cacheName).clear());
 		
@@ -36,5 +25,5 @@ public class KnockServiceImpl implements KnockService {
 		
 		return r;
 	}
-
+	
 }

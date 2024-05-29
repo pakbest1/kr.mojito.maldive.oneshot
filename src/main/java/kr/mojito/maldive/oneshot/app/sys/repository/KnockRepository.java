@@ -1,4 +1,4 @@
-package kr.mojito.maldive.oneshot.app.knock.repository;
+package kr.mojito.maldive.oneshot.app.sys.repository;
 
 import java.util.List;
 import java.util.Map;
