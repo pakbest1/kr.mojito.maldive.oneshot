@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Textarea Example</title>
+</head>
+<body>
+
+<textarea id="myTextarea" rows="4" cols="50"></textarea>
+
+<script>
+// textarea 요소를 가져옵니다.
+var textarea = document.getElementById("myTextarea");
+
+// textarea에 이벤트 리스너를 추가합니다.
+textarea.addEventListener("keydown", function(event) {
+// Enter 키가 눌렸는지 확인합니다.
+if (event.keyCode === 13) {
+	// Ctrl 키가 눌렸는지 확인합니다.
+	if (event.ctrlKey) {
+	  // Ctrl + Enter가 눌렸을 때의 동작을 여기에 추가합니다.
+	  sendMessage();
+	} else {
+	  // Enter 키가 눌렸을 때의 동작을 여기에 추가합니다.
+	  event.preventDefault(); // 기본 동작을 취소하여 줄바꿈을 막습니다.
+	  insertNewLine();
+	}
+}
+});
+
+// 새 줄을 추가하는 함수
+function insertNewLine() {
+var currentPosition = textarea.selectionStart;
+var textBeforeCursor = textarea.value.substring(0, currentPosition);
+var textAfterCursor = textarea.value.substring(currentPosition, textarea.value.length);
+textarea.value = textBeforeCursor + '\n' + textAfterCursor;
+textarea.selectionStart = textarea.selectionEnd = currentPosition + 1;
+}
+
+// 전송하는 함수 (임시로 alert으로 표시)
+function sendMessage() {
+var message = textarea.value.trim(); // 앞뒤 공백을 제거한 입력 내용
+if (message !== '') {
+	alert("전송: " + message);
+	textarea.value = ''; // 입력 내용 초기화
+}
+}
+</script>
+
+</body>
+</html>

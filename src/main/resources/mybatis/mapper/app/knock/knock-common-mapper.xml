@@ -9,15 +9,15 @@
 /* kr.mojito.maldive.oneshot.app.knock.selectHello */
 
 SELECT T.*
-     , 'table'            USER_TYPE
-  FROM tb_sys_property    AS  T
-  
- UNION ALL
- 
+	, 'table'            USER_TYPE
+FROM tb_sys_property    AS  T
+
+UNION ALL
+
 SELECT 'code'             CODE
-     , 'Mybatis'          NAME
-     , 'Hello, Mybatis.'  VALUE
-     , 'dual'             USER_TYPE
+	, 'Mybatis'          NAME
+	, 'Hello, Mybatis.'  VALUE
+	, 'dual'             USER_TYPE
 
 /* /kr.mojito.maldive.oneshot.app.knock.selectHello */
 </select>

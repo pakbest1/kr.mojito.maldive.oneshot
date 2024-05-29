@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.convert.converter.Converter;
@@ -34,7 +35,9 @@ import kr.mojito.maldive.oneshot.app.message.repository.MessageRepository;
 import kr.mojito.maldive.oneshot.app.message.repository.impl.InMemoryMessageRespository;
 
 //@Configuration
+//@ComponentScan
 //@EnableAutoConfiguration
+@EnableCaching
 @SpringBootApplication
 @ComponentScan(basePackages={
 	"kr.mojito.maldive.oneshot"
@@ -80,6 +83,8 @@ public class MojitoApplication {
 	}
 
 	public static synchronized void close(boolean restart) {
+		
+		
 		_logger_.info("Shutting down initiated..");
 		_logger_.info("Shutting down.. Restart: {}", restart);
 		System.exit(restart ? 0 : 33);

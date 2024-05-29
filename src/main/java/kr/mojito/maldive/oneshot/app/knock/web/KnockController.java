@@ -1,6 +1,7 @@
 package kr.mojito.maldive.oneshot.app.knock.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +15,19 @@ import kr.mojito.maldive.oneshot.app.knock.service.KnockService;
 public class KnockController {
 
 	@Autowired
-	private KnockService svc;
+	private KnockService knockService;
 
 	@RequestMapping(value={ "/hello", "/helloworld" })
-	public @ResponseBody List<?> helloworld() {
+	public @ResponseBody List<?> helloworld() throws Exception {
 
-		return svc.selectAll();
+		return knockService.selectAll();
+
+	}
+	
+	@RequestMapping(value={ "/evict/all" })
+	public @ResponseBody Map<String, ?> evictAll() throws Exception {
+
+		return knockService.evictAll();
 
 	}
 

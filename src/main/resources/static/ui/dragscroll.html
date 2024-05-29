@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag to Scroll Example</title>
+<style>
+/* 전체 페이지를 감싸는 컨테이너에 스타일을 적용합니다. */
+.container {
+width: 100%;
+height: 100vh; /* 뷰포트 높이에 맞게 설정합니다. */
+/* overflow: hidden; */ /* 내부 컨텐츠가 넘칠 경우 스크롤을 숨깁니다. */
+}
+
+/* 실제 내용이 들어가는 요소에 스타일을 적용합니다. */
+.content {
+width: auto;
+height: auto; /* 내용의 높이를 자동으로 조절합니다. */
+cursor: grab; /* 드래그를 시작할 때 커서를 변경합니다. */
+}
+
+img {
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<!-- 페이지의 내용을 추가합니다. -->
+<div class="content">
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+	
+	<!-- 페이지의 내용을 추가합니다. -->
+	<p>페이지의 내용을 추가합니다.</p>
+	<img  src="https://via.placeholder.com/800x600" alt="Large Image">
+</div>
+</div>
+
+<script>
+// 드래그 이벤트를 감지하여 페이지를 스크롤하는 함수
+function dragToScroll(element) {
+var pos = { top: 0, left: 0, x: 0, y: 0 };
+
+const mouseDownHandler = function(e) {
+	element.style.cursor = 'grabbing'; // 드래그 중일 때 커서 모양 변경
+	element.style.userSelect = 'none'; // 드래그 중일 때 텍스트 선택 방지
+
+	pos = {
+	left: element.scrollLeft,
+	top: element.scrollTop,
+	// 현재 마우스 위치
+	x: e.clientX,
+	y: e.clientY,
+	};
+
+	document.addEventListener('mousemove', mouseMoveHandler);
+	document.addEventListener('mouseup', mouseUpHandler);
+};
+
+const mouseMoveHandler = function(e) {
+	// 이동한 거리 계산
+	const dx = e.clientX - pos.x;
+	const dy = e.clientY - pos.y;
+
+	// 스크롤 위치 갱신
+	element.scrollTop = pos.top - dy;
+	element.scrollLeft = pos.left - dx;
+};
+
+const mouseUpHandler = function() {
+	element.style.cursor = 'grab'; // 드래그 종료 후 커서 모양 변경
+	element.style.removeProperty('user-select'); // 텍스트 선택 허용
+
+	document.removeEventListener('mousemove', mouseMoveHandler);
+	document.removeEventListener('mouseup', mouseUpHandler);
+};
+
+element.addEventListener('mousedown', mouseDownHandler);
+}
+
+// 페이지가 로드되었을 때 드래그 이벤트를 활성화합니다.
+window.onload = function() {
+var container = document.querySelector('.container');
+dragToScroll(container);
+};
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Textarea Example</title>
+<style>
+#myTextarea {
+	resize: none; /* 사용자가 크기 조정할 수 없도록 설정 */
+}
+</style>
+</head>
+<body>
+
+	<textarea id="myTextarea" rows="1" cols="50"></textarea>
+
+<script type="text/javascript" >
+	// textarea 요소를 가져옵니다.
+	var textarea = document.getElementById("myTextarea");
+
+	// textarea에 이벤트 리스너를 추가합니다.
+	textarea.addEventListener("input", function() {
+		autoResize();
+	});
+
+	// textarea의 높이를 자동으로 조절하는 함수
+	function autoResize() {
+		textarea.style.height = "auto"; // 높이를 초기화하여 내용에 맞게 조절될 수 있도록 합니다.
+		textarea.style.height = textarea.scrollHeight + "px"; // 실제 내용의 높이에 따라 textarea의 높이를 설정합니다.
+	}
+
+	// textarea에 초기 높이를 설정하기 위해 페이지 로드 시 호출합니다.
+	autoResize();
+</script>
+
+</body>
+</html>
