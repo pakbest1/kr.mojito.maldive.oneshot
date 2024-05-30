@@ -89,8 +89,8 @@ public class HttpUtil {
 		log(s, null);
 	}
 	public static void log(String s, String prefix) {
-		String se = "================================================================================================\n";
-		String ss = "------------------------------------------------------------------------------------------------\n";  // String.format("%-80s", "-"); // "-".repeat(80);
-		System.out.println(se+"["+ (prefix == null ? "" : prefix + " --> ") +"response] >>>\n"+ss + s.trim() + "\n"+se);
+		String sff = "================================================================================================\n";
+		String smd = "------------------------------------------------------------------------------------------------\n";  // String.format("%-80s", "-"); // "-".repeat(80);
+		System.out.println(sff+"["+ (prefix == null ? "" : prefix + " --> ") +"response] >>>\n"+smd + s.trim() + "\n"+sff);
 	}
 }
