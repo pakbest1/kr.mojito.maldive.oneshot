@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class HttpUtil {
 	private HttpUtil() {}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	private static Object _request(String surl, String method, String mediatype, Object body) {
 		if (surl      == null) { return null; }
 		
