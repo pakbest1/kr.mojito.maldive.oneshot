@@ -16,6 +16,8 @@ public class EcacheServiceImpl implements EcacheService {
 	@SuppressWarnings("serial")
 	@Override
 	public Map<String, Object>  evict(String id) throws Exception {
+		
+		
 		cacheManager.getCacheNames().stream()
 			.forEach(cacheName -> cacheManager.getCache(cacheName).clear());
 		

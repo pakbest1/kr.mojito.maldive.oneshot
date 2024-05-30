@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:\jwork\ws_egov4\kr.mojito.maldive.oneshot\src\db\Mojito.Maldive.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1204"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,15:maintb_sys_property"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="tb_cms_database_object" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="47"/><column index="3" value="38"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="tb_sys_property" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="53"/><column index="3" value="46"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">SELECT 'code'             CODE
-	 , 'Mybatis'          NAME
-	 , 'Hello, Mybatis.'  VALUE
-	 , 'userDual'         USER_TYPE</sql><current_tab id="0"/></tab_sql></sqlb_project>
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:\jwork\ws_egov4\kr.mojito.maldive.oneshot\src\db\Mojito.Maldive.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2521"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,22:maintb_cms_database_object"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="tb_cms_database_object" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="47"/><column index="3" value="38"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="tb_cms_database_property" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="55"/><column index="2" value="44"/><column index="3" value="47"/><column index="4" value="46"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">DROP   TABLE &quot;tb_cms_database_property&quot;;
+CREATE TABLE &quot;tb_cms_database_property&quot; (
+	&quot;lookup&quot;	TEXT NOT NULL,
+	&quot;code&quot;	    TEXT NOT NULL,
+	&quot;value&quot;	  TEXT,
+	&quot;desc&quot;	  TEXT,
+	&quot;alias01&quot; TEXT,
+	&quot;alias02&quot; TEXT,
+	&quot;alias03&quot; TEXT,
+	&quot;alias04&quot; TEXT,
+	&quot;alias05&quot; TEXT,
+	&quot;parent&quot;  TEXT,
+	&quot;seqc&quot;	INTEGER NOT NULL DEFAULT 0,
+	&quot;inst_userid&quot;	TEXT NOT NULL,
+	&quot;inst_dttm&quot;	TEXT NOT NULL,
+	&quot;updt_userid&quot;	TEXT NOT NULL,
+	&quot;updt_dttm&quot;	TEXT NOT NULL,
+	PRIMARY KEY(&quot;lookup&quot;,&quot;code&quot;)
+);
+
+DROP   TABLE &quot;tb_cms_database_source&quot;;
+CREATE TABLE &quot;tb_cms_database_source&quot; (
+	&quot;owner&quot;	TEXT NOT NULL,
+	&quot;name&quot;	TEXT NOT NULL,
+	&quot;line&quot;	INTEGER NOT NULL,
+	&quot;srce_text&quot;	TEXT,
+	&quot;aply_text&quot;	TEXT,
+	&quot;inst_userid&quot;	TEXT NOT NULL,
+	&quot;inst_dttm&quot;	TEXT NOT NULL,
+	&quot;updt_userid&quot;	TEXT NOT NULL,
+	&quot;updt_dttm&quot;	TEXT NOT NULL,
+	PRIMARY KEY(&quot;owner&quot;,&quot;name&quot;,&quot;line&quot;)
+);
+
+DROP   TABLE &quot;tb_cms_database_connection&quot;;
+CREATE TABLE &quot;tb_cms_database_connection&quot; (
+	&quot;name&quot;	         TEXT NOT NULL,
+	&quot;dbtype&quot;         TEXT NOT NULL,
+	&quot;drive&quot;          TEXT NOT NULL,
+	&quot;url&quot;            TEXT NOT NULL,
+	&quot;username&quot;       TEXT,
+	&quot;password&quot;       TEXT,
+	
+	&quot;inst_userid&quot;	TEXT NOT NULL,
+	&quot;inst_dttm&quot;	TEXT NOT NULL,
+	&quot;updt_userid&quot;	TEXT NOT NULL,
+	&quot;updt_dttm&quot;	TEXT NOT NULL,
+	PRIMARY KEY(&quot;name&quot;)
+);
+
+BEGIN;
+	SELECT row_number() over()  rn
+		 , name
+	  FROM tb_cms_database_connection
+	 WHERE true
+	 ;
+ END;</sql><current_tab id="0"/></tab_sql></sqlb_project>
