@@ -2,13 +2,12 @@ package kr.mojito.maldive.oneshot.app.utils;
 
 import java.net.URL;
 
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Component
@@ -16,12 +15,10 @@ import okhttp3.Response;
 public class HttpUtil {
 	private HttpUtil() {}
 	
-	private static final String DEFAULT_HTTP_METHOD_POST = HttpMethod.POST.toString();
-	
 	private static Object _request(String surl, String method, String contenttype, Object body) {
 		if (surl        == null) { return null; }
-		if (method      == null) { method      = HttpMethod.GET                    .toString(); }
-		if (contenttype == null) { contenttype = MediaType.APPLICATION_OCTET_STREAM.toString(); }
+		if (method      == null) { method      = HttpConsts.Methods.GET              .toString(); }
+		if (contenttype == null) { contenttype = HttpConsts.MediaTypes.MEDIATYPE_HTML.toString(); }
 		
 		String s = null;
 		URL url;
@@ -36,11 +33,15 @@ public class HttpUtil {
 			).build();
 			
 			Request.Builder requestBuilder = new Request.Builder().url(surl);
-			if (body != null && DEFAULT_HTTP_METHOD_POST.equals(method)) {
+			if (body != null && HttpConsts.Methods.POST.equals(method)) {
 //				if (body instanceof String) {
 //					//ObjectMapper objectmapper = new ObjectMapper();
 //					//objectmapper.
 //				}
+				//okhttp3.MediaType.get(s)
+				//okhttp3.MediaType.get("html");
+				//MediaTypes.MEDIATYPE_HTML
+				requestBuilder.post(RequestBody.create(okhttp3.MediaType.parse("application/json"), ((String) body)));
 			}
 			
 			Response response = client.newCall(requestBuilder.build()).execute();
@@ -76,14 +77,7 @@ public class HttpUtil {
 		return requestJson(surl, null);
 	}
 	
-	public static void main(String[] args) {
-		String s;
-		s = (String) HttpUtil.requestGet("https://publicobject.com/robots.txt");
-		log(s, "HttpUtil.requestGet");
-		
-		s = (String) HttpUtil.request("https://publicobject.com/robots.txt", "get", "text/plain");
-		log(s, "HttpUtil.request");
-	}
+	
 	
 	public static void log(String s) {
 		log(s, null);
@@ -93,4 +87,20 @@ public class HttpUtil {
 		String smd = "------------------------------------------------------------------------------------------------\n";  // String.format("%-80s", "-"); // "-".repeat(80);
 		System.out.println(sff+"["+ (prefix == null ? "" : prefix + " --> ") +"response] >>>\n"+smd + s.trim() + "\n"+sff);
 	}
+	
+	
+	
+	public static void main(String[] args) {
+		okhttp3.MediaType mediaType = okhttp3.MediaType.get("text/html;charset=utf-8");
+		log(mediaType.toString());
+		
+		String s;
+		s = (String) HttpUtil.requestGet("https://publicobject.com/robots.txt");
+		log(s, "HttpUtil.requestGet");
+		
+		s = (String) HttpUtil.request("https://publicobject.com/robots.txt", HttpConsts.Methods.POST, HttpConsts.MediaTypes.MEDIATYPE_RAW_DATA.toString());
+		log(s, "HttpUtil.request");
+		
+	}
+	
 }
