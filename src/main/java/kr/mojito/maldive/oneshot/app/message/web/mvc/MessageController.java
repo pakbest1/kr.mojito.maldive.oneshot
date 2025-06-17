@@ -15,7 +15,6 @@ package kr.mojito.maldive.oneshot.app.message.web.mvc;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +35,6 @@ import kr.mojito.maldive.oneshot.app.message.repository.MessageRepository;
 public class MessageController {
 	private final MessageRepository messageRepository;
 
-	@Autowired
 	public MessageController(MessageRepository messageRepository) {
 		this.messageRepository = messageRepository;
 	}

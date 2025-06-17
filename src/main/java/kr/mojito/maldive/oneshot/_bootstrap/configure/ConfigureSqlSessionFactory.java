@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -18,6 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import kr.mojito.maldive.oneshot._bootstrap.mybatis.resreshable.RefreshableSqlSessionFactoryBean;
 
 //@Configuration
+@Configuration
 @EnableTransactionManagement
 public class ConfigureSqlSessionFactory implements Closeable {
 

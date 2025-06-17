@@ -126,6 +126,7 @@ public class HttpUtil {
 	
 	
 	
+	@SuppressWarnings("serial")
 	public static void main(String[] args) {
 		String s;
 		

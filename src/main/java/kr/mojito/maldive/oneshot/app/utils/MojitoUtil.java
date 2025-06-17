@@ -69,6 +69,9 @@ public class MojitoUtil {
 		return s;
 	}
 
+	public static String toPrettyJSON(Object o) {
+		return toJSON4Indent(o);
+	}
 	public static String toJSON4Indent(Object o) {
 		String s = null;
 
